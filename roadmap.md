@@ -144,7 +144,18 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
 | 2026-06-25 | Portable subagent dispatch | Some environments don't register `.claude/agents/*` as dispatchable types; orchestrator falls back to `general-purpose` + "read the spec file". Writer fallback loses the hard no-fetch wall → mitigated by explicit instruction + the gate running first |
 | 2026-06-26 | "Full audit" hardening (independent re-fetch) | User wanted to be *absolutely sure* news is real. Added auditor stage + `--require-audit` gate: VERIFIED requires two independent confirmations from the live source. Every reference now carries a clickable source link |
 | 2026-06-26 | `govinfo.gov` added to `verified_domains` | First live run: `federalregister.gov` (allowlisted) blocks automated fetch; the readable authoritative copy is `govinfo.gov`, GPO's official Federal Register publisher. Treated as a Tier-1 primary source so FAA AD text read there can satisfy VERIFIED |
+| 2026-06-26 | Deterministic output finaliser (`finalize_digest.py`, orchestrator Step 5b) | Live run showed the writer LLM ignores pure-formatting instructions (`&amp;`, doubled ref type, section order). Enforce mechanically after the writer — structure over instruction, same principle as the gates. Only reformats existing text; never adds/changes a reference, quote, or fact |
+| 2026-06-26 | Gate I/O forced to UTF-8 | Windows redirected stdout defaults to cp1252; the gate wrote a file the audit gate could not read back. `reconfigure(encoding="utf-8")` in both scripts' `main()` + regression test |
 
 ## Open questions
 
-_(none open)_
+- **G13 — cold-start / window policy:** the strict 7-day window drops genuinely-recent ADs on a
+  first run (they were published 8–14 days before). One-time wider first-run lookback, or accept
+  that steady-state weekly cadence self-covers? (Ties to G4.)
+- **G4 — cross-run memory / dedup:** no state between runs, so a developing event can be re-surfaced
+  each week. Worth a lightweight per-run ledger of seen ref-numbers/event-ids.
+- **Output density (minor):** the writer's `*Technical detail:*` line packs ref + effectivity + OEM
+  position + root cause into one semicolon-joined run-on. Per current `writer.md` template; could be
+  tightened. Not a defect.
+
+See `docs/superpowers/specs/2026-06-26-aviation-digest-spec.md` §8 + §11 for the full gap analysis.
