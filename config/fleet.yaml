@@ -1,0 +1,215 @@
+# =============================================================================
+# fleet.yaml — Scoping config for the Aviation Technical-Intelligence Digest
+# =============================================================================
+# Single source of truth for operator, fleet, engines, peers, sources, and run
+# parameters. The pipeline reads ONLY from this file for scope decisions, so the
+# same pipeline works for a different operator/fleet by editing this file alone.
+#
+# See CLAUDE.md for the project contract and the public-internet-only rule.
+# =============================================================================
+
+operator:
+  name: Cathay Pacific
+  icao: CPA
+  iata: CX
+  home_regulator: HKCAD          # Hong Kong Civil Aviation Department
+  region: Hong Kong
+
+# -----------------------------------------------------------------------------
+# Fleet of interest — the operator's own types.
+# `aliases` help the scanner match how sources actually write the type.
+# `engines` are the variants relevant for SB/AD scoping.
+# -----------------------------------------------------------------------------
+fleet:
+  - type: A330-300
+    aliases: [A333, "330-300", "A330"]
+    oem: Airbus
+    engines: [Trent 700]
+
+  - type: A321neo
+    aliases: [A21N, "A321-200N", "A321neo", "321neo"]
+    oem: Airbus
+    engines: [LEAP-1A, PW1100G]   # CX fleet is LEAP-1A; PW1100G kept for read-across
+
+  - type: A350-900
+    aliases: [A359, "350-900", "A350"]
+    oem: Airbus
+    engines: [Trent XWB-84]
+
+  - type: A350-1000
+    aliases: [A35K, "350-1000", "A350-1000"]
+    oem: Airbus
+    engines: [Trent XWB-97]
+
+  - type: 777-300ER
+    aliases: [B77W, "777-300ER", "773ER", "777-300(ER)"]
+    oem: Boeing
+    engines: [GE90-115B]
+
+# -----------------------------------------------------------------------------
+# Peer / read-across types — NOT operated by CX, but monitored because an event
+# on them may carry read-across to the fleet (shared system, engine, OEM design
+# philosophy, or regulatory precedent).
+# -----------------------------------------------------------------------------
+peers:
+  - type: A320neo family
+    aliases: [A20N, A21N, "A319neo", "A320neo", "A321neo"]
+    read_across: Shares PW1100G / LEAP-1A engines and A32x systems with A321neo
+  - type: A340
+    aliases: ["A340-300", "A340-600", A343, A346]
+    read_across: Shared Airbus widebody systems / design lineage with A330/A350
+  - type: 787
+    aliases: [B788, B789, B78X, "787-8", "787-9", "787-10"]
+    read_across: Boeing widebody design read-across to 777-300ER
+  - type: 767
+    aliases: [B763, B764, "767-300", "767-400"]
+    read_across: Boeing widebody systems read-across to 777-300ER
+  - type: Other Trent-powered widebodies
+    aliases: ["Trent 1000", "Trent 7000", "Trent 900", "Trent XWB"]
+    read_across: Rolls-Royce Trent family read-across to Trent 700 / Trent XWB
+
+# -----------------------------------------------------------------------------
+# Engines master list — for query expansion and SB/AD scoping.
+# -----------------------------------------------------------------------------
+engines:
+  - name: Trent 700
+    oem: Rolls-Royce
+    on_types: [A330-300]
+  - name: Trent XWB-84
+    oem: Rolls-Royce
+    on_types: [A350-900]
+  - name: Trent XWB-97
+    oem: Rolls-Royce
+    on_types: [A350-1000]
+  - name: LEAP-1A
+    oem: CFM International
+    on_types: [A321neo]
+  - name: PW1100G
+    oem: Pratt & Whitney
+    on_types: [A321neo]            # read-across; CX A321neo are LEAP-1A
+  - name: GE90-115B
+    oem: GE Aerospace
+    on_types: [777-300ER]
+
+# -----------------------------------------------------------------------------
+# Run parameters — cadence and lookback window. Current date is computed at
+# RUNTIME by the orchestrator; these only set the window length and defaults.
+# -----------------------------------------------------------------------------
+run:
+  cadence: weekly                  # weekly | daily
+  lookback_days: 7                 # 7 for weekly, 1 for daily
+  target_words: 1000               # weekly target; brevity over completeness
+  carry_developing_events: true    # older still-developing events allowed if flagged, never as "new"
+
+# -----------------------------------------------------------------------------
+# Source tiers — consulted in priority order. Tier rank drives ranking and the
+# verification rule: trade press (tier 4) is LEADS ONLY and can never be the
+# sole source for a technical reference.
+# -----------------------------------------------------------------------------
+sources:
+  tier_1_regulators:
+    rank: 1
+    role: primary                  # can satisfy [VERIFIED]
+    entries:
+      - name: FAA Federal Register
+        url: https://www.federalregister.gov/agencies/federal-aviation-administration
+      - name: FAA DRS (Dynamic Regulatory System)
+        url: https://drs.faa.gov/
+      - name: EASA AD portal
+        url: https://ad.easa.europa.eu/
+      - name: HKCAD (Hong Kong)
+        url: https://www.cad.gov.hk/
+      - name: Transport Canada CAWIS / ADs
+        url: https://wwwapps.tc.gc.ca/Saf-Sec-Sur/2/cawis-swimn/
+      - name: CAAC
+        url: http://www.caac.gov.cn/
+      - name: UK CAA
+        url: https://www.caa.co.uk/
+
+  tier_2_oems:
+    rank: 2
+    role: primary                  # can satisfy [VERIFIED] when publicly fetchable
+    note: SB/SIL/SL often gated behind customer portals — if not publicly readable, mark UNVERIFIED.
+    entries:
+      - name: Boeing newsroom / commercial
+        url: https://www.boeing.com/commercial
+      - name: Airbus newsroom / safety
+        url: https://www.airbus.com/en/newsroom
+      - name: Rolls-Royce media
+        url: https://www.rolls-royce.com/media.aspx
+      - name: GE Aerospace news
+        url: https://www.geaerospace.com/news
+      - name: Pratt & Whitney news
+        url: https://www.prattwhitney.com/en/newsroom
+
+  tier_3_investigators:
+    rank: 3
+    role: primary                  # official investigation findings count as primary
+    entries:
+      - name: NTSB
+        url: https://www.ntsb.gov/investigations/
+      - name: UK AAIB
+        url: https://www.gov.uk/government/organisations/air-accidents-investigation-branch
+      - name: BEA (France)
+        url: https://bea.aero/en/
+      - name: TSB Canada
+        url: https://www.tsb.gc.ca/eng/
+      - name: Hong Kong AAIA
+        url: https://www.thb.gov.hk/eng/boards/transport/air/aaia.htm
+
+  tier_4_trade_press:
+    rank: 4
+    role: leads_only               # NEVER sole source for a technical reference
+    entries:
+      - name: Aviation Week
+        url: https://aviationweek.com/
+      - name: The Air Current
+        url: https://theaircurrent.com/
+      - name: Leeham News
+        url: https://leehamnews.com/
+      - name: FlightGlobal
+        url: https://www.flightglobal.com/
+      - name: AeroTime
+        url: https://www.aerotime.aero/
+      - name: ch-aviation
+        url: https://www.ch-aviation.com/
+      - name: The Aviation Herald
+        url: https://avherald.com/
+
+# -----------------------------------------------------------------------------
+# Provenance allowlist — ONLY a source URL on one of these domains can satisfy a
+# [VERIFIED] claim. Trade-press domains are deliberately excluded. The verifier
+# checks every record's primary_source_url against this list (Stage 3 gate).
+# -----------------------------------------------------------------------------
+verified_domains:
+  # Regulators
+  - federalregister.gov
+  - govinfo.gov        # GPO official publisher of the Federal Register; federalregister.gov blocks automated fetch (302 loop), so AD text is read here
+  - drs.faa.gov
+  - faa.gov
+  - ad.easa.europa.eu
+  - easa.europa.eu
+  - cad.gov.hk
+  - tc.gc.ca
+  - caac.gov.cn
+  - caa.co.uk
+  # Investigators
+  - ntsb.gov
+  - gov.uk            # AAIB lives under gov.uk
+  - bea.aero
+  - tsb.gc.ca
+  - thb.gov.hk
+  # OEMs (only when the document text is publicly fetchable)
+  - boeing.com
+  - airbus.com
+  - rolls-royce.com
+  - geaerospace.com
+  - prattwhitney.com
+
+# -----------------------------------------------------------------------------
+# Quote rules — applied by the verifier when extracting verbatim text.
+# -----------------------------------------------------------------------------
+quotes:
+  max_words: 25
+  only_from_fetched_text: true     # never reconstruct or paraphrase-into-quotes
+  require_attribution: [doc_title, ref_number, revision_or_date, url]

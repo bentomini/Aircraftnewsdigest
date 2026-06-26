@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-aircraftnews/schema/record.schema.json",
+  "title": "Digest Item Record",
+  "description": "The inter-stage contract for the Aviation Technical-Intelligence Digest pipeline. Scanner emits records with confidence=UNVERIFIED and null provenance. Verifier fills provenance and assigns confidence. validate_records.py mechanically enforces the gate before the Writer ever sees a record. See CLAUDE.md and config/fleet.yaml.",
+  "type": "object",
+  "required": ["id", "headline", "category", "types_affected", "summary", "references", "item_confidence"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable kebab-case slug, unique within a run."
+    },
+    "headline": {
+      "type": "string",
+      "description": "Triage headline an engineer can read in ~2 seconds."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["fleet", "read_across", "industry"],
+      "description": "fleet = directly involves an operator type; read_across = peer type with read-across; industry = major industry event."
+    },
+    "types_affected": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Aircraft/engine types touched, using fleet.yaml type names."
+    },
+    "event_date": {
+      "type": ["string", "null"],
+      "description": "ISO date (YYYY-MM-DD) of the event or the governing document. Null only if genuinely undated."
+    },
+    "within_window": {
+      "type": "boolean",
+      "description": "Set by verifier/validator: is event_date inside [current_date - lookback_days, current_date]?"
+    },
+    "developing_carryover": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if this is an older but still-developing event intentionally carried over. Must be flagged in output, never presented as new."
+    },
+    "summary": {
+      "type": "string",
+      "description": "What happened, 1-3 sentences, in the analyst's own words."
+    },
+    "references": {
+      "type": "array",
+      "description": "Technical artifacts (AD/EAD/SB/SIL/SL/MSG-3). May be empty for a purely event-level item.",
+      "items": { "$ref": "#/$defs/reference" }
+    },
+    "oem_regulator_position": {
+      "type": ["string", "null"],
+      "description": "The OEM/regulator stance (e.g. 'not safety-related', 'no replacement required after failure'). Reported, never the analyst's own determination."
+    },
+    "root_cause": {
+      "type": ["string", "null"]
+    },
+    "quotes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/quote" },
+      "default": []
+    },
+    "read_across": {
+      "type": ["string", "null"],
+      "description": "One line: why a peer/industry event matters to the operator fleet. Required in prose when category != fleet."
+    },
+    "lead_sources": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "default": [],
+      "description": "Discovery URLs (incl. trade press). NEVER proof. A lead_source can never satisfy [VERIFIED]."
+    },
+    "item_confidence": {
+      "$ref": "#/$defs/confidence",
+      "description": "Roll-up = the highest confidence present among references; UNVERIFIED if none. Recomputed by the validator."
+    },
+    "verifier_notes": {
+      "type": "string",
+      "description": "What the verifier/validator dropped or downgraded and why. Audit trail, not shown to readers."
+    }
+  },
+  "$defs": {
+    "confidence": {
+      "type": "string",
+      "enum": ["VERIFIED", "REPORTED", "UNVERIFIED"],
+      "description": "VERIFIED = confirmed against a publicly-fetched primary source on the allowlist. REPORTED = event reported by trade press, no primary technical reference confirmed. UNVERIFIED = reference exists but text not accessed (e.g. gated)."
+    },
+    "reference": {
+      "type": "object",
+      "required": ["ref_type", "ref_number", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "ref_type": {
+          "type": "string",
+          "enum": ["AD", "EAD", "SB", "SIL", "SL", "MSG-3", "other"]
+        },
+        "ref_number": { "type": "string" },
+        "revision": { "type": ["string", "null"] },
+        "ref_date": { "type": ["string", "null"], "description": "ISO date of the reference document." },
+        "effectivity": { "type": ["string", "null"], "description": "Affected MSN range / serial effectivity." },
+        "primary_source_url": {
+          "type": ["string", "null"],
+          "description": "URL of the publicly-fetched primary document. REQUIRED and must be on verified_domains for confidence=VERIFIED."
+        },
+        "primary_source_domain": {
+          "type": ["string", "null"],
+          "description": "Host of primary_source_url, www-stripped. Recomputed/validated by the gate."
+        },
+        "fetched_text_snippet": {
+          "type": ["string", "null"],
+          "description": "A short excerpt the verifier actually read from the primary doc. REQUIRED (non-trivial length) for confidence=VERIFIED. This is the proof of fetch."
+        },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "audit": {
+          "type": ["object", "null"],
+          "description": "Added by the independent Auditor stage. A VERIFIED reference is downgraded by validate_records.py --require-audit unless audit.status == 'confirmed' with a real excerpt.",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["confirmed", "not_found", "fetch_failed", "not_audited"],
+              "description": "Result of independently re-fetching primary_source_url."
+            },
+            "checked_url": { "type": ["string", "null"], "description": "The URL the auditor actually fetched." },
+            "excerpt": { "type": ["string", "null"], "description": "Real text the auditor read from the page (>=20 chars to keep VERIFIED)." },
+            "ref_number_found": { "type": ["boolean", "null"] },
+            "notes": { "type": ["string", "null"] }
+          },
+          "required": ["status"]
+        }
+      }
+    },
+    "quote": {
+      "type": "object",
+      "required": ["text", "doc_title", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Verbatim excerpt, <= quotes.max_words (default 25) from config. Only from fetched text."
+        },
+        "doc_title": { "type": "string" },
+        "ref_number": { "type": ["string", "null"] },
+        "revision_or_date": { "type": ["string", "null"] },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source document URL. Must be on verified_domains, else the quote is dropped by the gate."
+        }
+      }
+    }
+  }
+}

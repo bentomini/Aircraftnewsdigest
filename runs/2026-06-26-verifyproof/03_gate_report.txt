@@ -1,0 +1,4 @@
+
+[gate] kept=3 dropped=0 violations=2
+  - trent-700-ad-2026-10-06-supersedes-2020-24-08: quote dropped: 27 words exceeds max_words=25
+  - a350-oxygen-generator-clamp-ad-2026-09-14: quote dropped: 29 words exceeds max_words=25
