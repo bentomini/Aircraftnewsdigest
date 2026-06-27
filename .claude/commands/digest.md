@@ -154,30 +154,6 @@ python tools/engineers_corner.py \
 The rotation pointer is read-only here (advanced in Step 6e, after the digest succeeds). A busy week
 (≥ `standing_watch.corner_min_core_items` substantive core items) yields `{ "corner": null }`.
 
-## Step 4g — SCOUT IMAGERY (dispatch the `imagery` subagent)
-Find at most one relatable photo per item. Use the Agent tool with `subagent_type: imagery`
-(fallback: `general-purpose` + "Read and follow EXACTLY `.claude/agents/imagery.md`"). In the prompt:
-> Find imagery for the records in `runs/{CURRENT_DATE}/06_deduped.json` per your instructions.
-> Read that file. Return ONLY metadata `{ "images": [...] }` — never download or embed an image.
-
-Save the returned JSON verbatim to `runs/$CURRENT_DATE/09_imagery.json`. If imagery is disabled in
-config or the agent returns nothing, save `{ "images": [] }`.
-
-## Step 4h — IMAGE GATE (Bash — deterministic, never skip)
-Enforce the copyright/provenance rule. Embeds are restricted to the public-domain
-`imagery.embed_allowlist`; everything else becomes link-only. Bytes for off-allowlist photos are
-never fetched.
-```
-python tools/fetch_images.py \
-  --config config/fleet.yaml \
-  --infile runs/$CURRENT_DATE/09_imagery.json \
-  --assets-dir runs/$CURRENT_DATE/assets \
-  > runs/$CURRENT_DATE/10_images.json \
-  2> runs/$CURRENT_DATE/10_images_report.txt
-```
-Read `runs/$CURRENT_DATE/10_images_report.txt` and surface the `[images] N embedded, M link-only`
-summary. This step never blocks the digest — any download/validation failure degrades to link-only.
-
 ## Step 5 — WRITE (dispatch the `writer` subagent)
 Use the Agent tool with `subagent_type: writer`. In the prompt, pass:
 > Render the digest from `runs/{CURRENT_DATE}/06_deduped.json` per your instructions.
@@ -199,7 +175,39 @@ This unescapes HTML entities, collapses a doubled ref type (`AD AD …` → `AD 
 order (Directly Fleet-Relevant → Read-Across → Major Industry Events) with the Sources line last. It
 only reformats text already in the file — it never adds or changes a reference, quote, or fact.
 
-## Step 7 — RENDER PUBLICATION (Bash — deterministic)
+---
+**Publication layer (Steps 5c–5f).** The verified Markdown digest is now COMPLETE (Steps 5/5b). The
+remaining publication steps run AFTER it on purpose, so nothing here can ever block the core digest.
+They read only gate-passed JSON (`06_deduped.json`, `07_radar.json`, `08_corner.json`) plus the
+gate-passed images, and every one degrades gracefully on failure. **Execute them in document order
+(5c → 5d → 5e → 5f), then Step 6.** If any of 5c–5f fails, still proceed — the `.md` digest already
+exists and the run is a success.
+
+## Step 5c — SCOUT IMAGERY (dispatch the `imagery` subagent)
+Find at most one relatable photo per item. Use the Agent tool with `subagent_type: imagery`
+(fallback: `general-purpose` + "Read and follow EXACTLY `.claude/agents/imagery.md`"). In the prompt:
+> Find imagery for the records in `runs/{CURRENT_DATE}/06_deduped.json` per your instructions.
+> Read that file. Return ONLY metadata `{ "images": [...] }` — never download or embed an image.
+
+Save the returned JSON verbatim to `runs/$CURRENT_DATE/09_imagery.json`. If imagery is disabled in
+config or the agent returns nothing, save `{ "images": [] }`.
+
+## Step 5d — IMAGE GATE (Bash — deterministic)
+Enforce the copyright/provenance rule. Embeds are restricted to the public-domain
+`imagery.embed_allowlist`; everything else becomes link-only. Bytes for off-allowlist photos are
+never fetched.
+```
+python tools/fetch_images.py \
+  --config config/fleet.yaml \
+  --infile runs/$CURRENT_DATE/09_imagery.json \
+  --assets-dir runs/$CURRENT_DATE/assets \
+  > runs/$CURRENT_DATE/10_images.json \
+  2> runs/$CURRENT_DATE/10_images_report.txt
+```
+Read `runs/$CURRENT_DATE/10_images_report.txt` and surface the `[images] N embedded, M link-only`
+summary. This step never blocks the digest — any download/validation failure degrades to link-only.
+
+## Step 5e — RENDER PUBLICATION (Bash — deterministic)
 Build the branded HTML publication from the SAME gate-passed JSON the writer used, plus the
 gate-passed images. Like the writer, this tool has no fetch capability and can add nothing new.
 ```
@@ -213,7 +221,7 @@ python tools/render_publication.py \
   --outfile digests/$CURRENT_DATE-{cadence}.html
 ```
 
-## Step 7b — RENDER PDF (Bash — deterministic, failure-tolerant)
+## Step 5f — RENDER PDF (Bash — deterministic, failure-tolerant)
 Print the HTML to PDF via headless Chromium. If Playwright/Chromium is unavailable it warns and the
 HTML still ships — never treat a PDF miss as a pipeline failure.
 ```
@@ -296,11 +304,12 @@ If the Corner was suppressed this week (`corner: null`), this is a no-op and the
   has no fetch tools, so it cannot add one.
 - Never skip Steps 4e/4f (build the Standing Watch inputs) or 6d/6e (record the store and rotation).
   Record (6d/6e) only after the digest is written, mirroring Steps 6b/6c.
-- The publication renderer (Step 7) may only consume gate-passed JSON (`06_deduped.json`,
+- The publication renderer (Step 5e) may only consume gate-passed JSON (`06_deduped.json`,
   `07_radar.json`, `08_corner.json`) + gate-passed images (`10_images.json`). It has no fetch tools;
   it can never add a reference, quote, or fact — exactly like the Writer.
 - Images may be EMBEDDED only via `10_images.json` (the image gate). Embedding is restricted to the
   public-domain `imagery.embed_allowlist`; copyrighted/illustrative photos are link-only and must
   never be downloaded or inlined. The imagery subagent returns metadata only.
-- The publication layer (Steps 4g/4h/7/7b) must NEVER block the verified Markdown digest. Any imagery
-  or PDF failure degrades gracefully (link-only / HTML-only); the digest still completes.
+- The publication layer (Steps 5c–5f) runs AFTER the Markdown digest is finalised and must NEVER
+  block it. Any imagery or PDF failure degrades gracefully (link-only / HTML-only); the digest still
+  completes.

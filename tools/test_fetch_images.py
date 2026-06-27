@@ -140,6 +140,29 @@ class TestProcess(unittest.TestCase):
         out = fi.process(payload, ALLOW, _ok_downloader)
         self.assertEqual(out["images"], {})
 
+    def test_null_images_does_not_raise(self):
+        # A poorly-behaved agent could emit {"images": null}; the gate must not crash.
+        out = fi.process({"images": None}, ALLOW, _ok_downloader)
+        self.assertEqual(out["images"], {})
+
+
+class TestMainResilience(unittest.TestCase):
+    def test_main_survives_malformed_json(self):
+        import io
+        import contextlib
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False,
+                                         encoding="utf-8") as f:
+            f.write("{not valid json")
+            bad = f.name
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = fi.main(["--config", "no-such-config.yaml", "--infile", bad])
+            self.assertEqual(rc, 0)
+            self.assertIn('"images"', buf.getvalue())
+        finally:
+            os.unlink(bad)
+
 
 try:
     import PIL  # noqa: F401

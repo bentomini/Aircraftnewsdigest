@@ -130,7 +130,7 @@ def resolve_image(candidate, embed_allowlist, downloader):
 
 def process(payload, embed_allowlist, downloader, assets_dir=None):
     """Resolve every candidate -> {"images": {record_id: directive}}."""
-    candidates = payload.get("images", []) if isinstance(payload, dict) else (payload or [])
+    candidates = (payload.get("images") or []) if isinstance(payload, dict) else (payload or [])
     out = {}
     for cand in candidates:
         d = resolve_image(cand, embed_allowlist, downloader)
@@ -227,7 +227,12 @@ def main(argv=None):
     else:
         with open(args.infile, encoding="utf-8") as f:
             raw = f.read()
-    payload = json.loads(raw) if raw.strip() else {"images": []}
+    try:
+        payload = json.loads(raw) if raw.strip() else {"images": []}
+    except (json.JSONDecodeError, ValueError):
+        # Malformed 09_imagery.json must not crash the gate (never block the digest).
+        sys.stderr.write("[images] WARNING: could not parse input JSON -> no photos\n")
+        payload = {"images": []}
 
     if not icfg["enabled"]:
         sys.stdout.write(json.dumps({"images": {}}, indent=2, ensure_ascii=False))
