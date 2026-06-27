@@ -22,11 +22,19 @@ text. Many OEM SB/SIL/SL live behind portals; expect those to land UNVERIFIED, a
    reference. (Note: a public regulator AD often cites the OEM SB number — that regulator doc IS
    a valid primary source for the AD, and corroborates the SB number even if the SB text is gated.)
 2. **Fetch and read the document.** Actually open it.
-3. **Confirm against the fetched text:** `ref_number`, `revision`, `ref_date`, `effectivity`.
+3. **Confirm against the fetched text:** `ref_number`, `revision`, `ref_date`, `effectivity`,
+   and — for an AD/EAD — `effective_date` (the calendar date the directive becomes effective,
+   distinct from the publication `ref_date`; e.g. "effective June 12, 2026" → `2026-06-12`).
    Correct any value that the scanner got wrong. If you cannot confirm a field, set it null.
 4. **Record proof:** put the document URL in `primary_source_url`, its www-stripped host in
    `primary_source_domain`, and a short real excerpt you read into `fetched_text_snippet`.
 5. **Assign confidence** per the rules below.
+
+### Proposed rules (NPRM / PAD)
+A proposed rule (FAA NPRM, EASA PAD) is verified exactly like an AD — fetch the primary
+document on an allowlisted domain, confirm the docket/PAD number against the text, keep
+`ref_type` as `NPRM` or `PAD`. It is forward-looking, not yet in force, so it has no
+`effective_date` (leave null) and the writer renders it as `[PROPOSED — not yet final]`.
 
 ## Confidence rules (assign per reference)
 - `VERIFIED` — ALL of: `primary_source_url` is set AND its domain is in `verified_domains` AND
