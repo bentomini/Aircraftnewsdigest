@@ -103,6 +103,17 @@ run:
   carry_developing_events: true    # older still-developing events allowed if flagged, never as "new"
 
 # -----------------------------------------------------------------------------
+# Standing Watch — the "filler / minimum-entry" content layer. Forward-looking
+# primary-source intelligence + a walled-off educational block, rendered under
+# their own ## Standing Watch heading so they never dilute the verified core.
+# -----------------------------------------------------------------------------
+standing_watch:
+  forward_days: 90              # Compliance Radar: show ADs whose effective_date is within this many days ahead
+  radar_max: 3                  # Compliance Radar: max entries shown
+  horizon_max: 3               # On the Horizon: max proposed-rule (NPRM/PAD) items shown (writer-enforced)
+  corner_min_core_items: 4     # Engineer's Corner renders only if fewer than this many substantive core items
+
+# -----------------------------------------------------------------------------
 # Source tiers — consulted in priority order. Tier rank drives ranking and the
 # verification rule: trade press (tier 4) is LEADS ONLY and can never be the
 # sole source for a technical reference.
