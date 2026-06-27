@@ -20,7 +20,8 @@ class TestRadarOnlyEmitsRecordedVerifiedADs(unittest.TestCase):
         d = tempfile.mkdtemp()
         store = os.path.join(d, "_compliance.json")
         cfg = os.path.join(d, "fleet.yaml")
-        open(cfg, "w").write("standing_watch:\n  forward_days: 90\n  radar_max: 3\n")
+        with open(cfg, "w") as fh:
+            fh.write("standing_watch:\n  forward_days: 90\n  radar_max: 3\n")
 
         # An UNVERIFIED AD with an effective date inside the window.
         records = {"records": [{
@@ -44,11 +45,12 @@ class TestCornerEmitsOnlyCuratedContent(unittest.TestCase):
     def test_corner_entry_has_no_reference_fields(self):
         d = tempfile.mkdtemp()
         bank = os.path.join(d, "bank.json")
-        json.dump({"version": 1, "entries": [
-            {"id": "e", "title": "T", "topic_tags": [], "body": "evergreen"}]},
-            open(bank, "w"))
+        with open(bank, "w") as fh:
+            json.dump({"version": 1, "entries": [
+                {"id": "e", "title": "T", "topic_tags": [], "body": "evergreen"}]}, fh)
         cfg = os.path.join(d, "fleet.yaml")
-        open(cfg, "w").write("standing_watch:\n  corner_min_core_items: 4\n")
+        with open(cfg, "w") as fh:
+            fh.write("standing_watch:\n  corner_min_core_items: 4\n")
         thin = {"records": [{"item_confidence": "VERIFIED", "types_affected": [], "references": []}]}
         out = run("engineers_corner.py", ["--bank", bank, "--rotation",
                   os.path.join(d, "_corner.json"), "--config", cfg,
