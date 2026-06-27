@@ -97,7 +97,8 @@ engines:
 # -----------------------------------------------------------------------------
 run:
   cadence: weekly                  # weekly | daily
-  lookback_days: 7                 # 7 for weekly, 1 for daily
+  lookback_days: 7                 # 7 for weekly, 1 for daily (the nominal/floor window)
+  cold_start_lookback_days: 30     # first-run + skipped-run cap (days); self-healing window upper bound
   target_words: 1000               # weekly target; brevity over completeness
   carry_developing_events: true    # older still-developing events allowed if flagged, never as "new"
 

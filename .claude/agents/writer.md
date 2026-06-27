@@ -38,6 +38,13 @@ Omit a section if it has no items. Within each section, order by item_confidence
 
 Per item:
 - **{headline}** — {types_affected joined}, {event_date}.
+- **Dedup tag (render exactly, never invent):** If a record has `dedup.status == "updated"`, append
+  ` [UPDATED since <previously_reported>]` to that item's headline, where `<previously_reported>` is
+  the record's `dedup.previously_reported` value (omit the date if it is null: ` [UPDATED]`). If a
+  specific reference carries `dedup_status == "updated"`, you may instead note ` [rev changed from
+  <previous_version>]` after that reference. Do NOT add any dedup tag to records with
+  `dedup.status == "new"` or with no `dedup` object. This is a presentation tag only — it never
+  changes a reference, quote, date, or revision.
 - *What happened:* {summary}
 - *Technical detail:* for each reference — {ref_type} {ref_number}{ rev. revision if present},
   {effectivity if present}; {oem_regulator_position if present}; {root_cause if present}. Put the

@@ -124,10 +124,27 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
       verifier→gate→auditor→audit-gate→writer as `VERIFIED` with `[source]` links + 1 verbatim quote;
       audit gate `kept=3 dropped=0 violations=0`. Artifacts: `runs/2026-06-26-verifyproof/`,
       `digests/2026-06-26-verifyproof.md`. **G2 closed.**
-- [ ] Window/cold-start decision (G13) — one-time wider first-run lookback vs. accept steady-state cadence
+- [x] Window/cold-start decision (G13) RESOLVED + SHIPPED: self-healing window via
+      `tools/compute_window.py` (`effective = min(cold_start_cap, max(nominal, gap))`, per-cadence
+      `runs/_state.json`, cap 30d). 22 unit/CLI tests pass. Orchestrator Step 1 computes it; Step 6b
+      records the run on success. Built test-first via subagent-driven dev; final review = ready to
+      merge (incl. `os.makedirs` guard on the state path). Spec + plan in
+      `docs/superpowers/{specs,plans}/2026-06-26-g13-self-healing-window*.md`. G4 dedup half still open.
 - [x] Writer defects (G14) FIXED: added deterministic `tools/finalize_digest.py` (unescape entities,
       collapse doubled ref type, force section order) + 12 tests; wired into orchestrator as Step 5b
-- [ ] Adversarial test: confirm a trade-press-only "lead" cannot reach `[VERIFIED]`
+- [x] G4 cross-run dedup SHIPPED (2026-06-26): `tools/dedup_ledger.py` (apply + `--record`), ledger
+      `runs/_seen.json`, orchestrator Steps 4d/6c, schema `dedup`/`dedup_status` fields, writer
+      `[UPDATED since …]` tag. Policy: suppress exact, re-surface on change (revision/date). Atomic
+      ledger write. 24 tests pass. Built test-first per
+      `docs/superpowers/plans/2026-06-26-g4-dedup-ledger.md`.
+- [x] Adversarial test: confirm a trade-press-only "lead" cannot reach `[VERIFIED]` (2026-06-26).
+      4 new tests (`TestAdversarialTradePressOnly`, 42 total) drive the REAL CLI end-to-end
+      (sanitize gate → `--require-audit` audit gate) on a record where a hostile verifier faked
+      every controllable field — spoofed `primary_source_domain: faa.gov`, fabricated
+      `fetched_text_snippet`, fabricated `audit.status=confirmed` excerpt — over a trade-press URL.
+      Result: downgraded to UNVERIFIED (reason = provenance/allowlist, not audit), backing quote
+      dropped, lookalike `faa.gov.avherald.com` also rejected. Gate recomputes the domain from the
+      URL, so no verifier-supplied field can spoof it.
 - [ ] Confirm auditor's live fetch reliability (watch for over-conservative `fetch_failed` downgrades)
 - [ ] Tune scanner query set for coverage vs. token cost
 
@@ -146,14 +163,21 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
 | 2026-06-26 | `govinfo.gov` added to `verified_domains` | First live run: `federalregister.gov` (allowlisted) blocks automated fetch; the readable authoritative copy is `govinfo.gov`, GPO's official Federal Register publisher. Treated as a Tier-1 primary source so FAA AD text read there can satisfy VERIFIED |
 | 2026-06-26 | Deterministic output finaliser (`finalize_digest.py`, orchestrator Step 5b) | Live run showed the writer LLM ignores pure-formatting instructions (`&amp;`, doubled ref type, section order). Enforce mechanically after the writer — structure over instruction, same principle as the gates. Only reformats existing text; never adds/changes a reference, quote, or fact |
 | 2026-06-26 | Gate I/O forced to UTF-8 | Windows redirected stdout defaults to cp1252; the gate wrote a file the audit gate could not read back. `reconfigure(encoding="utf-8")` in both scripts' `main()` + regression test |
+| 2026-06-26 | G13 — self-healing lookback window | Effective window = `min(cold_start_cap, max(nominal, gap_since_last_run))`; per-cadence state in `runs/_state.json`; cold-start/cap default 30d. New deterministic tool `tools/compute_window.py`; orchestrator records the run marker only on success (Step 6b). Fixes cold-start + skipped-run coverage; structural over manual override. G4 dedup stays open. |
+| 2026-06-26 | G4 — cross-run dedup ledger | Suppress an item only if every reference was already reported at the same version; re-surface tagged `updated` on a new revision/date. Identity = reference `TYPE:NUMBER` + version (revision else ref_date); ref-less events keyed on a headline slug + event_date (best-effort). New deterministic tool `tools/dedup_ledger.py`; ledger `runs/_seen.json` written atomically only after a successful digest (Step 6c), mirroring the G13 run marker. |
 
 ## Open questions
 
-- **G13 — cold-start / window policy:** the strict 7-day window drops genuinely-recent ADs on a
-  first run (they were published 8–14 days before). One-time wider first-run lookback, or accept
-  that steady-state weekly cadence self-covers? (Ties to G4.)
-- **G4 — cross-run memory / dedup:** no state between runs, so a developing event can be re-surfaced
-  each week. Worth a lightweight per-run ledger of seen ref-numbers/event-ids.
+- **G4 — cross-run memory / dedup (CLOSED 2026-06-26):** both halves now done. G13 closed the
+  *window-coverage* half (`runs/_state.json` persists per-cadence `last_run_date`); the *dedup* half
+  is now shipped as `tools/dedup_ledger.py` + the `runs/_seen.json` ledger. Apply (Step 4d) suppresses
+  items already reported at the same version and tags changed refs `updated`; record (Step 6c) upserts
+  shown items after a successful digest. Remaining limitation (minor): ref-less event items are keyed
+  on a headline slug, so a re-worded headline for the same incident can dodge dedup — acceptable, since
+  ref-bearing items (ADs/SBs/SILs/SLs) are the robust path and the main re-surfacing problem.
+- **G13 follow-up (minor, deferred):** `record_run` writes `runs/_state.json` non-atomically. A crash
+  mid-write degrades to cold start on the next run (correct fail-safe direction), so low severity;
+  a temp-file-and-rename would make it crash-proof if ever wanted.
 - **Output density (minor):** the writer's `*Technical detail:*` line packs ref + effectivity + OEM
   position + root cause into one semicolon-joined run-on. Per current `writer.md` template; could be
   tightened. Not a defect.

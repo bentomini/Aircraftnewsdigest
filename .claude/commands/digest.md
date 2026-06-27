@@ -29,9 +29,25 @@ Dispatch each stage with the Agent tool using whichever of these your Claude Cod
 
 ## Step 1 — Runtime parameters (Bash)
 - Compute today's date: `date +%F` → call this `CURRENT_DATE`. **Always compute at runtime; never hardcode.**
-- Set `LOOKBACK_DAYS`: from `config/fleet.yaml` `run.lookback_days` (7 for weekly, 1 for daily) — override if the cadence arg differs.
+- Set `NOMINAL_LOOKBACK`: from `config/fleet.yaml` `run.lookback_days` (7 for weekly, 1 for daily) — override if the cadence arg differs.
 - Create the run directory: `mkdir -p runs/$CURRENT_DATE digests`.
-- Tell the user the run parameters before proceeding.
+- **Compute the self-healing window (deterministic, never skip).** The lookback grows to cover the
+  gap since the last successful run of this cadence (capped by `run.cold_start_lookback_days`), so a
+  first run or a skipped run never silently misses recent items:
+  ```
+  LOOKBACK_DAYS=$(python tools/compute_window.py \
+    --config config/fleet.yaml \
+    --current-date $CURRENT_DATE \
+    --cadence {cadence} \
+    --nominal-lookback-days $NOMINAL_LOOKBACK \
+    --state runs/_state.json)
+  ```
+  The tool prints the effective integer to stdout and a one-line reason to stderr
+  (`cold start -> 30d` / `14d gap -> healed to 14d` / `steady state -> 7d`).
+- Use `LOOKBACK_DAYS` (the **effective** window) for every downstream step — the scanner prompt, the
+  verifier prompt, and both gates' `--lookback-days`.
+- Tell the user the run parameters before proceeding: `CURRENT_DATE`, cadence, `NOMINAL_LOOKBACK` vs
+  the effective `LOOKBACK_DAYS`, and the reason line from the tool's stderr.
 
 ## Step 2 — SCAN (dispatch the `scanner` subagent)
 Use the Agent tool with `subagent_type: scanner`. In the prompt, pass:
@@ -90,12 +106,28 @@ python tools/validate_records.py \
   2> runs/$CURRENT_DATE/05_audit_report.txt
 ```
 Read `runs/$CURRENT_DATE/05_audit_report.txt` and surface its summary and any audit downgrades to
-the user. A non-zero exit is expected and healthy. **`05_final.json` is the only thing the Writer
-may see.**
+the user. A non-zero exit is expected and healthy. `05_final.json` now feeds the dedup step (4d);
+the deduped `06_deduped.json` is what the Writer sees.
+
+## Step 4d — DEDUP (Bash — deterministic, never skip)
+Suppress items already reported in a previous run, and tag any that changed since (new
+revision/date). The Writer must only ever see this output:
+```
+python tools/dedup_ledger.py \
+  --ledger runs/_seen.json \
+  --current-date $CURRENT_DATE \
+  --infile runs/$CURRENT_DATE/05_final.json \
+  > runs/$CURRENT_DATE/06_deduped.json \
+  2> runs/$CURRENT_DATE/06_dedup_report.txt
+```
+Read `runs/$CURRENT_DATE/06_dedup_report.txt` and surface its summary line
+(`kept / suppressed / new / updated`) to the user. A non-zero exit just means something was
+suppressed — expected and healthy. The ledger is **read-only here**; it is only written in Step 6c
+after the digest succeeds. **`06_deduped.json` is the only thing the Writer may see.**
 
 ## Step 5 — WRITE (dispatch the `writer` subagent)
 Use the Agent tool with `subagent_type: writer`. In the prompt, pass:
-> Render the digest from `runs/{CURRENT_DATE}/05_final.json` per your instructions.
+> Render the digest from `runs/{CURRENT_DATE}/06_deduped.json` per your instructions.
 > cadence = {cadence}. Read that file (and config/fleet.yaml for operator/fleet names).
 > Return ONLY the finished Markdown.
 
@@ -121,10 +153,39 @@ Print:
   that every VERIFIED item was confirmed by two independent fetches, and that the per-stage
   artifacts in `runs/$CURRENT_DATE/` (01→05) are kept for audit.
 
+## Step 6b — Record the run (Bash — deterministic, never skip)
+The digest now exists, so advance the per-cadence run marker. This makes the *next* run's window
+self-heal (it measures the gap since this run). Record only here, after a successful digest — never
+earlier, so a failed or empty run does not move the marker and cause the next run to under-cover:
+```
+python tools/compute_window.py --record \
+  --state runs/_state.json \
+  --current-date $CURRENT_DATE \
+  --cadence {cadence}
+```
+This writes `runs/_state.json` (`{cadence}.last_run_date = $CURRENT_DATE`), preserving the other
+cadence's marker. It records the run only; it never touches the digest.
+
+## Step 6c — Record reported items (Bash — deterministic, never skip)
+The digest now exists, so remember what it reported so the *next* run can suppress unchanged
+repeats. Record only here, after a successful digest — never earlier, so a failed or empty run
+does not poison the ledger:
+```
+python tools/dedup_ledger.py --record \
+  --ledger runs/_seen.json \
+  --current-date $CURRENT_DATE \
+  --infile runs/$CURRENT_DATE/06_deduped.json
+```
+This upserts each shown item's identity (reference TYPE:NUMBER + version, or event slug) into
+`runs/_seen.json` with an atomic write. It records only; it never touches the digest.
+
 ## Guardrails (do not violate)
 - Never write a reference, quote, date, or revision into the digest that is not in `05_final.json`.
 - Never let the Writer fetch the web or "fill in" a gap — it has no fetch tools; keep it that way.
 - Never present a trade-press item as a confirmed regulatory/OEM reference.
-- Never skip Step 4 or Step 4c. The two deterministic gates are the point.
+- Never skip Step 4 or Step 4c (the two deterministic gates) or Step 6b (the run marker that makes
+  the next window self-heal). Record the marker (6b) only after the digest is written.
+- Never skip Step 4d (dedup) or Step 6c (the ledger update). Update the ledger (6c) only after the
+  digest is written, mirroring the Step 6b run marker.
 - A reference reaching the digest as VERIFIED must have passed BOTH the verifier and the independent
   auditor. If only one confirmed it, it is UNVERIFIED.

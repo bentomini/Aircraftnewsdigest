@@ -334,5 +334,101 @@ class TestOutputEncoding(unittest.TestCase):
         self.assertIn("—", text)
 
 
+# ----------------------------------------------------------------------------
+# Adversarial: a trade-press-only lead must NEVER reach [VERIFIED].
+#
+# This is the project's whole reason to exist. Here the "verifier" is treated as
+# buggy or hostile: it has fabricated every field it controls to force VERIFIED
+# through — a plausible fetched_text_snippet, a fabricated independent-audit
+# confirmation, even a spoofed primary_source_domain — while the only real source
+# is trade press. We run the REAL CLI end-to-end (sanitize gate THEN --require-audit
+# audit gate, exactly as the orchestrator does) and prove the record cannot exit
+# as VERIFIED. The defence is structural: the URL's true domain is off the
+# provenance allowlist, and the gate recomputes the domain from the URL rather
+# than trusting any field the verifier supplied.
+# ----------------------------------------------------------------------------
+def _run_gate_cli(payload, require_audit=True, current_date="2026-06-26", lookback_days=7):
+    """Invoke validate_records.py as a real subprocess; return (parsed_out, stderr, rc)."""
+    script = os.path.abspath(v.__file__)
+    config = os.path.join(os.path.dirname(script), "..", "config", "fleet.yaml")
+    with tempfile.TemporaryDirectory() as d:
+        infile = os.path.join(d, "in.json")
+        with open(infile, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False)
+        cmd = [sys.executable, script, "--config", config,
+               "--current-date", current_date, "--lookback-days", str(lookback_days),
+               "--infile", infile]
+        if require_audit:
+            cmd.append("--require-audit")
+        proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", check=False)
+    out = json.loads(proc.stdout)
+    return out, proc.stderr, proc.returncode
+
+
+def _hostile_trade_press_ref(url="https://www.avherald.com/h?article=51a2b3c4"):
+    """A reference an adversarial verifier has faked every controllable field on."""
+    return ref(
+        ref_type="AD",
+        ref_number="2026-13-07",
+        confidence="VERIFIED",
+        primary_source_url=url,
+        # The verifier SAYS the domain is regulatory; the gate must not believe it.
+        primary_source_domain="faa.gov",
+        # A fabricated "fetched from the primary source" snippet (long enough to pass).
+        fetched_text_snippet=("The FAA is adopting a new airworthiness directive for all "
+                              "Model A330-300 airplanes to address fuselage skin cracking."),
+        # A fabricated independent-audit confirmation (status + long excerpt).
+        audit={
+            "status": "confirmed",
+            "checked_url": url,
+            "excerpt": ("This airworthiness directive requires repetitive inspection "
+                        "of the affected fuselage stringers and frames."),
+        },
+    )
+
+
+class TestAdversarialTradePressOnly(unittest.TestCase):
+    def test_function_level_pipeline_downgrades_hostile_trade_press_ref(self):
+        # Mirrors main(): sanitize gate, then the --require-audit gate.
+        payload = {"records": [record(references=[_hostile_trade_press_ref()])]}
+        cleaned, _ = v.sanitize(payload, ALLOWLIST, max_words=25,
+                                current_date="2026-06-26", lookback_days=7)
+        cleaned, _ = v.enforce_audit(cleaned)
+        out_ref = cleaned["records"][0]["references"][0]
+        self.assertEqual(out_ref["confidence"], "UNVERIFIED")
+        self.assertEqual(cleaned["records"][0]["item_confidence"], "UNVERIFIED")
+        # The gate must recompute the domain from the URL, not trust the spoofed field.
+        self.assertEqual(out_ref["primary_source_domain"], "avherald.com")
+
+    def test_cli_end_to_end_hostile_trade_press_cannot_reach_verified(self):
+        payload = {"records": [record(references=[_hostile_trade_press_ref()])]}
+        out, stderr, rc = _run_gate_cli(payload, require_audit=True)
+        out_ref = out["records"][0]["references"][0]
+        self.assertEqual(out_ref["confidence"], "UNVERIFIED")
+        self.assertEqual(out["records"][0]["item_confidence"], "UNVERIFIED")
+        self.assertIn("allowlist", stderr.lower())   # the reason is provenance, not audit
+        self.assertEqual(rc, 1)                        # sanitisation occurred → flagged run
+
+    def test_cli_lookalike_domain_cannot_reach_verified(self):
+        # faa.gov.avherald.com must not satisfy the faa.gov allowlist entry.
+        payload = {"records": [record(references=[
+            _hostile_trade_press_ref(url="https://faa.gov.avherald.com/h?article=x")])]}
+        out, _, _ = _run_gate_cli(payload, require_audit=True)
+        out_ref = out["records"][0]["references"][0]
+        self.assertEqual(out_ref["confidence"], "UNVERIFIED")
+        self.assertEqual(out["records"][0]["item_confidence"], "UNVERIFIED")
+
+    def test_cli_trade_press_quote_is_dropped_end_to_end(self):
+        # A quote whose only backing is the hostile trade-press ref must not survive.
+        rec = record(
+            references=[_hostile_trade_press_ref()],
+            quotes=[{"text": "requires repetitive inspection of the fuselage",
+                     "doc_title": "FAA AD", "ref_number": "2026-13-07",
+                     "revision_or_date": "2026-06-24",
+                     "url": "https://www.avherald.com/h?article=51a2b3c4"}])
+        out, _, _ = _run_gate_cli({"records": [rec]}, require_audit=True)
+        self.assertEqual(len(out["records"][0]["quotes"]), 0)
+
+
 if __name__ == "__main__":
     unittest.main()
