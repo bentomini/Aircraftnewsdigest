@@ -19,9 +19,14 @@ import json
 import os
 import re
 import sys
+import tempfile
 from urllib.parse import urlparse
 
 
+# NOTE: extract_domain / domain_in_allowlist below mirror the equivalent provenance
+# helpers in tools/validate_records.py. They are intentionally duplicated (not shared)
+# to keep this publication-layer change isolated from the verified core — if you change
+# the domain logic here, keep validate_records.py in sync.
 def extract_domain(url):
     """Host of a URL, lower-cased, leading 'www.' stripped. '' if none."""
     if not url:
@@ -64,18 +69,27 @@ def parse_imagery_config(text):
             break
         m = re.match(r"^\s+enabled:\s*(true|false)", line, re.I)
         if m:
-            cfg["enabled"] = m.group(1).lower() == "true"; in_list = False; continue
+            cfg["enabled"] = m.group(1).lower() == "true"
+            in_list = False
+            continue
         m = re.match(r"^\s+max_width_px:\s*(\d+)", line)
         if m:
-            cfg["max_width_px"] = int(m.group(1)); in_list = False; continue
+            cfg["max_width_px"] = int(m.group(1))
+            in_list = False
+            continue
         m = re.match(r"^\s+max_bytes:\s*(\d+)", line)
         if m:
-            cfg["max_bytes"] = int(m.group(1)); in_list = False; continue
+            cfg["max_bytes"] = int(m.group(1))
+            in_list = False
+            continue
         m = re.match(r"^\s+download_timeout_s:\s*(\d+)", line)
         if m:
-            cfg["download_timeout_s"] = int(m.group(1)); in_list = False; continue
+            cfg["download_timeout_s"] = int(m.group(1))
+            in_list = False
+            continue
         if re.match(r"^\s+embed_allowlist:\s*$", line):
-            in_list = True; continue
+            in_list = True
+            continue
         m = re.match(r"^\s+-\s*(\S+)", line)
         if m and in_list:
             cfg["embed_allowlist"].append(m.group(1).strip())
@@ -121,28 +135,48 @@ def process(payload, embed_allowlist, downloader, assets_dir=None):
     for cand in candidates:
         d = resolve_image(cand, embed_allowlist, downloader)
         rid = d.get("record_id")
-        if not rid:
+        if rid is None:
             continue
         if d.get("embed") and assets_dir:
-            os.makedirs(assets_dir, exist_ok=True)
-            path = os.path.join(assets_dir, "%s.%s" % (rid, d.get("ext", "jpg")))
-            with open(path, "wb") as f:
-                f.write(d["_raw_bytes"])
-            d["asset_path"] = path
+            # The saved copy is non-essential (the image embeds via its data_uri),
+            # so a filesystem failure must never raise/block — degrade silently.
+            try:
+                os.makedirs(assets_dir, exist_ok=True)
+                path = os.path.join(assets_dir, "%s.%s" % (rid, d.get("ext", "jpg")))
+                fd, tmp = tempfile.mkstemp(dir=assets_dir, suffix=".tmp")
+                try:
+                    with os.fdopen(fd, "wb") as f:
+                        f.write(d["_raw_bytes"])
+                    os.replace(tmp, path)
+                except BaseException:
+                    try:
+                        os.unlink(tmp)
+                    except OSError:
+                        pass
+                    raise
+                d["asset_path"] = path
+            except OSError:
+                pass
         d.pop("_raw_bytes", None)
         out[rid] = d
     return {"images": out}
 
 
 def make_downloader(max_bytes, max_width_px, timeout):
-    """Build a real network downloader. Validates it is a raster image, downscales,
-    re-encodes JPEG, returns {data_uri, ext, raw_bytes}. Raises on anything wrong."""
+    """Build and return a real network downloader callable.
+
+    The returned `download(url)` validates the response is a raster image, downscales,
+    re-encodes JPEG, and returns {data_uri, ext, raw_bytes}; it raises on anything
+    wrong. The factory itself does not raise."""
     import base64
     import io
     import urllib.request
     from PIL import Image
 
     def download(url):
+        # Decompression-bomb guard: cap decoded pixel count so a small-but-huge-
+        # dimension image can't expand to hundreds of MB before we resize it.
+        Image.MAX_IMAGE_PIXELS = 50_000_000
         req = urllib.request.Request(url, headers={"User-Agent": "digest-imagery/1.0"})
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             ctype = (resp.headers.get_content_type() or "").lower()
@@ -182,18 +216,26 @@ def main(argv=None):
 
     cfg_text = ""
     try:
-        cfg_text = open(args.config, encoding="utf-8").read()
+        with open(args.config, encoding="utf-8") as f:
+            cfg_text = f.read()
     except OSError:
         pass
     icfg = parse_imagery_config(cfg_text)
 
-    raw = sys.stdin.read() if args.infile == "-" else open(args.infile, encoding="utf-8").read()
+    if args.infile == "-":
+        raw = sys.stdin.read()
+    else:
+        with open(args.infile, encoding="utf-8") as f:
+            raw = f.read()
     payload = json.loads(raw) if raw.strip() else {"images": []}
 
     if not icfg["enabled"]:
         sys.stdout.write(json.dumps({"images": {}}, indent=2, ensure_ascii=False))
         sys.stderr.write("\n[images] imagery disabled -> no photos\n")
         return 0
+
+    if not icfg["embed_allowlist"]:
+        sys.stderr.write("[images] WARNING: embed_allowlist is empty -> all photos will be link-only\n")
 
     downloader = make_downloader(icfg["max_bytes"], icfg["max_width_px"], icfg["download_timeout_s"])
     result = process(payload, icfg["embed_allowlist"], downloader, assets_dir=args.assets_dir)

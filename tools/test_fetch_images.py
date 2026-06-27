@@ -141,6 +141,59 @@ class TestProcess(unittest.TestCase):
         self.assertEqual(out["images"], {})
 
 
+try:
+    import PIL  # noqa: F401
+    _HAS_PIL = True
+except ImportError:
+    _HAS_PIL = False
+
+
+@unittest.skipUnless(_HAS_PIL, "Pillow not installed")
+class TestRealDownloader(unittest.TestCase):
+    def test_resize_and_jpeg_encode_without_network(self):
+        import io
+        import urllib.request
+        from PIL import Image
+
+        # Build a 600x400 raster in memory (wider than the 480px cap).
+        src = Image.new("RGB", (600, 400), (10, 120, 90))
+        buf = io.BytesIO()
+        src.save(buf, format="PNG")
+        png_bytes = buf.getvalue()
+
+        class _FakeResp:
+            def __init__(self, data):
+                self._data = data
+                self.headers = self
+
+            def get_content_type(self):
+                return "image/png"
+
+            def read(self, n=-1):
+                return self._data
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+        original = urllib.request.urlopen
+        urllib.request.urlopen = lambda req, timeout=None: _FakeResp(png_bytes)
+        try:
+            download = fi.make_downloader(max_bytes=5000000, max_width_px=480, timeout=15)
+            got = download("https://www.ntsb.gov/x/fig.png")
+        finally:
+            urllib.request.urlopen = original
+
+        self.assertTrue(got["data_uri"].startswith("data:image/jpeg;base64,"))
+        self.assertEqual(got["ext"], "jpg")
+        # Re-decode the returned JPEG to confirm it was downscaled to the 480px cap.
+        out_img = Image.open(io.BytesIO(got["raw_bytes"]))
+        self.assertEqual(out_img.width, 480)
+        self.assertEqual(out_img.height, 320)
+
+
 class TestAdversarial(unittest.TestCase):
     def test_spoofed_primary_over_copyrighted_url_never_embeds(self):
         downloaded = []
