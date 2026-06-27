@@ -7,16 +7,21 @@ pure formatting rules — the 2026-06-26 proof run showed it still emitted
 runs AFTER the writer, the same way ``validate_records.py`` enforces the gate
 after the verifier: structure over instruction.
 
-It fixes three rendering defects (project gap G14):
+It fixes four rendering/editorial rules:
   * HTML-escaped entities (``&amp;`` -> ``&``) the writer emits despite instructions;
   * a doubled reference type (``AD AD 2026-..`` when ``ref_number`` already
     starts with the type);
   * section order — forced to Directly Fleet-Relevant -> Read-Across -> Major
-    Industry Events, with the trailing ``Sources & Confidence`` line kept last.
+    Industry Events, with the trailing ``Sources & Confidence`` line kept last;
+  * Read-Across suppression — if the Directly Fleet-Relevant section contains
+    >= ``standing_watch.read_across_min_fleet_items`` items (default 5), the
+    entire ## Read-Across (Peer Types) section is removed. A busy fleet week
+    should not be diluted by peer-type items.
 
 Stdlib only. Usage:
     python finalize_digest.py --infile digests/2026-06-26-weekly.md > clean.md
     python finalize_digest.py --infile digests/x.md --in-place
+    python finalize_digest.py --infile digests/x.md --in-place --config config/fleet.yaml
 """
 import argparse
 import re
@@ -35,6 +40,8 @@ REF_TYPES = ["MSG-3", "EAD", "SIL", "SL", "SB", "AD"]
 _ENTITIES = [("&amp;", "&"), ("&lt;", "<"), ("&gt;", ">"),
              ("&#39;", "'"), ("&quot;", '"')]
 
+_DEFAULT_MIN_FLEET = 5
+
 
 def unescape_entities(text):
     """Turn the handful of HTML entities the writer over-escapes back into text."""
@@ -47,6 +54,49 @@ def dedupe_ref_type(text):
     """Collapse a doubled reference type, e.g. 'AD AD 2026-10-06' -> 'AD 2026-10-06'."""
     for t in REF_TYPES:
         text = re.sub(r"\b(%s)\s+\1\b" % re.escape(t), r"\1", text)
+    return text
+
+
+def _read_fleet_threshold(config_path="config/fleet.yaml"):
+    """Read read_across_min_fleet_items from fleet.yaml; return default if absent."""
+    try:
+        with open(config_path, encoding="utf-8") as fh:
+            m = re.search(r"read_across_min_fleet_items\s*:\s*(\d+)", fh.read())
+            return int(m.group(1)) if m else _DEFAULT_MIN_FLEET
+    except OSError:
+        return _DEFAULT_MIN_FLEET
+
+
+def _count_fleet_items(text):
+    """Count bold-headline items inside ## Directly Fleet-Relevant."""
+    m = re.search(
+        r"(?m)^## Directly Fleet-Relevant\s*\n(.*?)(?=^##|\Z)",
+        text, re.S | re.MULTILINE,
+    )
+    if not m:
+        return 0
+    return len(re.findall(r"(?m)^\*\*", m.group(1)))
+
+
+def suppress_readacross(text, config_path="config/fleet.yaml"):
+    """Remove ## Read-Across section when fleet item count >= threshold.
+
+    Prints a one-line notice to stderr if suppressed, so the operator can see why
+    the section is absent (same pattern as other gate notices).
+    """
+    threshold = _read_fleet_threshold(config_path)
+    fleet_count = _count_fleet_items(text)
+    if fleet_count >= threshold:
+        print(
+            f"[finalise] Read-Across suppressed: {fleet_count} fleet items >= threshold {threshold}",
+            file=sys.stderr,
+        )
+        text = re.sub(
+            r"(?m)^## Read-Across \(Peer Types\)\n.*?(?=^##|\Z)",
+            "",
+            text,
+            flags=re.S,
+        )
     return text
 
 
@@ -75,6 +125,8 @@ def reorder_sections(text):
 
     out = preamble.strip()
     for header, content in chunks:
+        if not content.strip():
+            continue  # skip empty sections (e.g. suppressed Read-Across)
         out += ("\n\n" if out else "") + header + "\n\n" + content.strip("\n")
     out = out.rstrip()
     if footer:
@@ -82,9 +134,13 @@ def reorder_sections(text):
     return out + "\n"
 
 
-def finalize(text):
+def finalize(text, config_path="config/fleet.yaml"):
     """Apply all deterministic fixups in order."""
-    return reorder_sections(dedupe_ref_type(unescape_entities(text)))
+    text = unescape_entities(text)
+    text = dedupe_ref_type(text)
+    text = suppress_readacross(text, config_path)
+    text = reorder_sections(text)
+    return text
 
 
 def main(argv=None):
@@ -98,11 +154,13 @@ def main(argv=None):
     ap.add_argument("--infile", required=True, help="Digest Markdown file.")
     ap.add_argument("--in-place", action="store_true",
                     help="Rewrite the file in place instead of printing to stdout.")
+    ap.add_argument("--config", default="config/fleet.yaml",
+                    help="Path to fleet.yaml (default: config/fleet.yaml).")
     args = ap.parse_args(argv)
 
     with open(args.infile, encoding="utf-8") as fh:
         text = fh.read()
-    fixed = finalize(text)
+    fixed = finalize(text, config_path=args.config)
 
     if args.in_place:
         with open(args.infile, "w", encoding="utf-8") as fh:

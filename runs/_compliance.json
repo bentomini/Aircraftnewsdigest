@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "updated": "2026-06-27",
+  "ads": {
+    "AD:FAA AD 2026-12-06": {
+      "effective_date": "2026-06-30",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2026-12-06",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-15/html/2026-11965.htm",
+      "headline": "FAA AD 2026-12-06 (effective June 30, 2026): Trent 1000 HPT blade failure risk — Trent family read-across",
+      "recorded": "2026-06-27"
+    },
+    "EAD:EASA AD 2026-0119-E": {
+      "effective_date": "2026-06-24",
+      "ref_type": "EAD",
+      "ref_number": "EASA AD 2026-0119-E",
+      "url": "https://ad.easa.europa.eu/ad/2026-0119-E",
+      "headline": "EASA Emergency AD 2026-0119-E: A380 wing mid-spar crack inspections (Emirates/Qantas) — effective June 24, 2026",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2025-25-12": {
+      "effective_date": "2026-01-13",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2025-25-12",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2025-12-29/html/2025-23858.htm",
+      "headline": "FAA AD 2025-25-12: A350 flight-control software update closes out FCRM hydraulic-fluid contamination risk (effective Jan 13, 2026)",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2025-25-07": {
+      "effective_date": "2026-02-06",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2025-25-07",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-02/html/2025-24173.htm",
+      "headline": "FAA AD 2025-25-07: GE90 HPT stage 1/2 disk replacement for iron-inclusion powder-metal defect (effective Feb 6, 2026)",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2025-24-51": {
+      "effective_date": "2026-01-06",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2025-24-51",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-05/html/2025-24242.htm",
+      "headline": "FAA AD 2025-24-51 / EASA AD 2025-0268-E: A320-family ELAC software fix for solar-radiation pitch event (effective Jan 6, 2026)",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2025-26-04": {
+      "effective_date": "2026-02-17",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2025-26-04",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-12/html/2026-00330.htm",
+      "headline": "FAA AD 2025-26-04: PW1122G-JM through PW1431GH-JM fuel hose clamp / fan blade fire risk (effective Feb 17, 2026) — read-across",
+      "recorded": "2026-06-27"
+    }
+  }
+}

@@ -1,0 +1,468 @@
+{
+  "records": [
+    {
+      "id": "faa-rr-deutschland-trent1000-ad-2026-12-06",
+      "headline": "FAA AD 2026-12-06 (effective June 30, 2026): Trent 1000 HPT blade failure risk — Trent family read-across",
+      "category": "read_across",
+      "types_affected": [
+        "Other Trent-powered widebodies",
+        "787"
+      ],
+      "event_date": "2026-06-15",
+      "within_window": true,
+      "developing_carryover": false,
+      "summary": "FAA adopted AD 2026-12-06 (Amendment 39-23376, docket FAA-2026-4655), published 15 June 2026 and effective 30 June 2026, for 13 Rolls-Royce Deutschland Trent 1000 series engine variants (-AE3 through -R3) due to premature high-pressure turbine blade failure risk despite existing inspection/life-limit requirements, which could cause loss of thrust control and loss of the airplane.",
+      "references": [
+        {
+          "ref_type": "AD",
+          "ref_number": "FAA AD 2026-12-06",
+          "revision": null,
+          "ref_date": "2026-06-15",
+          "effective_date": "2026-06-30",
+          "effectivity": "Rolls-Royce Deutschland Trent 1000 series: -AE3, -CE3, -D3, -G3, -H3, -J3, -K3, -L3, -M3, -N3, -P3, -Q3, -R3",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2026-06-15/html/2026-11965.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "The unsafe condition, if not addressed, could result in failure of one or more engines, loss of thrust control, and loss of the airplane.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "Premature failure of high-pressure turbine (HPT) blades despite existing inspection and life-limit requirements.",
+      "quotes": [
+        {
+          "text": "The unsafe condition, if not addressed, could result in failure of one or more engines, loss of thrust control, and loss of the airplane.",
+          "doc_title": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+          "ref_number": "FAA AD 2026-12-06",
+          "revision_or_date": "2026-06-15",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-15/html/2026-11965.htm"
+        }
+      ],
+      "read_across": "Trent 1000 is a Rolls-Royce Trent-family engine; HPT-blade-failure risk and the manufacturing/inspection scrutiny it implies are relevant read-across for Trent 700 and Trent XWB on the CX fleet, though this AD does not apply to CX's own engines.",
+      "lead_sources": [
+        "https://www.federalregister.gov/documents/2026/06/15/2026-11965/airworthiness-directives-rolls-royce-deutschland-ltd-and-co-kg-engines"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov mirror. AD number corrected from FR doc number (2026-11965) to actual AD number 2026-12-06; engine model corrected from 'likely Trent 1000 variant' (unconfirmed by scanner) to confirmed Trent 1000 series."
+    },
+    {
+      "id": "easa-a380-wing-spar-crack-emergency-ad",
+      "headline": "EASA Emergency AD 2026-0119-E: A380 wing mid-spar crack inspections (Emirates/Qantas) — effective June 24, 2026",
+      "category": "read_across",
+      "types_affected": [],
+      "event_date": "2026-06-22",
+      "within_window": true,
+      "developing_carryover": false,
+      "summary": "EASA issued Emergency AD 2026-0119-E (issued 22 June 2026, effective 24 June 2026) covering Airbus A380-841/-842/-861 wing mid-spar inspections, published without the normal consultation process due to urgency. Trade press reports it follows a prior directive (2025-0280) on aircraft returning from storage and affects 16 specific aircraft (15 Emirates, 1 Qantas), though the EASA portal page itself did not display the detailed unsafe-condition text or MSN list (contained only in the PDF attachment).",
+      "references": [
+        {
+          "ref_type": "EAD",
+          "ref_number": "EASA AD 2026-0119-E",
+          "revision": null,
+          "ref_date": "2026-06-22",
+          "effective_date": "2026-06-24",
+          "effectivity": "Airbus A380-841, A380-842, A380-861",
+          "primary_source_url": "https://ad.easa.europa.eu/ad/2026-0119-E",
+          "primary_source_domain": "ad.easa.europa.eu",
+          "fetched_text_snippet": "Wings – Wing Mid Spars – Inspection... The results of the safety assessment have indicated the need for immediate publication and notification, without the full consultation process",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "Reported (trade press, not confirmed from the AD's full text): cracking discovered at the wing mid-spar, found during follow-up review of a prior storage-related inspection directive. EASA portal summary page did not display the underlying unsafe-condition narrative or MSN list (held only in the gated PDF attachment), so the specific causal narrative and exact MSN list remain trade-press-sourced, not independently confirmed from the AD text itself.",
+      "quotes": [
+        {
+          "text": "The results of the safety assessment have indicated the need for immediate publication and notification, without the full consultation process",
+          "doc_title": "EASA AD 2026-0119-E — Wings, Wing Mid Spars, Inspection",
+          "ref_number": "2026-0119-E",
+          "revision_or_date": "2026-06-22",
+          "url": "https://ad.easa.europa.eu/ad/2026-0119-E"
+        }
+      ],
+      "read_across": "Airbus widebody structural/design lineage is generic context; the A380-specific wing mid-spar issue has no direct part commonality with CX's A330/A350 wing-box designs.",
+      "lead_sources": [
+        "https://www.aerotime.aero/articles/easa-airbus-a380-inspection-wing-cracks-airworthiness-directive",
+        "https://www.euronews.com/business/2026/06/23/airbus-under-fresh-scrutiny-as-easa-orders-a380-inspections-over-wing-cracks",
+        "https://aiaa.org/2026/06/24/easa-orders-urgent-inspections-of-16-airbus-a380s-over-wing-crack-concerns/"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "AD number, issue date, effective date, and effectivity (A380-841/-842/-861) confirmed directly on ad.easa.europa.eu. Specific MSN list (16 aircraft, Emirates/Qantas split) and detailed root-cause narrative are from trade press only — could not be confirmed from the gated PDF attachment, so root_cause is explicitly marked as trade-press-sourced and the MSN-specific claim is omitted from the verified reference (effectivity kept at model level only)."
+    },
+    {
+      "id": "ntsb-united-767-newark-light-pole-prelim",
+      "headline": "NTSB preliminary report (DCA26FA194): United 767-400 (Flight 169) struck light pole on approach to Newark",
+      "category": "read_across",
+      "types_affected": [
+        "767"
+      ],
+      "event_date": "2026-06-04",
+      "within_window": true,
+      "developing_carryover": false,
+      "summary": "United Airlines Flight 169, a Boeing 767-400ER (N77066) from Venice to Newark, struck a light pole over the New Jersey Turnpike on approach to runway 29 on 3 May 2026 (debris hit a tractor-trailer, minor injury to the driver); the aircraft sustained substantial fuselage damage. NTSB released a preliminary report on 4 June 2026 under docket DCA26FA194, finding the aircraft was below the normal glidepath, with the first officer warning the captain the aircraft was 'slow' and 'a little low' shortly before impact.",
+      "references": [
+        {
+          "ref_type": "other",
+          "ref_number": "NTSB docket DCA26FA194 — Preliminary Report",
+          "revision": null,
+          "ref_date": "2026-06-04",
+          "effective_date": null,
+          "effectivity": null,
+          "primary_source_url": "https://www.ntsb.gov/investigations/Documents/DCA26FA194%20Preliminary%20Report.pdf",
+          "primary_source_domain": "ntsb.gov",
+          "fetched_text_snippet": null,
+          "confidence": "UNVERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "Reported (trade press characterization of NTSB preliminary findings): aircraft remained below normal glide path for the final approach segment; first officer warned the captain the aircraft was slow and low shortly before impact.",
+      "quotes": [],
+      "read_across": "767 is a Boeing widebody peer type; approach-energy-management and CRM lessons are relevant to 777 line operations even though airframe-specific systems differ.",
+      "lead_sources": [
+        "https://abcnews.com/US/united-flight-struck-pole-truck-landed-newark-month/story?id=133596746",
+        "https://www.cnn.com/2026/06/04/us/united-airlines-newark-nj-ntsb",
+        "https://www.npr.org/2026/06/04/nx-s1-5846909/ntsb-united-767-landing-accident-newark"
+      ],
+      "item_confidence": "UNVERIFIED",
+      "verifier_notes": "Corrected docket number from scanner's erroneous DCA26MA024 (UPS MD-11 conflation) to the correct DCA26FA194, confirmed via search of ntsb.gov's own document path. The PDF was fetched from ntsb.gov (binary retrieved) but text extraction tooling was unavailable in this environment, so no genuine fetched_text_snippet could be produced; confidence held at UNVERIFIED (event is real/REPORTED-grade via trade press, reference exists on an allowlisted domain but text unconfirmed) rather than VERIFIED, per the rule that VERIFIED requires an actual read excerpt."
+    },
+    {
+      "id": "avherald-jal-a350-1000-engine-oil-diversion",
+      "headline": "JAL A350-1000 diverts to Keflavik over right-engine oil system malfunction (Trent XWB-97), June 14 2026",
+      "category": "read_across",
+      "types_affected": [
+        "A350-1000"
+      ],
+      "event_date": "2026-06-14",
+      "within_window": true,
+      "developing_carryover": false,
+      "summary": "A Japan Airlines Airbus A350-1000 (JA02WJ), operating flight JL43 Tokyo Haneda-London Heathrow with 222 passengers and 17 crew, diverted to Keflavik, Iceland on 14 June 2026 after the crew identified a right-hand engine oil system malfunction while over Greenland at FL370, landing safely on runway 01. The aircraft is powered by Trent XWB-97, the same engine variant used on CX's own A350-1000 fleet. No associated AD/SB has surfaced.",
+      "references": [],
+      "oem_regulator_position": null,
+      "root_cause": null,
+      "quotes": [],
+      "read_across": "Same aircraft type and engine variant (A350-1000 / Trent XWB-97) operated by Cathay Pacific; an oil-system malfunction on this engine type warrants monitoring for any related OEM bulletin.",
+      "lead_sources": [
+        "https://avherald.com/h?article=53ab403a"
+      ],
+      "item_confidence": "REPORTED",
+      "verifier_notes": "Event confirmed via The Aviation Herald (trade press; tier 4, leads-only) — no primary regulator/OEM document exists for this operational diversion, so no reference can be VERIFIED or UNVERIFIED-with-a-claimed-number; correctly rolled up as REPORTED (event-level item, no primary technical reference)."
+    },
+    {
+      "id": "faa-a350-fcgs-software-ad-2025-25-12",
+      "headline": "FAA AD 2025-25-12: A350 flight-control software update closes out FCRM hydraulic-fluid contamination risk (effective Jan 13, 2026)",
+      "category": "fleet",
+      "types_affected": [
+        "A350-900",
+        "A350-1000"
+      ],
+      "event_date": "2025-12-29",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "FAA AD 2025-25-12 (Amendment 39-23220, docket FAA-2025-5390), published 29 December 2025 and effective 13 January 2026, requires Airbus A350-941/-1041 operators to install Flight Control and Guidance System software standards PRIM P14.1.3 and SEC S14.1.2, permanently closing out a risk of loss of control of an outboard aileron (and, by shared design, elevator/rudder) surfaces caused by hydraulic fluid contaminating an electronic card in the Flight Control Remote Module. It supersedes interim AD 2025-13-12 (July 2025), which mandated inspections and hardware replacement.",
+      "references": [
+        {
+          "ref_type": "AD",
+          "ref_number": "FAA AD 2025-25-12",
+          "revision": null,
+          "ref_date": "2025-12-29",
+          "effective_date": "2026-01-13",
+          "effectivity": "Airbus SAS Model A350-941 and A350-1041 airplanes",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2025-12-29/html/2025-23858.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "Loss of control of an outboard aileron surface due to hydraulic fluid contaminating an electronic card of the flight control remote module.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": "Software fix is positioned as the permanent mitigation, replacing the interim hardware-replacement program required by superseded AD 2025-13-12.",
+      "root_cause": "Hydraulic fluid contaminated an electronic card of the Flight Control Remote Module (FCRM), which could cause loss of control of an outboard aileron surface, and similarly affects elevator/rudder FCRMs.",
+      "quotes": [
+        {
+          "text": "Loss of control of an outboard aileron surface due to hydraulic fluid contaminating an electronic card of the flight control remote module.",
+          "doc_title": "Airworthiness Directives; Airbus SAS Airplanes",
+          "ref_number": "FAA AD 2025-25-12",
+          "revision_or_date": "2025-12-29",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2025-12-29/html/2025-23858.htm"
+        }
+      ],
+      "read_across": null,
+      "lead_sources": [
+        "https://www.airwaysmag.com/new-post/faa-ad-resolve-a350-flight-control-hazard",
+        "https://www.federalregister.gov/documents/2025/12/29/2025-23858/airworthiness-directives-airbus-sas-airplanes"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov. Effective date (2026-01-13) is well outside the 30-day window but kept as developing_carryover: this is a major, still-current standing compliance item directly affecting both CX A350 subtypes (the permanent software fix superseding a still-recent interim AD); should be flagged as carried-over, not new."
+    },
+    {
+      "id": "faa-ge90-hpt-disk-ad-2025-25-07",
+      "headline": "FAA AD 2025-25-07: GE90 HPT stage 1/2 disk replacement for iron-inclusion powder-metal defect (effective Feb 6, 2026)",
+      "category": "fleet",
+      "types_affected": [
+        "777-300ER"
+      ],
+      "event_date": "2026-01-02",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "FAA AD 2025-25-07 (docket FAA-2025-1364), published 2 January 2026 and effective 6 February 2026, requires replacement of GE90-90B/-94B/-110B1/-115B HPT stage 1 and stage 2 disks identified in AD Table 1 or referenced GE service-bulletin tables, due to a manufacturing process that may have introduced iron inclusion into the powder-metal material, risking premature fracture and uncontained failure. GE90-115B powers the CX 777-300ER fleet.",
+      "references": [
+        {
+          "ref_type": "AD",
+          "ref_number": "FAA AD 2025-25-07",
+          "revision": null,
+          "ref_date": "2026-01-02",
+          "effective_date": "2026-02-06",
+          "effectivity": "General Electric GE90-90B, GE90-94B, GE90-110B1, and GE90-115B turbofan engines with specific HPT stage 1/2 disks identified by part/serial number",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2026-01-02/html/2025-24173.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "The FAA is issuing this AD to prevent premature fracture and uncontained failure of the HPT stage 1 disks and HPT stage 2 disks.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "HPT stage 1/2 disks manufactured from powder metal material suspected to contain iron inclusion, a manufacturing process deficiency reducing fatigue life and raising risk of premature fracture / uncontained failure.",
+      "quotes": [
+        {
+          "text": "The FAA is issuing this AD to prevent premature fracture and uncontained failure of the HPT stage 1 disks and HPT stage 2 disks.",
+          "doc_title": "Airworthiness Directives; General Electric Company Engines",
+          "ref_number": "FAA AD 2025-25-07",
+          "revision_or_date": "2026-01-02",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-02/html/2025-24173.htm"
+        }
+      ],
+      "read_across": null,
+      "lead_sources": [
+        "https://www.govinfo.gov/content/pkg/FR-2026-01-02/html/2025-24173.htm",
+        "https://www.federalregister.gov/documents/2026/01/02/2025-24173/airworthiness-directives-general-electric-company-engines"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov; AD number corrected from scanner's docket/FR-doc reference to actual AD number 2025-25-07. Outside the 30-day window but carried over as a standing, directly fleet-relevant compliance item (GE90-115B is the CX 777-300ER engine)."
+    },
+    {
+      "id": "faa-nprm-777-mlg-support-beam-crack",
+      "headline": "FAA NPRM (docket FAA-2026-1339): proposed AD for 777 MLG support beam crack inspections [PROPOSED — not yet final]",
+      "category": "fleet",
+      "types_affected": [
+        "777-300ER"
+      ],
+      "event_date": "2026-02-25",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "FAA published an NPRM (docket FAA-2026-1339, Project Identifier AD-2025-01162-T) on 25 February 2026 proposing a new AD for Boeing 777-200/-200LR/-300/-300ER/777F airplanes after reports of cracking on the MLG support beam lower stabilizer brace aft fitting, referencing Boeing Alert Requirements Bulletin 777-57A0128 RB. Comment period closed 13 April 2026; no final rule located as of verification.",
+      "references": [
+        {
+          "ref_type": "NPRM",
+          "ref_number": "FAA-2026-1339; Project Identifier AD-2025-01162-T",
+          "revision": null,
+          "ref_date": "2026-02-25",
+          "effective_date": null,
+          "effectivity": "Boeing 777-200, -200LR, -300, -300ER, 777F",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2026-02-25/html/2026-03782.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "A collapsed MLG during takeoff, landing, or ground operations, if not addressed, could result in loss of control of the airplane.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": "FAA states uncorrected cracking could lead to MLG collapse during takeoff/landing/ground operations.",
+      "root_cause": "Cracks found on the MLG support beam lower stabilizer brace aft fitting lower flange attachment holes, referenced in Boeing ARB 777-57A0128 RB.",
+      "quotes": [
+        {
+          "text": "A collapsed MLG during takeoff, landing, or ground operations, if not addressed, could result in loss of control of the airplane.",
+          "doc_title": "Airworthiness Directives; The Boeing Company Airplanes (NPRM)",
+          "ref_number": "FAA-2026-1339",
+          "revision_or_date": "2026-02-25",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-02-25/html/2026-03782.htm"
+        }
+      ],
+      "read_across": null,
+      "lead_sources": [
+        "https://www.federalregister.gov/documents/2026/02/25/2026-03782/airworthiness-directives-the-boeing-company-airplanes"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov. NPRM, not yet final — rendered [PROPOSED — not yet final], no effective_date. Outside window but kept as carryover for On-the-Horizon tracking given direct 777-300ER relevance and a comment period that closed only recently (Apr 2026)."
+    },
+    {
+      "id": "faa-a330-a340-oxygen-system-nprm-etops",
+      "headline": "FAA NPRM (docket FAA-2026-3873): A330/A340 flightcrew oxygen supply insufficient for ETOPS-180 with 4 crew [PROPOSED — not yet final]",
+      "category": "fleet",
+      "types_affected": [
+        "A330-300"
+      ],
+      "event_date": "2026-04-29",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "FAA published an NPRM (docket FAA-2026-3873, Project Identifier MCAI-2025-00197-T) on 29 April 2026 proposing an AD for Airbus A330-200/-300 airplanes modified by STC ST04038NY, where a single-cylinder flightcrew oxygen system would be insufficient under all circumstances for ETOPS-180 operations with four flightcrew members. Comment period closed 15 June 2026; no final rule located as of verification. Only relevant if CX's A330-300 fleet carries this specific STC.",
+      "references": [
+        {
+          "ref_type": "NPRM",
+          "ref_number": "FAA-2026-3873; Project Identifier MCAI-2025-00197-T",
+          "revision": null,
+          "ref_date": "2026-04-29",
+          "effective_date": null,
+          "effectivity": "Airbus A330-200/-300 airplanes modified by FAA STC ST04038NY (single-cylinder flightcrew oxygen system)",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2026-04-29/html/2026-08289.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "The oxygen supply would be insufficient under all circumstances for ETOPS-180 with four flightcrew members.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "Insufficient flightcrew oxygen supply for ETOPS-180 diversion time with 4 flightcrew, for airplanes equipped with a single-cylinder oxygen system per STC ST04038NY.",
+      "quotes": [
+        {
+          "text": "The oxygen supply would be insufficient under all circumstances for ETOPS-180 with four flightcrew members.",
+          "doc_title": "Airworthiness Directives; Airbus SAS Airplanes (NPRM)",
+          "ref_number": "FAA-2026-3873",
+          "revision_or_date": "2026-04-29",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-04-29/html/2026-08289.htm"
+        }
+      ],
+      "read_across": null,
+      "lead_sources": [
+        "https://www.federalregister.gov/documents/2026/04/29/2026-08289/airworthiness-directives-airbus-sas-airplanes"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov; docket/project number captured (FAA-2026-3873 / MCAI-2025-00197-T), resolving scanner's 'not captured' gap. NPRM, not yet final — [PROPOSED — not yet final], no effective_date. Comment period closed just 12 days before window start; kept as carryover/On-the-Horizon given direct A330-300 relevance, conditional on CX fleet carrying the cited STC (unconfirmed)."
+    },
+    {
+      "id": "easa-faa-a320-elac-solar-radiation-ad",
+      "headline": "FAA AD 2025-24-51 / EASA AD 2025-0268-E: A320-family ELAC software fix for solar-radiation pitch event (effective Jan 6, 2026)",
+      "category": "read_across",
+      "types_affected": [
+        "A321neo"
+      ],
+      "event_date": "2025-11-28",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "Following an Airbus A320 uncommanded, limited pitch-down event attributed to intense solar radiation corrupting an Elevator Aileron Computer (ELAC), EASA issued emergency AD 2025-0268-E (effective 29 Nov 2025) and the FAA mirrored it with emergency AD 2025-24-51 (Amendment 39-23223, docket FAA-2025-5395), published 5 January 2026 and effective 6 January 2026, both requiring replacement/modification of affected ELACs. The FAA AD's effectivity list explicitly includes A321-251NX/-252NX/-253NX/-271NX/-272NX — the CX A321neo configuration family.",
+      "references": [
+        {
+          "ref_type": "AD",
+          "ref_number": "FAA AD 2025-24-51",
+          "revision": null,
+          "ref_date": "2026-01-05",
+          "effective_date": "2026-01-06",
+          "effectivity": "Airbus A319/A320 series; A321-211/-212/-213/-231/-232/-251N/-252N/-253N/-251NX/-252NX/-253NX/-271N/-272N/-271NX/-272NX",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2026-01-05/html/2025-24242.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "The unsafe condition could lead to an uncommanded elevator movement that may result in exceeding the aircraft's structural capability.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "Intense solar radiation interfered with ELAC processing, causing an uncommanded, limited pitch-down event; malfunction of the affected ELAC could cause uncommanded elevator movement exceeding structural capability.",
+      "quotes": [
+        {
+          "text": "The unsafe condition could lead to an uncommanded elevator movement that may result in exceeding the aircraft's structural capability.",
+          "doc_title": "Airworthiness Directives; Airbus SAS Airplanes",
+          "ref_number": "FAA AD 2025-24-51",
+          "revision_or_date": "2026-01-05",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-05/html/2025-24242.htm"
+        }
+      ],
+      "read_across": "Directly involves the A321neo's ELAC flight-control computer family (variants -251NX/-252NX/-253NX/-271NX/-272NX explicitly listed in the FAA AD), shared across the A320/A321neo line; CX's own A321neo fleet's ELAC software standard should be checked against the AD.",
+      "lead_sources": [
+        "https://www.flightglobal.com/safety/us-airlines-scramble-to-update-jets-as-faa-prepares-a320-family-software-order/165520.article",
+        "https://theaircurrent.com/feed/dispatches/solar-flare-vulnerability-airbus-a320-software-forces-emergency-action-airlines/"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov. AD number corrected from scanner's FR-doc-only citation to actual AD number 2025-24-51; confirmed the A321neo-specific variant list is explicitly named in the AD's applicability (-251NX etc.), upgrading this from a generic A320-family read-across to a directly-named A321neo item. Outside window but carried over as a major still-resolving fleet item."
+    },
+    {
+      "id": "faa-pw1100g-fuel-hose-clamp-ad-2025-26-04",
+      "headline": "FAA AD 2025-26-04: PW1122G-JM through PW1431GH-JM fuel hose clamp / fan blade fire risk (effective Feb 17, 2026) — read-across",
+      "category": "read_across",
+      "types_affected": [
+        "A321neo"
+      ],
+      "event_date": "2026-01-12",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "FAA AD 2025-26-04 (Amendment 39-23226, docket FAA-2025-0480), published 12 January 2026 and effective 17 February 2026, addresses Pratt & Whitney geared-turbofan engines (PW1122G-JM through PW1431GH-JM model range, encompassing the PW1100G-JM/PW1400G-JM families) after multiple reports of fan blade fracture events, three resulting in an engine under-cowl or pool fire. Requires removal of a loop cushion clamp (P/N ST1540-06) within 30 days and replacement of thermal management system clevis mounts at next shop visit. CX's own A321neo fleet uses LEAP-1A, not PW1100G, so this is read-across only.",
+      "references": [
+        {
+          "ref_type": "AD",
+          "ref_number": "FAA AD 2025-26-04",
+          "revision": null,
+          "ref_date": "2026-01-12",
+          "effective_date": "2026-02-17",
+          "effectivity": "Pratt & Whitney PW1122G-JM through PW1431GH-JM model range",
+          "primary_source_url": "https://www.govinfo.gov/content/pkg/FR-2026-01-12/html/2026-00330.htm",
+          "primary_source_domain": "govinfo.gov",
+          "fetched_text_snippet": "Multiple reports of fan blade fracture events, three of which resulted in an engine under cowl fire or pool fire.",
+          "confidence": "VERIFIED"
+        }
+      ],
+      "oem_regulator_position": null,
+      "root_cause": "Multiple fan blade fracture events, three resulting in engine under-cowl or pool fire; fix removes a fuel-tube loop cushion clamp and later replaces thermal management system clevis mounts.",
+      "quotes": [
+        {
+          "text": "Multiple reports of fan blade fracture events, three of which resulted in an engine under cowl fire or pool fire.",
+          "doc_title": "Airworthiness Directives; Pratt & Whitney Division Engines",
+          "ref_number": "FAA AD 2025-26-04",
+          "revision_or_date": "2026-01-12",
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-12/html/2026-00330.htm"
+        }
+      ],
+      "read_across": "PW1100G is a read-across engine for the A321neo per fleet scope (CX's own A321neo fleet uses LEAP-1A); the AD's applicability list spans the broader PW1100G-JM/PW1400G-JM geared-turbofan family relevant to shared A321neo airframe/nacelle fire-risk procedures.",
+      "lead_sources": [
+        "https://www.flightglobal.com/engines/faa-orders-pw1100g-modifications-following-engine-fires/165953.article"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Confirmed via govinfo.gov; AD number resolved to 2025-26-04 (scanner had not captured it). Outside window; carried over as a standing read-across item since it remains a recent, still-active compliance program."
+    },
+    {
+      "id": "ntsb-ups-md11-investigation-update",
+      "headline": "NTSB UPS MD-11 (Flight 2976, docket DCA26MA024) investigative hearing — May 19-20, 2026: aft-pylon bearing fatigue findings",
+      "category": "industry",
+      "types_affected": [],
+      "event_date": "2026-05-19",
+      "within_window": false,
+      "developing_carryover": true,
+      "summary": "NTSB held a two-day investigative hearing (19-20 May 2026, docket DCA26MA024, confirmed on ntsb.gov) into the 4 November 2025 crash of UPS Flight 2976, an MD-11F that lost its No.1 engine/pylon on takeoff from Louisville, killing 3 crew and 11 on the ground. Trade press reporting on the hearing describes fatigue cracking in an aft pylon spherical bearing (P/N S00399-1), prior bearing-failure incidents referenced in a 2011 Boeing service letter (MD-11-SL-54-104-A), and Boeing testimony that the bearing should have been classified as a Principal Structural Element at original certification. The FAA's emergency AD grounded MD-11/DC-10/MD-10 variants in November 2025; that grounding was eased in May 2026 per trade press.",
+      "references": [
+        {
+          "ref_type": "other",
+          "ref_number": "NTSB docket DCA26MA024 — Investigative Hearing",
+          "revision": null,
+          "ref_date": "2026-05-19",
+          "effective_date": null,
+          "effectivity": null,
+          "primary_source_url": "https://www.ntsb.gov/news/events/Pages/DCA26MA024InvHearing.aspx",
+          "primary_source_domain": "ntsb.gov",
+          "fetched_text_snippet": "The three crewmembers aboard the airplane were killed. Eleven people on the ground were killed and another 23 injured.",
+          "confidence": "VERIFIED"
+        },
+        {
+          "ref_type": "AD",
+          "ref_number": "FAA emergency AD (MD-11/DC-10/MD-10 grounding, Nov 2025)",
+          "revision": null,
+          "ref_date": "2025-11-24",
+          "effective_date": null,
+          "effectivity": "MD-11, MD-11F, MD-10-10F, MD-10-30F, DC-10-10/-10F/-15/-30/-30F (incl. KC-10A/KDC-10), DC-10-40/-40F",
+          "primary_source_url": null,
+          "primary_source_domain": null,
+          "fetched_text_snippet": null,
+          "confidence": "UNVERIFIED"
+        }
+      ],
+      "oem_regulator_position": "Reported (trade press characterization of hearing testimony, not independently confirmed from a primary hearing transcript): Boeing staff acknowledged the failed aft pylon spherical bearing should have been classified as a Principal Structural Element during original MD-11 certification.",
+      "root_cause": "Reported (trade press characterization, not confirmed from a primary NTSB document): fatigue cracking in the bearing race propagated until overstress fracture of both lugs, shifting load and allowing engine/pylon separation.",
+      "quotes": [
+        {
+          "text": "The three crewmembers aboard the airplane were killed. Eleven people on the ground were killed and another 23 injured.",
+          "doc_title": "Investigative Hearing: UPS Flight 2976 Crash During Takeoff",
+          "ref_number": "DCA26MA024",
+          "revision_or_date": "2026-05-19",
+          "url": "https://www.ntsb.gov/news/events/Pages/DCA26MA024InvHearing.aspx"
+        }
+      ],
+      "read_across": "Classic major industry event — pylon/engine-mount structural integrity and the OEM-service-letter-vs-mandatory-AD gap is a generic read-across theme for continuing operational safety / aging-component monitoring on all CX fleet types, even though CX operates no MD-11/DC-10.",
+      "lead_sources": [
+        "https://www.cnn.com/2026/05/19/us/ntsb-ups-investigation",
+        "https://aviationweek.com/air-transport/safety-ops-regulation/ups-accident-probe-finds-trail-missed-clues",
+        "https://www.npr.org/2026/05/19/nx-s1-5823467/ups-crash-md-11-ntsb-louisville",
+        "https://www.flyingmag.com/ntsb-focuses-on-maintenance-procedures-on-first-day-of-ups-crash-hearing/"
+      ],
+      "item_confidence": "VERIFIED",
+      "verifier_notes": "Hearing dates/docket confirmed directly on ntsb.gov with a genuine excerpt. The FAA emergency AD reference remains UNVERIFIED (not independently fetched in this pass). Hearing date (2026-05-19) is just outside the 30-day window but carried over as the canonical 'major industry event' the project charter names explicitly."
+    }
+  ]
+}

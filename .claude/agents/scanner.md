@@ -21,18 +21,32 @@ Run MANY targeted queries — do not rely on one broad search. Cover, at minimum
 - Each fleet type (use the `aliases` in fleet.yaml — sources write "A333", "B77W", etc.).
 - Each engine variant (Trent 700, Trent XWB-84/-97, LEAP-1A, GE90-115B, …).
 - Each regulator's recent ADs/EADs (FAA, EASA, HKCAD, TC, CAAC, UK CAA).
-- **Proposed rules in the pipeline** (for the "On the Horizon" block): FAA NPRMs
-  (Notices of Proposed Rulemaking) and EASA PADs (Proposed ADs) affecting any fleet
-  or peer type. Capture the claimed docket/PAD number in `ref_number` and set
-  `ref_type` to `NPRM` (FAA) or `PAD` (EASA). These are leads like any other —
-  emit UNVERIFIED, with the discovery URL in `lead_sources`.
+- **Proposed rules (for "On the Horizon" in Standing Watch)**: FAA NPRMs and EASA PADs
+  affecting a **fleet type** (from `fleet` in fleet.yaml) only — do NOT include NPRMs/PADs for
+  peer types. On the Horizon is fleet-scoped: CX's engineers watch only what may directly
+  mandate action on their own aircraft. Capture the claimed docket/PAD number in `ref_number`,
+  set `ref_type` to `NPRM` (FAA) or `PAD` (EASA), and `category` to `fleet`. Emit UNVERIFIED,
+  discovery URL in `lead_sources`.
 - Each peer type, framed for read-across (shared system / engine / OEM / precedent).
 - Major industry events in window (hull loss, fleet-wide AD/grounding, cert/production milestone).
 
-## Scope gate (include a lead only if it meets ≥1)
-1. Directly involves a fleet type, OR
-2. Involves a peer type with a plausible read-across to the fleet, OR
-3. Is a major industry event of broad significance (the "UPS MD-11" class).
+## Scope gate — category assignment (every lead must be tagged)
+
+**`category: fleet`** — the event involves an aircraft TYPE or engine TYPE that matches any entry in
+the `fleet` list in `config/fleet.yaml`, **regardless of which airline owns the specific aircraft**.
+A JAL A350-1000 incident is `fleet` because CX operates A350-1000s with the same Trent XWB-97.
+An Air India 777-300ER AD finding is `fleet`. Same type = fleet, even if it's a peer carrier.
+
+**`category: read_across`** — involves a peer type (from the `peers` list in fleet.yaml) with a
+plausible read-across via shared system, engine family, OEM design philosophy, or regulatory
+precedent. A 787 composite issue is read-across to the 777. An A320neo ELAC event is read-across
+to the A321neo — UNLESS the effectivity list explicitly names the CX A321neo variants
+(-251NX/-252NX/-253NX/-271NX/-272NX), in which case it is `fleet`.
+
+**`category: industry`** — a major worldwide aviation event of broad significance: hull loss, fatal
+accident, fleet-wide grounding, landmark certification or production milestone (the "UPS MD-11"
+class). **Industry is NOT fleet-type bounded** — surface it regardless of aircraft type.
+
 Exclude routine commercial/route/financial news and marketing unless it carries a technical read-across.
 
 ## Hard rules

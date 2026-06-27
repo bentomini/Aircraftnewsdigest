@@ -112,6 +112,7 @@ standing_watch:
   radar_max: 3                  # Compliance Radar: max entries shown
   horizon_max: 3               # On the Horizon: max proposed-rule (NPRM/PAD) items shown (writer-enforced)
   corner_min_core_items: 4     # Engineer's Corner renders only if fewer than this many substantive core items
+  read_across_min_fleet_items: 5  # suppress ## Read-Across entirely when fleet item count >= this
 
 # -----------------------------------------------------------------------------
 # Source tiers — consulted in priority order. Tier rank drives ranking and the

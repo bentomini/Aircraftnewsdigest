@@ -145,6 +145,21 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
       Result: downgraded to UNVERIFIED (reason = provenance/allowlist, not audit), backing quote
       dropped, lookalike `faa.gov.avherald.com` also rejected. Gate recomputes the domain from the
       URL, so no verifier-supplied field can spoof it.
+- [x] **2nd live run done (2026-06-27):** `/digest weekly`, cold-start 30d window. 18 leads →
+      11 final, 9 in digest (7 VERIFIED / 1 REPORTED / 1 UNVERIFIED). Gates held; audit gate caught a
+      non-verbatim quote (A330 oxygen NPRM) and downgraded it. Standing Watch rendered live for the
+      first time. Artifacts in `runs/2026-06-27/`, digest `digests/2026-06-27-weekly.md`.
+- [x] **Self-audit findings actioned (2026-06-27):** (a) categorisation fixed so same-TYPE-any-operator
+      = fleet [scanner.md]; (b) Read-Across suppressed when ≥5 fleet items [finalize_digest.py +
+      `read_across_min_fleet_items` config]; (c) Standing Watch confirmed fleet-scoped [scanner.md].
+- [ ] **Open from self-audit (G15, cosmetic):** writer leaks `ref_type: "other"` literally into the
+      *Technical detail* line ("other NTSB docket …"); and "AD FAA AD 2025-…" double-prefix slips past
+      `finalize_digest.dedupe_ref_type` (its `\b(AD)\s+\1\b` pattern misses the `AD FAA AD` form where
+      the ref_number itself contains "AD"). Both are rendering-only nits, no fact impact.
+- [ ] **Open from self-audit (G16, design tension):** the gate enforces the window on `event_date`
+      (publication date). The freshest, directly-fleet-relevant A330 standby-fuel-pump AD was dropped
+      because its pub date (2026-05-22) fell 6 days before a 30d window, even though its *effective*
+      date (2026-06-08) was well inside. Consider letting an in-window effective_date keep an item.
 - [ ] Confirm auditor's live fetch reliability (watch for over-conservative `fetch_failed` downgrades)
 - [ ] Tune scanner query set for coverage vs. token cost
 
@@ -186,6 +201,7 @@ Plan: `docs/superpowers/plans/2026-06-27-standing-watch-content-layer.md`.
 | 2026-06-26 | G13 — self-healing lookback window | Effective window = `min(cold_start_cap, max(nominal, gap_since_last_run))`; per-cadence state in `runs/_state.json`; cold-start/cap default 30d. New deterministic tool `tools/compute_window.py`; orchestrator records the run marker only on success (Step 6b). Fixes cold-start + skipped-run coverage; structural over manual override. G4 dedup stays open. |
 | 2026-06-26 | G4 — cross-run dedup ledger | Suppress an item only if every reference was already reported at the same version; re-surface tagged `updated` on a new revision/date. Identity = reference `TYPE:NUMBER` + version (revision else ref_date); ref-less events keyed on a headline slug + event_date (best-effort). New deterministic tool `tools/dedup_ledger.py`; ledger `runs/_seen.json` written atomically only after a successful digest (Step 6c), mirroring the G13 run marker. |
 | 2026-06-27 | Standing Watch content layer | Filler for thin weeks via forward-looking primary-source intel (Compliance Radar, On-the-Horizon NPRM/PAD) + a walled-off curated Engineer's Corner. On-the-Horizon rides the existing gates (NPRM/PAD added to ref_type enum; gate ignores ref_type). Corner is deterministic + author-curated (JSON bank) — no LLM-generated facts, preserving the verify-everything ethos even in the entertaining block |
+| 2026-06-27 | Categorisation + Read-Across suppression (post-self-audit) | Audience is CX/HK, so CX-fleet relevance is the priority. (1) **Fleet = same aircraft/engine TYPE, any operator** (a JAL A350-1000 event is fleet, not read-across) — scanner `category` rules rewritten. (2) **Read-Across suppressed entirely when ≥ `read_across_min_fleet_items` (=5) fleet items** — enforced in `finalize_digest.py`, structure over instruction, also fixes word-overflow on busy weeks. (3) **Major Industry Events stays NOT fleet-bounded** — a worldwide-event channel. (4) **Standing Watch (Radar + Horizon) is fleet-scoped** — no proposed rules for non-CX types. New config `standing_watch.read_across_min_fleet_items`. Writer unchanged (already routes by `category` + omits empty sections) |
 
 ## Open questions
 

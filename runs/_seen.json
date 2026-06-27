@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "updated": "2026-06-27",
+  "seen": {
+    "AD:FAA AD 2026-12-06": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-15",
+      "headline": "FAA AD 2026-12-06 (effective June 30, 2026): Trent 1000 HPT blade failure risk — Trent family read-across"
+    },
+    "EAD:EASA AD 2026-0119-E": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-22",
+      "headline": "EASA Emergency AD 2026-0119-E: A380 wing mid-spar crack inspections (Emirates/Qantas) — effective June 24, 2026"
+    },
+    "OTHER:NTSB DOCKET DCA26FA194 — PRELIMINARY REPORT": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-04",
+      "headline": "NTSB preliminary report (DCA26FA194): United 767-400 (Flight 169) struck light pole on approach to Newark"
+    },
+    "EVENT:jal-a350-1000-diverts-to-keflavik-over-right-engine-oil-system-malfunction-trent-xwb-97-june-14-2026": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-14",
+      "headline": "JAL A350-1000 diverts to Keflavik over right-engine oil system malfunction (Trent XWB-97), June 14 2026"
+    },
+    "AD:FAA AD 2025-25-12": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2025-12-29",
+      "headline": "FAA AD 2025-25-12: A350 flight-control software update closes out FCRM hydraulic-fluid contamination risk (effective Jan 13, 2026)"
+    },
+    "AD:FAA AD 2025-25-07": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-01-02",
+      "headline": "FAA AD 2025-25-07: GE90 HPT stage 1/2 disk replacement for iron-inclusion powder-metal defect (effective Feb 6, 2026)"
+    },
+    "NPRM:FAA-2026-1339; PROJECT IDENTIFIER AD-2025-01162-T": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-02-25",
+      "headline": "FAA NPRM (docket FAA-2026-1339): proposed AD for 777 MLG support beam crack inspections [PROPOSED — not yet final]"
+    },
+    "NPRM:FAA-2026-3873; PROJECT IDENTIFIER MCAI-2025-00197-T": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-04-29",
+      "headline": "FAA NPRM (docket FAA-2026-3873): A330/A340 flightcrew oxygen supply insufficient for ETOPS-180 with 4 crew [PROPOSED — not yet final]"
+    },
+    "AD:FAA AD 2025-24-51": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-01-05",
+      "headline": "FAA AD 2025-24-51 / EASA AD 2025-0268-E: A320-family ELAC software fix for solar-radiation pitch event (effective Jan 6, 2026)"
+    },
+    "AD:FAA AD 2025-26-04": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-01-12",
+      "headline": "FAA AD 2025-26-04: PW1122G-JM through PW1431GH-JM fuel hose clamp / fan blade fire risk (effective Feb 17, 2026) — read-across"
+    },
+    "OTHER:NTSB DOCKET DCA26MA024 — INVESTIGATIVE HEARING": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-05-19",
+      "headline": "NTSB UPS MD-11 (Flight 2976, docket DCA26MA024) investigative hearing — May 19-20, 2026: aft-pylon bearing fatigue findings"
+    },
+    "AD:FAA EMERGENCY AD (MD-11/DC-10/MD-10 GROUNDING, NOV 2025)": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2025-11-24",
+      "headline": "NTSB UPS MD-11 (Flight 2976, docket DCA26MA024) investigative hearing — May 19-20, 2026: aft-pylon bearing fatigue findings"
+    }
+  }
+}

@@ -111,6 +111,22 @@ from the live primary source, and both deterministic gates passed.**
 Markdown, grouped:
 `## Directly Fleet-Relevant` → `## Read-Across (Peer Types)` → `## Major Industry Events`
 
+**Categorisation rules (audience is CX/HK — relevance to CX's own fleet is the priority):**
+- **Fleet** = same aircraft TYPE or engine TYPE as a `fleet` entry, **regardless of operator**.
+  A JAL A350-1000 / Trent XWB-97 event is *fleet*, not read-across — CX flies that exact type. An
+  AD that explicitly lists a CX variant in its effectivity is *fleet* even if discovered as a peer
+  lead.
+- **Read-Across** = peer type only (shared system / engine family / OEM design / regulatory
+  precedent). **Deliberately lower priority:** the `## Read-Across` section is **suppressed entirely
+  when there are ≥ `standing_watch.read_across_min_fleet_items` (default 5) fleet items** that week,
+  so a busy fleet week is never diluted by peer-type noise. Enforced mechanically in
+  `tools/finalize_digest.py`, not by writer instruction.
+- **Major Industry Events** = NOT fleet-type bounded — a channel for big worldwide events (the
+  "UPS MD-11" class) whatever the aircraft type.
+- **Standing Watch** (Compliance Radar + On the Horizon) is **fleet-scoped**: only NPRMs/PADs/ADs
+  for CX's own fleet types appear — CX engineers do not watch proposed rules on aircraft they
+  don't operate.
+
 Per item:
 - **[Triage headline]** — type(s), date.
 - *What happened:* 1-3 sentences.
