@@ -65,7 +65,7 @@ def render_image(directive):
         caption_line = " &middot; ".join([x for x in [cap, src] if x])
         cell = ('<img src="%s" alt="%s" style="width:160px;border:1px solid #c4ccd4;'
                 'border-radius:4px;display:block">'
-                '<div class="cap">%s</div>') % (directive["data_uri"], alt, caption_line)
+                '<div class="cap">%s</div>') % (html_escape(directive["data_uri"]), alt, caption_line)
         return cell, ""
     link = html_escape(directive.get("link_url") or "")
     label = src or "source"
@@ -98,11 +98,11 @@ def render_technical(record):
     return '<p><span class="lbl">Technical detail:</span> %s.</p>' % "; ".join(bits)
 
 
-def render_item(record, directive):
+def render_item(record, directive, proposed=False):
     head = html_escape(record.get("headline"))
     types = html_escape(", ".join(record.get("types_affected") or []))
     date = html_escape(record.get("event_date"))
-    conf = chip(record.get("item_confidence"))
+    conf = "" if proposed else chip(record.get("item_confidence"))
 
     carry = ""
     if record.get("developing_carryover") or record.get("within_window") is False:
@@ -110,8 +110,11 @@ def render_item(record, directive):
     dedup = record.get("dedup") or {}
     updated = ""
     if dedup.get("status") == "updated":
-        updated = ' <span class="updated">[UPDATED since %s]</span>' % \
-                  html_escape(dedup.get("previously_reported") or "")
+        prev = dedup.get("previously_reported") or ""
+        if prev:
+            updated = ' <span class="updated">[UPDATED since %s]</span>' % html_escape(prev)
+        else:
+            updated = ' <span class="updated">[UPDATED]</span>'
 
     img_cell, attribution = render_image(directive)
 
@@ -282,8 +285,8 @@ p{margin:6px 0;} .lbl{font-style:italic;color:#5b6b7d;}
 """
 
 FONT_LINK = ('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
-             'family=Inter:wght@400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&'
-             'family=Source+Serif+4:opsz,wght@8..60,400&display=swap">')
+             'family=Inter:wght@400;600;700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;'
+             'family=Source+Serif+4:opsz,wght@8..60,400&amp;display=swap">')
 
 SECTION_TITLES = [("fleet", "Directly Fleet-Relevant"),
                   ("read_across", "Read-Across (Peer Types)"),
@@ -301,7 +304,7 @@ def render_standing_watch(radar, horizon_records, corner, images):
     radar_html = render_radar(radar)
     horizon_html = ""
     if horizon_records:
-        items = "\n".join(render_item(r, images.get(r.get("id")))
+        items = "\n".join(render_item(r, images.get(r.get("id")), proposed=True)
                           for r in order_records(horizon_records))
         horizon_html = '<h3 class="watch-h">On the Horizon</h3>\n%s' % items
     corner_html = render_corner(corner)
@@ -375,7 +378,8 @@ def main(argv=None):
 
     cfg = ""
     try:
-        cfg = open(args.config, encoding="utf-8").read()
+        with open(args.config, encoding="utf-8") as f:
+            cfg = f.read()
     except OSError:
         pass
 

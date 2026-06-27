@@ -93,6 +93,10 @@ class TestItem(unittest.TestCase):
         html = rp.render_item(rec, None)
         self.assertIn("[UPDATED since 2026-06-01]", html)
 
+    def test_within_window_false_labels_carryover(self):
+        html = rp.render_item(_record(within_window=False), None)
+        self.assertIn("carried-over developing event", html)
+
 
 class TestGrouping(unittest.TestCase):
     def test_all_nprm_record_is_horizon(self):
@@ -162,6 +166,14 @@ standing_watch:
         self.assertIn("2 VERIFIED", line)
         self.assertIn("1 REPORTED", line)
 
+    def test_corner_none_returns_empty(self):
+        self.assertEqual(rp.render_corner(None), "")
+
+    def test_corner_renders_title_and_body(self):
+        html = rp.render_corner({"title": "Why FCRM matters", "body": "Some text."})
+        self.assertIn("Why FCRM matters", html)
+        self.assertIn("Some text.", html)
+
 
 class TestDocument(unittest.TestCase):
     BUNDLE = {
@@ -201,6 +213,7 @@ class TestDocument(unittest.TestCase):
         # The NPRM headline appears once, under On the Horizon, tagged PROPOSED.
         self.assertIn("777 MLG NPRM", html)
         self.assertIn("[PROPOSED — not yet final]", html)
+        self.assertEqual(html.count("777 MLG NPRM"), 1)
 
     def test_illustrative_image_is_link_not_embedded(self):
         html = rp.render_document(self.BUNDLE)
@@ -211,6 +224,26 @@ class TestDocument(unittest.TestCase):
         # Verified-content guarantee: a ref number not in the bundle never appears.
         html = rp.render_document(self.BUNDLE)
         self.assertNotIn("FAA AD 2099", html)
+
+    def test_read_across_suppressed_when_min_fleet_items_met(self):
+        bundle = {
+            "records": [
+                _record(id="f1", category="fleet", headline="Fleet Item 1"),
+                _record(id="f2", category="fleet", headline="Fleet Item 2"),
+                _record(id="ra1", category="read_across", headline="Peer Type Event",
+                        read_across="Peer type."),
+            ],
+            "radar": [],
+            "corner": None,
+            "images": {},
+            "operator": "Cathay Pacific",
+            "fleet_types": ["A330-300"],
+            "min_fleet_items": 2,
+            "date_label": "Week of 2026-06-27",
+        }
+        html = rp.render_document(bundle)
+        self.assertNotIn("Read-Across (Peer Types)", html)
+        self.assertNotIn("Peer Type Event", html)
 
 
 if __name__ == "__main__":
