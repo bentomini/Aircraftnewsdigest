@@ -190,6 +190,26 @@ Plan: `docs/superpowers/plans/2026-06-27-standing-watch-content-layer.md`.
 
 ---
 
+## Stage 7 — Publication renderer + imagery ✅
+
+**Goal:** Turn the verified digest into a branded, magazine-style HTML (+ derived PDF) with
+copyright-aware photos, without touching the verified core or the no-fetch guarantee.
+Spec: `docs/superpowers/specs/2026-06-27-publication-renderer-imagery-design.md`.
+Plan: `docs/superpowers/plans/2026-06-27-publication-renderer-imagery.md`.
+
+- [x] `imagery` config block in `config/fleet.yaml` (enabled, embed_allowlist, sizing)
+- [x] Image gate `tools/fetch_images.py` (+ tests): URL-recomputed domain, embed only public-domain
+      primary figures, everything else link-only, failure-safe; adversarial spoof test (17 tests)
+- [x] `imagery` subagent `.claude/agents/imagery.md` (metadata only, never embeds)
+- [x] Renderer `tools/render_publication.py` (+ tests): Flight Deck HTML from gate-passed JSON +
+      images; reproduces writer routing (horizon/suppression/order/carry-over/dedup); fetch-free;
+      escaping invariant on every JSON value; no chip on proposed-rule items (29 tests)
+- [x] PDF `tools/html_to_pdf.py` (Playwright/Chromium, failure-tolerant)
+- [x] Orchestrator Steps 4g/4h (imagery) + 7/7b (render/PDF) + guardrails
+- [ ] Live `/digest` smoke with real fetched imagery (the lug photo end-to-end)
+
+---
+
 ## Decisions log
 
 | Date | Decision | Notes |
@@ -208,6 +228,8 @@ Plan: `docs/superpowers/plans/2026-06-27-standing-watch-content-layer.md`.
 | 2026-06-27 | Standing Watch content layer | Filler for thin weeks via forward-looking primary-source intel (Compliance Radar, On-the-Horizon NPRM/PAD) + a walled-off curated Engineer's Corner. On-the-Horizon rides the existing gates (NPRM/PAD added to ref_type enum; gate ignores ref_type). Corner is deterministic + author-curated (JSON bank) — no LLM-generated facts, preserving the verify-everything ethos even in the entertaining block |
 | 2026-06-27 | G15 render fixes + G16 window-on-effective-date | G15: deterministic `finalize_digest.py` collapses the `AD FAA AD` double-prefix (letters-only bridge so distinct later ADs survive) and strips the literal `other` ref_type — rendering-only, structure over instruction. G16: `enforce_window` lets a reference that became effective inside the lookback window keep an item whose publication predates it (marked current, not carry-over); future effective dates stay Compliance Radar's remit. Both test-first |
 | 2026-06-27 | Categorisation + Read-Across suppression (post-self-audit) | Audience is CX/HK, so CX-fleet relevance is the priority. (1) **Fleet = same aircraft/engine TYPE, any operator** (a JAL A350-1000 event is fleet, not read-across) — scanner `category` rules rewritten. (2) **Read-Across suppressed entirely when ≥ `read_across_min_fleet_items` (=5) fleet items** — enforced in `finalize_digest.py`, structure over instruction, also fixes word-overflow on busy weeks. (3) **Major Industry Events stays NOT fleet-bounded** — a worldwide-event channel. (4) **Standing Watch (Radar + Horizon) is fleet-scoped** — no proposed rules for non-CX types. New config `standing_watch.read_across_min_fleet_items`. Writer unchanged (already routes by `category` + omits empty sections) |
+| 2026-06-27 | Publication renderer + imagery (Flight Deck) | New layer after dedup: `imagery` subagent (judgment, metadata only) → deterministic image gate (`fetch_images.py`, embed-allowlist) → fetch-free `render_publication.py` (Flight Deck navy+teal magazine HTML) → Playwright PDF. Verified core untouched; renderer can't add facts (no fetch), images are the only external content and pass their own gate |
+| 2026-06-27 | Photos: embed primary, link illustrative | Embed only public-domain agency images (ntsb/faa/govinfo/easa); copyrighted trade-press/avherald/OEM-press photos are attribution-link only, never redistributed. Domain recomputed from the URL in the gate, suffix-matched — no agent field can spoof it. One photo per item, only where it helps |
 
 ## Open questions
 
