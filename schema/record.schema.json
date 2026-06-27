@@ -76,6 +76,16 @@
     "verifier_notes": {
       "type": "string",
       "description": "What the verifier/validator dropped or downgraded and why. Audit trail, not shown to readers."
+    },
+    "dedup": {
+      "type": ["object", "null"],
+      "description": "Added by dedup_ledger.py (apply mode). Present only on records that survived dedup. status=new (not previously reported) or updated (a reference changed revision/date since it was last reported).",
+      "additionalProperties": false,
+      "properties": {
+        "status": { "type": "string", "enum": ["new", "updated"] },
+        "previously_reported": { "type": ["string", "null"], "description": "ISO date this item was last reported, if known." }
+      },
+      "required": ["status"]
     }
   },
   "$defs": {
@@ -91,11 +101,15 @@
       "properties": {
         "ref_type": {
           "type": "string",
-          "enum": ["AD", "EAD", "SB", "SIL", "SL", "MSG-3", "other"]
+          "enum": ["AD", "EAD", "NPRM", "PAD", "SB", "SIL", "SL", "MSG-3", "other"]
         },
         "ref_number": { "type": "string" },
         "revision": { "type": ["string", "null"] },
         "ref_date": { "type": ["string", "null"], "description": "ISO date of the reference document." },
+        "effective_date": {
+          "type": ["string", "null"],
+          "description": "ISO date (YYYY-MM-DD) the AD/EAD becomes effective. Distinct from ref_date (publication). Captured by the verifier from the fetched text; powers the Compliance Radar."
+        },
         "effectivity": { "type": ["string", "null"], "description": "Affected MSN range / serial effectivity." },
         "primary_source_url": {
           "type": ["string", "null"],
@@ -126,6 +140,15 @@
             "notes": { "type": ["string", "null"] }
           },
           "required": ["status"]
+        },
+        "dedup_status": {
+          "type": ["string", "null"],
+          "enum": ["new", "updated", "unchanged", null],
+          "description": "Added by dedup_ledger.py: new (first time reported), updated (revision/date changed since last reported), unchanged (re-shown because another reference on the same item changed)."
+        },
+        "previous_version": {
+          "type": ["string", "null"],
+          "description": "For dedup_status=updated: the version (revision or ref_date) last reported."
         }
       }
     },
