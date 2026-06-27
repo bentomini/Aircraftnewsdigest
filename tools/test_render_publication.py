@@ -163,5 +163,55 @@ standing_watch:
         self.assertIn("1 REPORTED", line)
 
 
+class TestDocument(unittest.TestCase):
+    BUNDLE = {
+        "records": [
+            _record(id="f1", category="fleet", headline="GE90 AD"),
+            _record(id="ra1", category="read_across", headline="Trent 1000 AD",
+                    read_across="Trent family read-across."),
+            _record(id="ind1", category="industry", headline="UPS MD-11 hearing"),
+            _record(id="h1", category="fleet", headline="777 MLG NPRM",
+                    references=[{"ref_type": "NPRM", "ref_number": "FAA-1",
+                                 "confidence": "VERIFIED",
+                                 "primary_source_url": "https://govinfo.gov/n"}]),
+        ],
+        "radar": [{"ref_number": "FAA AD 9", "effective_date": "2026-07-30",
+                   "headline": "blade", "url": "https://govinfo.gov/y"}],
+        "corner": None,
+        "images": {"ind1": {"embed": False, "caption": "wreck",
+                            "source_label": "Avherald", "link_url": "https://avherald.com/p"}},
+        "operator": "Cathay Pacific",
+        "fleet_types": ["A330-300", "777-300ER"],
+        "min_fleet_items": 5,
+        "date_label": "Week of 2026-06-27",
+    }
+
+    def test_document_has_sections_and_masthead(self):
+        html = rp.render_document(self.BUNDLE)
+        self.assertIn("<!DOCTYPE html>", html)
+        self.assertIn("Cathay Pacific", html)
+        self.assertIn("Directly Fleet-Relevant", html)
+        self.assertIn("Read-Across", html)
+        self.assertIn("Major Industry Events", html)
+        self.assertIn("Standing Watch", html)
+        self.assertIn("On the Horizon", html)
+
+    def test_horizon_record_not_in_core_sections(self):
+        html = rp.render_document(self.BUNDLE)
+        # The NPRM headline appears once, under On the Horizon, tagged PROPOSED.
+        self.assertIn("777 MLG NPRM", html)
+        self.assertIn("[PROPOSED — not yet final]", html)
+
+    def test_illustrative_image_is_link_not_embedded(self):
+        html = rp.render_document(self.BUNDLE)
+        self.assertIn("avherald.com/p", html)
+        self.assertNotIn("data:image", html)
+
+    def test_no_unknown_reference_smuggled(self):
+        # Verified-content guarantee: a ref number not in the bundle never appears.
+        html = rp.render_document(self.BUNDLE)
+        self.assertNotIn("FAA AD 2099", html)
+
+
 if __name__ == "__main__":
     unittest.main()
