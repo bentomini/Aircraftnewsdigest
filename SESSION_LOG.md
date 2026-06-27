@@ -1,5 +1,11 @@
 # Session Log
 
+## 2026-06-27 — Session 05
+**Goal:** Brainstorm + ship the "Standing Watch" content layer (filler so thin weeks read as ≥4 blocks) without diluting the verified core; exit-safe.
+**Built:** Spec `docs/superpowers/specs/2026-06-26-standing-watch-content-layer-design.md` + plan `docs/superpowers/plans/2026-06-27-standing-watch-content-layer.md`. Shipped (subagent-driven, 2-stage reviews): schema `effective_date` + `NPRM`/`PAD` ref_type; `tools/compliance_radar.py` (+store `runs/_compliance.json`); `tools/engineers_corner.py` (+bank `config/engineers_corner.json`, rotation `runs/_corner.json`); `finalize_digest.py` Standing-Watch ordering; scanner/verifier/writer prompts; orchestrator `digest.md` Steps 4e/4f build + 6d/6e record; `config/fleet.yaml` `standing_watch:` block; integration test. 130 tests green. Also committed prior uncommitted dedup/window/audit baseline (`f9cbf5f`). All on `main` (local repo, no remote).
+**Broken / deferred:** Live `/digest` smoke of rendered `## Standing Watch` (LLM writer) not run; minor radar polish (warn on unparseable `effective_date` — currently fails safe). Final review caught + fixed a real bug: corner core-count counted NPRM/PAD records (now excluded via `is_proposed_rule`, commit `b1b4e35`).
+**Next:** Run `/digest weekly` to eyeball the rendered Standing Watch section; then brainstorm sub-project 2 — HTML/PDF publication renderer + imagery (brainstorm asks #2/#3).
+
 ## 2026-06-26 — Session 04
 **Goal:** Close the Stage-5 adversarial trust test, then ship G4 cross-run dedup — exit-safe.
 **Built:** Adversarial test `TestAdversarialTradePressOnly` (4 tests in `tools/test_validate_records.py`, 42 total) proving a hostile trade-press-only lead can't reach VERIFIED through the real CLI (gate recomputes domain from URL). G4 dedup SHIPPED: `tools/dedup_ledger.py` (apply + `--record`, atomic ledger `runs/_seen.json`) + `tools/test_dedup_ledger.py` (24 tests); schema `dedup`/`dedup_status`/`previous_version`; orchestrator `digest.md` Steps 4d (apply) + 6c (record); writer `[UPDATED since …]` tag. Plan `docs/superpowers/plans/2026-06-26-g4-dedup-ledger.md` (TDD, executed inline). 66 tests green; end-to-end sim confirmed suppress-on-repeat.
