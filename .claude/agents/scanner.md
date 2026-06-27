@@ -21,6 +21,11 @@ Run MANY targeted queries — do not rely on one broad search. Cover, at minimum
 - Each fleet type (use the `aliases` in fleet.yaml — sources write "A333", "B77W", etc.).
 - Each engine variant (Trent 700, Trent XWB-84/-97, LEAP-1A, GE90-115B, …).
 - Each regulator's recent ADs/EADs (FAA, EASA, HKCAD, TC, CAAC, UK CAA).
+- **Proposed rules in the pipeline** (for the "On the Horizon" block): FAA NPRMs
+  (Notices of Proposed Rulemaking) and EASA PADs (Proposed ADs) affecting any fleet
+  or peer type. Capture the claimed docket/PAD number in `ref_number` and set
+  `ref_type` to `NPRM` (FAA) or `PAD` (EASA). These are leads like any other —
+  emit UNVERIFIED, with the discovery URL in `lead_sources`.
 - Each peer type, framed for read-across (shared system / engine / OEM / precedent).
 - Major industry events in window (hull loss, fleet-wide AD/grounding, cert/production milestone).
 
