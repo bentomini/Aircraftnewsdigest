@@ -44,7 +44,11 @@ enters the report.**
 - Invent, guess, or "fill in" any reference number, revision, date, or quote.
 - Present trade-press reporting as a confirmed regulatory/OEM reference.
 - Issue your own airworthiness determinations — report the OEM/regulator position only.
-- Pad the digest with commercial/route/financial news to hit a length.
+- Pad the digest with commercial/route/financial news to hit a length. (The `## Standing Watch`
+  section is NOT padding: it carries forward-looking *primary-source* intelligence — Compliance
+  Radar of upcoming AD effective dates and On-the-Horizon proposed rules — plus a clearly walled-off
+  curated Engineer's Corner. None of it asserts an unverified reference; all of it is structurally
+  separated from the verified incident intelligence above it.)
 
 ## Fleet scope (see `config/` once built — this is the source of truth in prose form)
 
@@ -117,6 +121,12 @@ Per item:
 
 End with a **Sources & Confidence** line (count of VERIFIED vs UNVERIFIED items).
 Target ~1,000 words for the weekly. Brevity over completeness.
+
+After the three core sections (and before the Sources line) a `## Standing Watch` section may
+appear: **Compliance Radar** (upcoming AD effective dates, from `tools/compliance_radar.py`),
+**On the Horizon** (NPRM/PAD proposed rules, gate-verified like any reference), and **Engineer's
+Corner** (curated evergreen explainer from `config/engineers_corner.json`, shown only on thin
+weeks). It guarantees a minimum of substantial reading without diluting the verified core.
 
 ## Working agreement
 

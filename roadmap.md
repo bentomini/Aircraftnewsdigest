@@ -150,6 +150,26 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
 
 ---
 
+## Stage 6 — Standing Watch content layer ✅ (filler / minimum-entry rule)
+
+**Goal:** make thin weeks read as substantial (≥4 blocks) without diluting the verified core.
+Spec: `docs/superpowers/specs/2026-06-26-standing-watch-content-layer-design.md`.
+Plan: `docs/superpowers/plans/2026-06-27-standing-watch-content-layer.md`.
+
+- [x] Schema: `NPRM`/`PAD` ref_type + reference `effective_date`
+- [x] On the Horizon: scanner queries + verifier handling + writer routing (rides existing gates)
+- [x] Compliance Radar: `tools/compliance_radar.py` + `runs/_compliance.json` store (test-first)
+- [x] Engineer's Corner: `config/engineers_corner.json` bank + `tools/engineers_corner.py` picker (test-first)
+- [x] Writer: `## Standing Watch` section (radar / horizon / corner)
+- [x] `finalize_digest.py`: Standing Watch in enforced section order
+- [x] Orchestrator: build Steps 4e/4f + record Steps 6d/6e
+- [x] Integration test: Standing Watch cannot smuggle an unverified reference
+- [ ] _minor (deferred)_: radar `record_store` could warn on an unparseable `effective_date` at
+      write time (currently fails safe — `select()` silently skips bad dates). Quality-review nit.
+- [ ] _deferred_: live `/digest` smoke of the rendered `## Standing Watch` section (LLM-driven writer)
+
+---
+
 ## Decisions log
 
 | Date | Decision | Notes |
@@ -165,6 +185,7 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
 | 2026-06-26 | Gate I/O forced to UTF-8 | Windows redirected stdout defaults to cp1252; the gate wrote a file the audit gate could not read back. `reconfigure(encoding="utf-8")` in both scripts' `main()` + regression test |
 | 2026-06-26 | G13 — self-healing lookback window | Effective window = `min(cold_start_cap, max(nominal, gap_since_last_run))`; per-cadence state in `runs/_state.json`; cold-start/cap default 30d. New deterministic tool `tools/compute_window.py`; orchestrator records the run marker only on success (Step 6b). Fixes cold-start + skipped-run coverage; structural over manual override. G4 dedup stays open. |
 | 2026-06-26 | G4 — cross-run dedup ledger | Suppress an item only if every reference was already reported at the same version; re-surface tagged `updated` on a new revision/date. Identity = reference `TYPE:NUMBER` + version (revision else ref_date); ref-less events keyed on a headline slug + event_date (best-effort). New deterministic tool `tools/dedup_ledger.py`; ledger `runs/_seen.json` written atomically only after a successful digest (Step 6c), mirroring the G13 run marker. |
+| 2026-06-27 | Standing Watch content layer | Filler for thin weeks via forward-looking primary-source intel (Compliance Radar, On-the-Horizon NPRM/PAD) + a walled-off curated Engineer's Corner. On-the-Horizon rides the existing gates (NPRM/PAD added to ref_type enum; gate ignores ref_type). Corner is deterministic + author-curated (JSON bank) — no LLM-generated facts, preserving the verify-everything ethos even in the entertaining block |
 
 ## Open questions
 
