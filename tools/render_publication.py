@@ -176,3 +176,65 @@ def suppress_read_across(by_cat, min_fleet_items):
     if len(by_cat.get("fleet", [])) >= min_fleet_items:
         by_cat["read_across"] = []
     return by_cat
+
+
+def parse_scalar(text, key, default):
+    m = re.search(r"(?m)^\s*%s:\s*(\d+)" % re.escape(key), text)
+    return int(m.group(1)) if m else default
+
+
+def parse_operator_name(text):
+    m = re.search(r"(?m)^operator:\s*\n(?:\s+.*\n)*?\s+name:\s*(.+)$", text)
+    return m.group(1).strip() if m else "Operator"
+
+
+def parse_fleet_types(text):
+    """Collect 'type:' values under the top-level 'fleet:' block."""
+    types, in_block = [], False
+    for line in text.splitlines():
+        if re.match(r"^fleet:\s*$", line):
+            in_block = True
+            continue
+        if in_block:
+            if re.match(r"^\S", line):
+                break
+            m = re.match(r"^\s+-?\s*type:\s*(.+)$", line)
+            if m:
+                types.append(m.group(1).strip())
+    return types
+
+
+def render_radar(radar):
+    if not radar:
+        return ""
+    rows = []
+    for e in radar:
+        ref = html_escape(e.get("ref_number"))
+        eff = html_escape(e.get("effective_date"))
+        head = html_escape(e.get("headline"))
+        url = e.get("url")
+        link = ' <a class="src" href="%s">[source]</a>' % html_escape(url) if url else ""
+        rows.append('<li><strong>%s</strong> — effective %s · %s%s</li>' % (ref, eff, head, link))
+    return ('<h3 class="watch-h">Compliance Radar</h3>\n<ul class="radar">\n%s\n</ul>'
+            % "\n".join(rows))
+
+
+def render_corner(corner):
+    if not corner:
+        return ""
+    title = html_escape(corner.get("title"))
+    body = html_escape(corner.get("body"))
+    return ('<h3 class="watch-h">Engineer\'s Corner</h3>\n'
+            '<div class="corner"><h4>%s</h4><p>%s</p></div>' % (title, body))
+
+
+def render_sources_line(records):
+    counts = {"VERIFIED": 0, "REPORTED": 0, "UNVERIFIED": 0}
+    for r in records:
+        c = (r.get("item_confidence") or "UNVERIFIED").upper()
+        counts[c] = counts.get(c, 0) + 1
+    total = len(records)
+    return ('<p class="sources"><strong>Sources &amp; Confidence:</strong> %d items — '
+            '%d VERIFIED, %d REPORTED, %d UNVERIFIED. Public-internet sources only; '
+            'gated OEM documents marked UNVERIFIED.</p>'
+            % (total, counts["VERIFIED"], counts["REPORTED"], counts["UNVERIFIED"]))

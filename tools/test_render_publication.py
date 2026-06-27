@@ -123,5 +123,45 @@ class TestGrouping(unittest.TestCase):
         self.assertEqual(by_cat["read_across"], [9])
 
 
+class TestConfigAndWatch(unittest.TestCase):
+    YAML = """
+operator:
+  name: Cathay Pacific
+fleet:
+  - type: A330-300
+  - type: 777-300ER
+standing_watch:
+  read_across_min_fleet_items: 5
+"""
+
+    def test_parse_operator_and_fleet(self):
+        self.assertEqual(rp.parse_operator_name(self.YAML), "Cathay Pacific")
+        self.assertEqual(rp.parse_fleet_types(self.YAML), ["A330-300", "777-300ER"])
+
+    def test_parse_min_fleet_default(self):
+        self.assertEqual(rp.parse_scalar(self.YAML, "read_across_min_fleet_items", 5), 5)
+        self.assertEqual(rp.parse_scalar("", "read_across_min_fleet_items", 5), 5)
+
+    def test_radar_block_renders_entries(self):
+        radar = [{"ref_number": "FAA AD 1", "effective_date": "2026-07-30",
+                  "headline": "Trent blade", "url": "https://govinfo.gov/y"}]
+        html = rp.render_radar(radar)
+        self.assertIn("FAA AD 1", html)
+        self.assertIn("2026-07-30", html)
+        self.assertIn("https://govinfo.gov/y", html)
+
+    def test_radar_empty_is_blank(self):
+        self.assertEqual(rp.render_radar([]), "")
+
+    def test_sources_line_counts(self):
+        recs = [_record(item_confidence="VERIFIED"),
+                _record(item_confidence="REPORTED"),
+                _record(item_confidence="VERIFIED")]
+        line = rp.render_sources_line(recs)
+        self.assertIn("3 items", line)
+        self.assertIn("2 VERIFIED", line)
+        self.assertIn("1 REPORTED", line)
+
+
 if __name__ == "__main__":
     unittest.main()
