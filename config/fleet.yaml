@@ -226,3 +226,22 @@ quotes:
   max_words: 25
   only_from_fetched_text: true     # never reconstruct or paraphrase-into-quotes
   require_attribution: [doc_title, ref_number, revision_or_date, url]
+
+# -----------------------------------------------------------------------------
+# Imagery — publication-layer photos. Two tiers, copyright-aware:
+#   * primary  : a real figure from the item's primary source. Embedded inline
+#                ONLY if its domain is on embed_allowlist (public-domain agencies).
+#   * illustrative / off-allowlist / OEM press : link-only attribution, never
+#                downloaded or embedded.
+# Non-evidentiary: images never set or change a confidence tag.
+# -----------------------------------------------------------------------------
+imagery:
+  enabled: true
+  embed_allowlist:        # public-domain / freely-reproducible agency domains only
+    - ntsb.gov
+    - faa.gov
+    - govinfo.gov
+    - easa.europa.eu
+  max_width_px: 480       # downscale wider images before embedding
+  max_bytes: 5000000      # reject anything larger than ~5 MB
+  download_timeout_s: 15
