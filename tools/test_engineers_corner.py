@@ -18,10 +18,48 @@ def rec(confidence, types):
     return {"item_confidence": confidence, "types_affected": types, "references": []}
 
 
+def proposed_rec(confidence, types, ref_type="NPRM"):
+    """A proposed-rule record: references are ALL NPRM/PAD (routed to On the Horizon)."""
+    return {"item_confidence": confidence, "types_affected": types,
+            "references": [{"ref_type": ref_type, "ref_number": "X", "confidence": confidence}]}
+
+
+def mixed_rec(confidence, types):
+    """A record with both an AD and an NPRM reference — NOT a pure proposed rule."""
+    return {"item_confidence": confidence, "types_affected": types,
+            "references": [{"ref_type": "AD", "ref_number": "A", "confidence": confidence},
+                           {"ref_type": "NPRM", "ref_number": "X", "confidence": confidence}]}
+
+
 class TestCoreCount(unittest.TestCase):
     def test_counts_only_verified_and_reported(self):
         records = [rec("VERIFIED", []), rec("REPORTED", []), rec("UNVERIFIED", [])]
         self.assertEqual(ec.count_core_items(records), 2)
+
+    def test_proposed_rule_records_do_not_count_as_core(self):
+        # NPRM/PAD-only records are routed to On the Horizon, not the core sections,
+        # so they must not count toward the corner-trigger floor (spec §7).
+        records = [rec("VERIFIED", []),
+                   proposed_rec("VERIFIED", [], "NPRM"),
+                   proposed_rec("VERIFIED", [], "PAD")]
+        self.assertEqual(ec.count_core_items(records), 1)
+
+    def test_mixed_ad_plus_nprm_still_counts_as_core(self):
+        # A record carrying a real AD (plus an NPRM) is still core intelligence.
+        self.assertEqual(ec.count_core_items([mixed_rec("VERIFIED", [])]), 1)
+
+
+class TestProposedRuleTrigger(unittest.TestCase):
+    def test_corner_renders_when_only_proposed_rules_pad_the_week(self):
+        # 1 real AD + 3 verified NPRMs: only 1 true core item, so the Corner must show.
+        records = [rec("VERIFIED", [])] + [proposed_rec("VERIFIED", []) for _ in range(3)]
+        chosen, idx = ec.select(BANK, records, {}, threshold=4)
+        self.assertIsNotNone(chosen)
+
+    def test_grounding_ignores_proposed_rule_types(self):
+        # A330-300 appears only on an NPRM-only record -> should NOT ground the pick.
+        records = [rec("VERIFIED", []), proposed_rec("VERIFIED", ["A330-300"])]
+        self.assertNotIn("a330-300", ec.grounded_types(records))
 
 
 class TestTrigger(unittest.TestCase):

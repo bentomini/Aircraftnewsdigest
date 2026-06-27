@@ -35,17 +35,34 @@ def parse_scalar_from_yaml(text, key, default):
     return int(m.group(1)) if m else default
 
 
+def is_proposed_rule(record):
+    """True if the record's references are ALL NPRM/PAD (routed to On the Horizon, not core).
+
+    Such records are rendered in the Standing Watch 'On the Horizon' block by the writer,
+    so they are NOT core-section intelligence and must not count toward the corner trigger
+    or ground the corner pick (spec section 7). A record with no references is not a
+    proposed rule (it is an event-level core item)."""
+    refs = record.get("references") or []
+    return bool(refs) and all((r.get("ref_type") or "").upper() in ("NPRM", "PAD")
+                              for r in refs)
+
+
 def count_core_items(records):
-    """Substantive core items = those with item_confidence VERIFIED or REPORTED."""
+    """Substantive core items = VERIFIED/REPORTED records that land in the core sections.
+
+    Excludes proposed-rule (NPRM/PAD-only) records, which the writer routes to On the Horizon."""
     return sum(1 for r in records
-               if (r.get("item_confidence") or "").upper() in ("VERIFIED", "REPORTED"))
+               if (r.get("item_confidence") or "").upper() in ("VERIFIED", "REPORTED")
+               and not is_proposed_rule(r))
 
 
 def grounded_types(records):
-    """Lower-cased types_affected of VERIFIED records, for tag grounding."""
+    """Lower-cased types_affected of core VERIFIED records, for tag grounding.
+
+    Skips proposed-rule records so the corner grounds on actual core news, not horizon items."""
     out = set()
     for r in records:
-        if (r.get("item_confidence") or "").upper() == "VERIFIED":
+        if (r.get("item_confidence") or "").upper() == "VERIFIED" and not is_proposed_rule(r):
             for t in (r.get("types_affected") or []):
                 out.add(t.strip().lower())
     return out
