@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "trent-hpt-corrosion-fatigue",
+      "title": "Why Trent HPT blades are a recurring corrosion-fatigue story",
+      "topic_tags": ["Trent 700", "Trent XWB-84", "Trent XWB-97", "A330-300", "A350-900", "A350-1000"],
+      "body": "High-pressure turbine blades live in the hottest, most oxidising part of the core. Protective coatings degrade with thermal cycling, and once the parent alloy is exposed, corrosion pits become crack initiation sites. Combine that with the cyclic loading of every flight and you get corrosion fatigue — the failure mode behind several Trent HPT directives. It is environment-dependent: blades on aircraft based in hot, humid, salt-laden climates age faster than a fleet-average assumption would predict, which is why service-life limits are increasingly tied to operating environment rather than cycles alone."
+    },
+    {
+      "id": "why-ad-supersedes",
+      "title": "What it means when an AD supersedes another",
+      "topic_tags": [],
+      "body": "A superseding AD does not just 'update' the old one — it withdraws and replaces it in full. The new directive restates the unsafe condition, then revises the compliance actions: often shorter thresholds, expanded effectivity, or a terminating modification that closes the repetitive inspection. Reading only the change summary is a trap; the legal requirement is the entire new AD. For planning, the key fields are the new effective date and whether prior compliance under the old AD counts toward the new one — sometimes it does, sometimes the clock restarts."
+    },
+    {
+      "id": "leap-vs-gtf-architecture",
+      "title": "LEAP-1A and PW1100G: two answers to the same efficiency question",
+      "topic_tags": ["A321neo", "LEAP-1A", "PW1100G", "A320neo family"],
+      "body": "Both engines chase propulsive efficiency through a higher bypass ratio, but by different routes. CFM's LEAP keeps a direct-drive fan and pushes the core — high pressure ratio, woven composite fan blades, ceramic-matrix-composite shroud segments in the turbine. Pratt's geared turbofan puts a reduction gearbox between fan and low-pressure spool, letting the fan turn slowly and the turbomachinery turn fast, each at its efficient speed. The trade-offs show up in the maintenance data: different hot-section behaviour, different in-service teething issues, and different powder-metal and bearing concerns over the type's life."
+    },
+    {
+      "id": "ge90-115b-scale",
+      "title": "The GE90-115B: living at the edge of fan-blade scale",
+      "topic_tags": ["777-300ER", "GE90-115B"],
+      "body": "The GE90-115B's fan is enormous, and its hollow titanium wide-chord blades were a structural milestone — large enough that fan-blade-off containment, bird-strike energy, and blade fatigue all sit at the leading edge of certification experience. That scale is why fan and containment-system service information on the type gets close attention: the loads and energies involved leave little margin, and inspection intervals reflect hard-won in-service knowledge rather than conservative guesses."
+    }
+  ]
+}
