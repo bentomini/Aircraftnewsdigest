@@ -7,3 +7,6 @@ __pycache__/
 # OS
 Thumbs.db
 .DS_Store
+
+# Brainstorming visual-companion scratch
+.superpowers/
