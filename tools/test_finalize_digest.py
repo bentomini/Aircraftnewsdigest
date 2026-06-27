@@ -71,6 +71,33 @@ class TestReorderSections(unittest.TestCase):
         self.assertIn("Sources & Confidence", out)
 
 
+class TestStandingWatchOrder(unittest.TestCase):
+    def test_standing_watch_after_core_before_sources(self):
+        text = (
+            "## Standing Watch\n\nradar stuff\n\n"
+            "## Directly Fleet-Relevant\n\nan AD\n\n"
+            "**Sources & Confidence:** 1 item.\n"
+        )
+        out = f.finalize(text)
+        i_fleet = out.index("## Directly Fleet-Relevant")
+        i_watch = out.index("## Standing Watch")
+        i_sources = out.index("**Sources & Confidence")
+        self.assertLess(i_fleet, i_watch)     # core section before Standing Watch
+        self.assertLess(i_watch, i_sources)   # Standing Watch before the Sources footer
+
+    def test_standing_watch_sorts_before_unknown_section(self):
+        # Discriminates the SECTION_ORDER change: only an explicitly-ranked
+        # Standing Watch sorts ahead of a genuinely-unknown H2 that precedes it.
+        text = (
+            "## Some Unknown Section\n\njunk\n\n"
+            "## Standing Watch\n\nradar stuff\n\n"
+            "**Sources & Confidence:** 1 item.\n"
+        )
+        out = f.finalize(text)
+        self.assertLess(out.index("## Standing Watch"),
+                        out.index("## Some Unknown Section"))
+
+
 class TestFinalizeEndToEnd(unittest.TestCase):
     def test_all_fixups_together(self):
         raw = (

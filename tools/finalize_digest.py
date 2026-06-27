@@ -26,6 +26,7 @@ SECTION_ORDER = [
     "## Directly Fleet-Relevant",
     "## Read-Across (Peer Types)",
     "## Major Industry Events",
+    "## Standing Watch",
 ]
 
 # Longer/overlapping types first so e.g. 'EAD' is matched before 'AD'.
