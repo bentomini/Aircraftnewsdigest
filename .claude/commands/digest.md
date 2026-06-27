@@ -125,10 +125,41 @@ Read `runs/$CURRENT_DATE/06_dedup_report.txt` and surface its summary line
 suppressed — expected and healthy. The ledger is **read-only here**; it is only written in Step 6c
 after the digest succeeds. **`06_deduped.json` is the only thing the Writer may see.**
 
+## Step 4e — BUILD COMPLIANCE RADAR (Bash — deterministic, never skip)
+Select upcoming AD effective dates from the persistent store for the Standing Watch section:
+```
+python tools/compliance_radar.py \
+  --store runs/_compliance.json \
+  --config config/fleet.yaml \
+  --current-date $CURRENT_DATE \
+  > runs/$CURRENT_DATE/07_radar.json \
+  2> runs/$CURRENT_DATE/07_radar_report.txt
+```
+This is read-only on the store (it is written in Step 6d, after the digest succeeds). The store is
+empty on first run, so `07_radar.json` is `{ "radar": [] }` until ADs with effective dates have been
+recorded — that is expected.
+
+## Step 4f — BUILD ENGINEER'S CORNER (Bash — deterministic, never skip)
+Decide whether to show a curated Corner entry and which one (only when the week is thin):
+```
+python tools/engineers_corner.py \
+  --bank config/engineers_corner.json \
+  --rotation runs/_corner.json \
+  --config config/fleet.yaml \
+  --current-date $CURRENT_DATE \
+  --infile runs/$CURRENT_DATE/06_deduped.json \
+  > runs/$CURRENT_DATE/08_corner.json \
+  2> runs/$CURRENT_DATE/08_corner_report.txt
+```
+The rotation pointer is read-only here (advanced in Step 6e, after the digest succeeds). A busy week
+(≥ `standing_watch.corner_min_core_items` substantive core items) yields `{ "corner": null }`.
+
 ## Step 5 — WRITE (dispatch the `writer` subagent)
 Use the Agent tool with `subagent_type: writer`. In the prompt, pass:
 > Render the digest from `runs/{CURRENT_DATE}/06_deduped.json` per your instructions.
-> cadence = {cadence}. Read that file (and config/fleet.yaml for operator/fleet names).
+> Also read the Standing Watch inputs `runs/{CURRENT_DATE}/07_radar.json` and
+> `runs/{CURRENT_DATE}/08_corner.json` and render the `## Standing Watch` section per your spec.
+> cadence = {cadence}. Read those files (and config/fleet.yaml for operator/fleet names).
 > Return ONLY the finished Markdown.
 
 Save the returned Markdown to `digests/$CURRENT_DATE-{cadence}.md`.
@@ -179,6 +210,27 @@ python tools/dedup_ledger.py --record \
 This upserts each shown item's identity (reference TYPE:NUMBER + version, or event slug) into
 `runs/_seen.json` with an atomic write. It records only; it never touches the digest.
 
+## Step 6d — RECORD COMPLIANCE STORE (Bash — deterministic, never skip)
+The digest exists, so persist this run's VERIFIED ADs (those with an effective_date) so the radar
+can re-surface them as their effective date approaches. Record only here, after success:
+```
+python tools/compliance_radar.py --record \
+  --store runs/_compliance.json \
+  --current-date $CURRENT_DATE \
+  --infile runs/$CURRENT_DATE/06_deduped.json
+```
+Atomic write; it only upserts AD/EAD references already shown as VERIFIED. It never touches the digest.
+
+## Step 6e — RECORD CORNER ROTATION (Bash — deterministic, never skip)
+Persist which Corner entry was shown so the next thin week rotates onward. Record only here:
+```
+python tools/engineers_corner.py --record \
+  --rotation runs/_corner.json \
+  --current-date $CURRENT_DATE \
+  --infile runs/$CURRENT_DATE/08_corner.json
+```
+If the Corner was suppressed this week (`corner: null`), this is a no-op and the rotation is unchanged.
+
 ## Guardrails (do not violate)
 - Never write a reference, quote, date, or revision into the digest that is not in `05_final.json`.
 - Never let the Writer fetch the web or "fill in" a gap — it has no fetch tools; keep it that way.
@@ -189,3 +241,9 @@ This upserts each shown item's identity (reference TYPE:NUMBER + version, or eve
   digest is written, mirroring the Step 6b run marker.
 - A reference reaching the digest as VERIFIED must have passed BOTH the verifier and the independent
   auditor. If only one confirmed it, it is UNVERIFIED.
+- The Standing Watch section is supplementary: never let it carry a reference, quote, or date that
+  did not come from `07_radar.json` (itself built only from previously-VERIFIED ADs), `08_corner.json`
+  (curated evergreen text), or a gate-passed NPRM/PAD record in `06_deduped.json`. The writer still
+  has no fetch tools, so it cannot add one.
+- Never skip Steps 4e/4f (build the Standing Watch inputs) or 6d/6e (record the store and rotation).
+  Record (6d/6e) only after the digest is written, mirroring Steps 6b/6c.
