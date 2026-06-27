@@ -139,3 +139,40 @@ def render_item(record, directive):
                 '<td class="imgcell" valign="top">%s</td></tr></table></div>'
                 % (head_block, body_html, img_cell))
     return '<div class="item">%s\n%s</div>' % (head_block, body_html)
+
+
+CONF_RANK = {"VERIFIED": 0, "REPORTED": 1, "UNVERIFIED": 2}
+
+
+def is_horizon(record):
+    """A proposed rule: has references and ALL of them are NPRM/PAD."""
+    refs = record.get("references") or []
+    return bool(refs) and all((r.get("ref_type") or "").upper() in PROPOSED_TYPES for r in refs)
+
+
+def order_records(records):
+    """VERIFIED first, then newest event_date first. Stable two-pass sort."""
+    recs = sorted(records, key=lambda r: r.get("event_date") or "", reverse=True)
+    recs.sort(key=lambda r: CONF_RANK.get((r.get("item_confidence") or "UNVERIFIED").upper(), 3))
+    return recs
+
+
+def group_records(records):
+    """Split into horizon (proposed) + core categories. Unknown categories fall to industry."""
+    by_cat = {"fleet": [], "read_across": [], "industry": [], "_horizon": []}
+    for rec in records:
+        if is_horizon(rec):
+            by_cat["_horizon"].append(rec)
+            continue
+        cat = (rec.get("category") or "industry").lower()
+        if cat not in ("fleet", "read_across", "industry"):
+            cat = "industry"
+        by_cat[cat].append(rec)
+    return by_cat
+
+
+def suppress_read_across(by_cat, min_fleet_items):
+    """Mechanically suppress ## Read-Across on a busy fleet week (structure over instruction)."""
+    if len(by_cat.get("fleet", [])) >= min_fleet_items:
+        by_cat["read_across"] = []
+    return by_cat

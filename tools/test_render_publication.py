@@ -94,5 +94,34 @@ class TestItem(unittest.TestCase):
         self.assertIn("[UPDATED since 2026-06-01]", html)
 
 
+class TestGrouping(unittest.TestCase):
+    def test_all_nprm_record_is_horizon(self):
+        rec = _record(references=[{"ref_type": "NPRM", "ref_number": "X",
+                                   "confidence": "VERIFIED"}])
+        self.assertTrue(rp.is_horizon(rec))
+
+    def test_mixed_refs_not_horizon(self):
+        rec = _record(references=[{"ref_type": "NPRM", "ref_number": "X", "confidence": "VERIFIED"},
+                                  {"ref_type": "AD", "ref_number": "Y", "confidence": "VERIFIED"}])
+        self.assertFalse(rp.is_horizon(rec))
+
+    def test_order_verified_before_reported_then_newest(self):
+        a = _record(id="a", item_confidence="REPORTED", event_date="2026-06-20")
+        b = _record(id="b", item_confidence="VERIFIED", event_date="2026-06-01")
+        c = _record(id="c", item_confidence="VERIFIED", event_date="2026-06-10")
+        ordered = [r["id"] for r in rp.order_records([a, b, c])]
+        self.assertEqual(ordered, ["c", "b", "a"])
+
+    def test_read_across_suppressed_when_fleet_threshold_met(self):
+        by_cat = {"fleet": [1, 2, 3, 4, 5], "read_across": [9], "industry": []}
+        rp.suppress_read_across(by_cat, 5)
+        self.assertEqual(by_cat["read_across"], [])
+
+    def test_read_across_kept_below_threshold(self):
+        by_cat = {"fleet": [1, 2], "read_across": [9], "industry": []}
+        rp.suppress_read_across(by_cat, 5)
+        self.assertEqual(by_cat["read_across"], [9])
+
+
 if __name__ == "__main__":
     unittest.main()
