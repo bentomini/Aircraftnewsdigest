@@ -181,6 +181,30 @@ class TestWindow(unittest.TestCase):
         self.assertTrue(keep)
         self.assertFalse(rec["within_window"])
 
+    def test_g16_recent_effective_date_rescues_old_publication(self):
+        # G16: pub date predates the window, but the AD became effective inside it.
+        rec = record(
+            event_date="2026-05-22", developing_carryover=False,
+            references=[ref(effective_date="2026-06-08")])
+        keep, _ = v.enforce_window(rec, current_date="2026-06-27", lookback_days=30)
+        self.assertTrue(keep)
+        self.assertTrue(rec["within_window"])  # presented as current, not carry-over
+
+    def test_g16_future_effective_date_does_not_rescue(self):
+        # An effective date in the future (Compliance Radar's job) must NOT keep it.
+        rec = record(
+            event_date="2026-05-22", developing_carryover=False,
+            references=[ref(effective_date="2026-07-30")])
+        keep, _ = v.enforce_window(rec, current_date="2026-06-27", lookback_days=30)
+        self.assertFalse(keep)
+
+    def test_g16_no_effective_date_still_dropped(self):
+        rec = record(
+            event_date="2026-05-01", developing_carryover=False,
+            references=[ref(effective_date=None)])
+        keep, _ = v.enforce_window(rec, current_date="2026-06-27", lookback_days=30)
+        self.assertFalse(keep)
+
 
 class TestEndToEnd(unittest.TestCase):
     def test_illegal_verified_cannot_pass(self):

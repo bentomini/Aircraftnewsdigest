@@ -111,9 +111,18 @@ def rollup_confidence(references, has_event_reporting):
 
 
 def enforce_window(record, current_date, lookback_days):
-    """Return (keep: bool, reason). Set record['within_window']. Drop stale non-carryovers."""
+    """Return (keep: bool, reason). Set record['within_window']. Drop stale non-carryovers.
+
+    G16: an item whose publication (``event_date``) predates the window is still
+    current if one of its references *became effective* inside the window — a
+    just-mandatory AD is operationally live even if the rule was published
+    earlier. Such an item is kept and marked within_window=True (not a carry-over).
+    A *future* effective date does not rescue it — that is Compliance Radar's job.
+    """
     ev = record.get("event_date")
     within = _in_window(ev, current_date, lookback_days)
+    if not within and _effective_in_window(record, current_date, lookback_days):
+        within = True
     record["within_window"] = within
     if not within:
         if record.get("developing_carryover"):
@@ -133,6 +142,30 @@ def _in_window(event_date, current_date, lookback_days):
         return True
     delta = (now - ev).days
     return 0 <= delta <= lookback_days
+
+
+def _effective_in_window(record, current_date, lookback_days):
+    """True if any reference has a present, parseable ``effective_date`` within the
+    backward window [current - lookback_days, current].
+
+    Unlike _in_window, a missing or unparseable date is False here: only a real,
+    recently-passed effective date should rescue an out-of-window publication.
+    """
+    try:
+        now = date.fromisoformat(current_date)
+    except (ValueError, TypeError):
+        return False
+    for reference in record.get("references", []):
+        ed = reference.get("effective_date")
+        if not ed:
+            continue
+        try:
+            d = date.fromisoformat(ed)
+        except (ValueError, TypeError):
+            continue
+        if 0 <= (now - d).days <= lookback_days:
+            return True
+    return False
 
 
 def sanitize_record(record, allowlist, max_words, current_date, lookback_days):

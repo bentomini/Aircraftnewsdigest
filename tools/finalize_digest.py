@@ -7,10 +7,12 @@ pure formatting rules — the 2026-06-26 proof run showed it still emitted
 runs AFTER the writer, the same way ``validate_records.py`` enforces the gate
 after the verifier: structure over instruction.
 
-It fixes four rendering/editorial rules:
+It fixes these rendering/editorial rules:
   * HTML-escaped entities (``&amp;`` -> ``&``) the writer emits despite instructions;
-  * a doubled reference type (``AD AD 2026-..`` when ``ref_number`` already
-    starts with the type);
+  * a doubled reference type — both the adjacent ``AD AD 2026-..`` form and the
+    ``AD FAA AD 2025-..`` regulator-in-between form (G15), when ``ref_number``
+    already names the type;
+  * the placeholder ref_type ``other`` printed literally (``other NTSB docket …``);
   * section order — forced to Directly Fleet-Relevant -> Read-Across -> Major
     Industry Events, with the trailing ``Sources & Confidence`` line kept last;
   * Read-Across suppression — if the Directly Fleet-Relevant section contains
@@ -51,9 +53,43 @@ def unescape_entities(text):
 
 
 def dedupe_ref_type(text):
-    """Collapse a doubled reference type, e.g. 'AD AD 2026-10-06' -> 'AD 2026-10-06'."""
+    """Collapse a redundant leading reference type.
+
+    The writer renders ``{ref_type} {ref_number}``. When ``ref_number`` already
+    names the type, the prepended type is noise. Two forms are collapsed, both
+    bounded to a single reference clause — the bridge ``[^,;\\n]*?`` never crosses
+    a comma, semicolon or newline, so an unrelated later reference is left intact:
+
+      * adjacent duplicate   ``AD AD 2026-10-06``      -> ``AD 2026-10-06``
+      * regulator-in-between  ``AD FAA AD 2025-25-12``  -> ``FAA AD 2025-25-12``
+        (ref_type ``AD`` + ref_number ``FAA AD 2025-25-12``; G15)
+
+    The bridge between the two types is letters-only (a regulator name, optionally
+    ``emergency``): it never spans a digit, slash, comma, semicolon, bracket or
+    newline. That keeps it from reaching across to a *distinct* later reference —
+    e.g. ``FAA AD 2025-24-51 / EASA AD 2025-0268-E`` must keep both ``AD`` tokens.
+
+    ``EAD EASA AD …`` is left alone: ``\\bAD\\b`` does not match inside ``EAD``,
+    and there is no second ``EAD``, so it never triggers.
+    """
     for t in REF_TYPES:
-        text = re.sub(r"\b(%s)\s+\1\b" % re.escape(t), r"\1", text)
+        esc = re.escape(t)
+        text = re.sub(r"\b(%s)\s+([^,;\n\d/()\[\]]*?\b%s\b)" % (esc, esc), r"\2", text)
+    return text
+
+
+def strip_other_ref_type(text):
+    """Remove the placeholder ref_type ``other`` the writer prints literally.
+
+    ``other`` is the schema catch-all (NTSB dockets, etc.) and must not appear in
+    the prose. The writer renders ``{ref_type} {ref_number}`` -> ``other NTSB
+    docket …``. Strip a lowercase ``other`` only where the writer places a
+    reference — right after the ``*Technical detail:*`` marker or after a ``; ``
+    reference separator — and only when the following token is capitalised (a
+    regulator/doc name), so the ordinary word ``other`` in prose is never touched.
+    """
+    text = re.sub(r"(\*Technical detail:\*\s+)other\s+(?=[A-Z])", r"\1", text)
+    text = re.sub(r"(;\s+)other\s+(?=[A-Z])", r"\1", text)
     return text
 
 
@@ -138,6 +174,7 @@ def finalize(text, config_path="config/fleet.yaml"):
     """Apply all deterministic fixups in order."""
     text = unescape_entities(text)
     text = dedupe_ref_type(text)
+    text = strip_other_ref_type(text)
     text = suppress_readacross(text, config_path)
     text = reorder_sections(text)
     return text

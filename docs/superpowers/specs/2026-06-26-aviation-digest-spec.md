@@ -226,3 +226,21 @@ confirmed G14 **cannot be fixed by prompt instruction alone**.
 adds or changes a reference, quote, or fact. Wired into the orchestrator as **Step 5b** (runs after
 the writer, "never skip"), the same structure-over-instruction principle as the gates. Both existing
 digests reprocessed clean.
+
+## 12. Second live run + self-audit — 2026-06-27 (G15/G16 found and fixed)
+
+A second `/digest weekly` ran clean end-to-end (cold-start 30d window; 18 leads → 9 in digest; the
+audit gate caught a non-verbatim quote and downgraded it; Standing Watch rendered live for the first
+time). Artifacts in `runs/2026-06-27/`, digest `digests/2026-06-27-weekly.md`. A scope self-audit then
+produced the categorisation + Read-Across-suppression changes (see roadmap decision log 2026-06-27) and
+two render/window follow-ups, both since **FIXED** test-first on 2026-06-27:
+
+| # | Finding | Status |
+|---|---------|--------|
+| **G15** | **Writer render leaks.** (a) `ref_type:"other"` printed literally (`other NTSB docket …`). (b) `AD FAA AD 2025-…` double-prefix slipped past `finalize_digest.dedupe_ref_type` — its old `\b(AD)\s+\1\b` matched only the adjacent `AD AD` form, not `AD <regulator> AD` where the `ref_number` itself contains the type. | **FIXED.** `dedupe_ref_type` now collapses the regulator-in-between form with a **letters-only bridge** (excludes digits/slash/brackets) so a distinct later reference like `FAA AD … / EASA AD …` keeps both ADs; new `strip_other_ref_type` drops the `other` placeholder (anchored to `*Technical detail:*`/`; ` + following-capital guard). 8 new tests incl. 2 over-collapse regressions caught by re-finalising the live digest; applied in place. `writer.md` also nudged. |
+| **G16** | **Window enforced on publication date only.** The gate dropped the directly-fleet A330 standby-fuel-pump AD because its pub date (2026-05-22) fell 6 days before a 30d window, even though its *effective* date (2026-06-08) was well inside. | **FIXED.** `validate_records.enforce_window` now keeps an item whose `event_date` predates the window if any reference *became effective* inside the backward window (new `_effective_in_window`), marking it `within_window=True` (current, not carry-over). A *future* effective date does not rescue it — that stays Compliance Radar's job. 3 new tests. |
+
+Also cleared the deferred Stage-6 nit: `compliance_radar.record_store` now **warns** (stderr or an
+injectable `warn`) on an unparseable `effective_date` instead of silently storing one that `select()`
+skips forever (still stored, never dropped; 2 new tests). **152 tool tests pass.** The living status
+is tracked in `roadmap.md`; this section is the point-in-time record.

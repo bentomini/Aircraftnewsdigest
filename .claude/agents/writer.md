@@ -62,6 +62,10 @@ Per item:
   write the OEM/regulator position or root cause if present, tagged with the item confidence.
   When joining fields, do not produce doubled punctuation (e.g. ".;") — if a field already ends
   in a period, drop the following separator.
+  - **Ref-type rendering:** if `ref_type` is the catch-all `other`, render only `{ref_number}` —
+    never print the literal word "other". If `{ref_number}` already begins with the regulator and
+    the same type (e.g. ref_number `FAA AD 2025-25-12` with ref_type `AD`), render `{ref_number}`
+    alone to avoid a doubled type ("AD FAA AD …"). The finaliser enforces both, but render them right.
 - *Verbatim:* for each quote — "{text}" — {doc_title}, {ref_number}, {revision_or_date}, [link]({url}).
   Omit this line entirely if the item has no quotes.
 - *Read-across to {operator} fleet:* {read_across}. Omit if category = fleet or read_across is null.

@@ -42,8 +42,18 @@ def ref_id(reference):
     return "%s:%s" % (rt, num)
 
 
-def record_store(store, records, current_date):
-    """Upsert VERIFIED AD/EAD references that carry an effective_date. Mutates store."""
+def record_store(store, records, current_date, warn=None):
+    """Upsert VERIFIED AD/EAD references that carry an effective_date. Mutates store.
+
+    ``warn`` is an optional callable taking one message string. An effective_date
+    that does not parse as ISO ``YYYY-MM-DD`` is still stored (we never drop the
+    AD), but a warning is emitted so the operator notices: ``select()`` silently
+    skips unparseable dates, so without this the AD would just never surface on
+    the radar with no trace. Defaults to writing to stderr.
+    """
+    if warn is None:
+        def warn(msg):
+            sys.stderr.write(msg + "\n")
     for rec in records:
         for r in (rec.get("references") or []):
             if (r.get("ref_type") or "").upper() not in RADAR_REF_TYPES:
@@ -53,6 +63,12 @@ def record_store(store, records, current_date):
             eff = (r.get("effective_date") or "").strip()
             if not eff:
                 continue
+            try:
+                date.fromisoformat(eff)
+            except (ValueError, TypeError):
+                warn("[radar] WARNING: %s has unparseable effective_date %r — "
+                     "stored but it will never surface on the radar until corrected"
+                     % (ref_id(r), eff))
             store[ref_id(r)] = {
                 "effective_date": eff,
                 "ref_type": (r.get("ref_type") or "").upper(),

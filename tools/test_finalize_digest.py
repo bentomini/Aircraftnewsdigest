@@ -39,6 +39,61 @@ class TestDedupeRefType(unittest.TestCase):
         # "and and" must not be touched; only known ref types
         self.assertEqual(f.dedupe_ref_type("and and then"), "and and then")
 
+    def test_regulator_between_two_types_collapses(self):
+        # G15: writer prepends ref_type 'AD' to ref_number 'FAA AD 2025-25-12'.
+        self.assertEqual(
+            f.dedupe_ref_type("AD FAA AD 2025-25-12"), "FAA AD 2025-25-12")
+
+    def test_regulator_emergency_form_collapses(self):
+        self.assertEqual(
+            f.dedupe_ref_type("AD FAA emergency AD (MD-11 grounding, Nov 2025)"),
+            "FAA emergency AD (MD-11 grounding, Nov 2025)")
+
+    def test_bridge_does_not_cross_comma(self):
+        # A later, distinct AD (after a comma) must NOT pull the leading type off.
+        self.assertEqual(
+            f.dedupe_ref_type("AD 2025-25-12, supersedes AD 2025-13-12"),
+            "AD 2025-25-12, supersedes AD 2025-13-12")
+
+    def test_ead_easa_ad_left_alone(self):
+        # ref_type 'EAD' + ref_number 'EASA AD ...' is not a doubled type.
+        self.assertEqual(
+            f.dedupe_ref_type("EAD EASA AD 2026-0119-E"), "EAD EASA AD 2026-0119-E")
+
+    def test_two_distinct_ads_in_headline_both_kept(self):
+        # Regression: the bridge must NOT span digits/slash to a later, distinct AD.
+        s = "FAA AD 2025-24-51 / EASA AD 2025-0268-E: ELAC software fix"
+        self.assertEqual(f.dedupe_ref_type(s), s)
+
+    def test_two_distinct_ads_in_prose_both_kept(self):
+        s = ("EASA issued emergency AD 2025-0268-E and the FAA mirrored it "
+             "with emergency AD 2025-24-51")
+        self.assertEqual(f.dedupe_ref_type(s), s)
+
+
+class TestStripOtherRefType(unittest.TestCase):
+    def test_leading_other_stripped(self):
+        line = "*Technical detail:* other NTSB docket DCA26FA194 — Preliminary Report"
+        self.assertEqual(
+            f.strip_other_ref_type(line),
+            "*Technical detail:* NTSB docket DCA26FA194 — Preliminary Report")
+
+    def test_other_as_second_reference_stripped(self):
+        line = ("*Technical detail:* AD FAA AD 2025-1 [VERIFIED]; "
+                "other NTSB docket DCA99 [UNVERIFIED]")
+        self.assertEqual(
+            f.strip_other_ref_type(line),
+            "*Technical detail:* AD FAA AD 2025-1 [VERIFIED]; "
+            "NTSB docket DCA99 [UNVERIFIED]")
+
+    def test_prose_other_not_touched(self):
+        line = "Trent 700 and other affected engines remain in service."
+        self.assertEqual(f.strip_other_ref_type(line), line)
+
+    def test_other_before_lowercase_not_touched(self):
+        line = "*Technical detail:* other affected systems were reviewed."
+        self.assertEqual(f.strip_other_ref_type(line), line)
+
 
 class TestReorderSections(unittest.TestCase):
     SAMPLE = (

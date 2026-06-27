@@ -49,6 +49,22 @@ class TestRecord(unittest.TestCase):
         cr.record_store(store, [ad_record("2026-10-06", "2026-09-15")], "2026-07-04")
         self.assertEqual(store["AD:2026-10-06"]["effective_date"], "2026-09-15")
 
+    def test_record_warns_on_unparseable_effective_date(self):
+        store, warnings = {}, []
+        cr.record_store(store, [ad_record("2026-10-06", "Q4 2026")], "2026-06-27",
+                        warn=warnings.append)
+        self.assertEqual(len(warnings), 1)
+        self.assertIn("unparseable effective_date", warnings[0])
+        # Still stored (never dropped) but it will never surface via select().
+        self.assertIn("AD:2026-10-06", store)
+        self.assertEqual(cr.select(store, "2026-06-27", 365, 5), [])
+
+    def test_record_does_not_warn_on_good_date(self):
+        warnings = []
+        cr.record_store({}, [ad_record("2026-10-06", "2026-09-01")], "2026-06-27",
+                        warn=warnings.append)
+        self.assertEqual(warnings, [])
+
 
 class TestSelect(unittest.TestCase):
     def setUp(self):
