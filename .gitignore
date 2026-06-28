@@ -1,12 +1,56 @@
+# =============================================================================
+# Per-run pipeline artifacts — ephemeral, regenerated each /digest run.
+# Persistent state files (runs/_state.json, _seen.json, _compliance.json,
+# _corner.json) are NOT ignored so continuity is preserved across clones.
+# =============================================================================
+runs/20*/
+runs/*-verifyproof/
+runs/*/assets/
+
+# =============================================================================
+# Generated publication files — rebuilt from the .md digest on demand.
+# .md digests ARE tracked (they are the primary human-readable output).
+# =============================================================================
+digests/*.pdf
+digests/*.html
+
+# =============================================================================
 # Python
+# =============================================================================
 __pycache__/
 *.py[cod]
-*.egg-info/
+*.pyo
 .pytest_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+env/
 
-# OS
-Thumbs.db
+# =============================================================================
+# Machine-specific Claude Code settings (permissions allowlist, local overrides).
+# Agents and commands ARE tracked — they are part of the project contract.
+# =============================================================================
+.claude/settings.local.json
+
+# =============================================================================
+# Environment & secrets
+# =============================================================================
+.env
+.env.*
+*.key
+*.pem
+
+# =============================================================================
+# OS / editor noise
+# =============================================================================
 .DS_Store
-
-# Brainstorming visual-companion scratch
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/
 .superpowers/

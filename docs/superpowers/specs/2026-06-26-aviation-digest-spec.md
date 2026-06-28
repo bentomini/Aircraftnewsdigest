@@ -12,8 +12,8 @@ Analysis) flags every place the current build diverges from this intent.
 
 ## 1. Purpose
 
-A recurring (default **weekly**) aviation technical-intelligence digest for **Cathay Pacific's
-engineering and technical-services team**. Output is a verified, fleet-scoped Markdown report
+A personal, recurring (default **weekly**) aviation technical-intelligence digest tracking the
+HK carrier fleet using public sources only. Output is a verified, fleet-scoped Markdown report
 covering ADs, EADs, SBs, SILs, service letters (SL), MSG-3 task changes, incidents, and major
 industry events (the "UPS MD-11" class).
 

@@ -73,6 +73,72 @@
       "last_reported": "2026-06-27",
       "last_version": "2025-11-24",
       "headline": "NTSB UPS MD-11 (Flight 2976, docket DCA26MA024) investigative hearing — May 19-20, 2026: aft-pylon bearing fatigue findings"
+    },
+    "AD:FAA AD 2026-12-11 (AMENDMENT 39-23381) / FR DOC 2026-13062 / DOCKET FAA-2026-3485": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-29",
+      "headline": "A321neo (XWB sub-variants) — FAA AD 2026-12-11 effective August 3, 2026: cold working process deviation at center fuselage frame foot joint connections, all CX fleet variants explicitly named"
+    },
+    "AD:FAA AD 2026-09-03 (AMENDMENT 39-23324) / FR DOC 2026-09169 / DOCKET FAA-2025-3989": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-05-08",
+      "headline": "A321neo / A320 family — FAA AD 2026-09-03 effective June 12, 2026: ALS Part 2 DT-ALI Revision 11 mandatory; 90-day compliance window to approximately September 10, 2026"
+    },
+    "AD:FAA AD 2026-12-04 / FR DOC 2026-11511 / DOCKET FAA-2026-3475": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-09",
+      "headline": "A350-900 — FAA AD 2026-12-04 effective July 14, 2026: improper fastener retorque at CWB/belly fairing junctions; EN6115 code B rotation risk; fuel leak and ignition hazard; A350-1041 NOT in scope"
+    },
+    "AD:FAA AD 2026-12-05 / FR DOC 2026-11975 / DOCKET FAA-2026-3473": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-15",
+      "headline": "A350-900/-1000 — FAA AD 2026-12-05 effective July 20, 2026: primary flight control actuators exposed to mechanical overloads during production acceptance test; all affected units must be replaced"
+    },
+    "EVENT:a330-300-swiss-lx-154-hb-jhc-zrh-bom-nose-gear-tyre-damage-at-takeoff-parts-found-on-departure-runway-returned-to-zurich-june-21-2026": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-21",
+      "headline": "A330-300 (Swiss LX-154, HB-JHC, ZRH–BOM) — nose gear tyre damage at takeoff, parts found on departure runway, returned to Zurich, June 21, 2026"
+    },
+    "EVENT:a350-900-cathay-pacific-cx-156-b-lrv-bne-hkg-severe-turbulence-injures-10-6-pax-4-crew-may-23-2026-investigation-ongoing": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-05-23",
+      "headline": "A350-900 (Cathay Pacific CX-156, B-LRV, BNE–HKG) — severe turbulence injures 10 (6 pax + 4 crew), May 23, 2026 — investigation ongoing"
+    },
+    "EAD:2026-0119-E": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-22",
+      "headline": "A380 — EASA EAD 2026-0119-E issued June 22, effective June 24, 2026: wing mid-spar cracks; 5 aircraft before-next-flight, 11 within 25 cycles (compliance detail from trade press; PDF not readable as text)"
+    },
+    "EVENT:boeing-787-8-air-india-flight-171-june-2025-crash-india-aaib-one-year-statement-june-12-2026-investigation-ongoing-no-new-findings-disclosed": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-06-12",
+      "headline": "Boeing 787-8 (Air India Flight 171, June 2025 crash) — India AAIB one-year statement June 12, 2026: investigation ongoing, no new findings disclosed"
+    },
+    "NPRM:DOCKET FAA-2026-3879": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "",
+      "headline": "A321 — FAA NPRM (On the Horizon): bulk cargo door fatigue cracks at fuselage sections 16/17; EASA AD 2025-0193 confirmed as triggering document (classic A321 variants only — CX A321neo scope unconfirmed)"
+    },
+    "AD:EASA AD 2025-0193": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2025-09-08",
+      "headline": "A321 — FAA NPRM (On the Horizon): bulk cargo door fatigue cracks at fuselage sections 16/17; EASA AD 2025-0193 confirmed as triggering document (classic A321 variants only — CX A321neo scope unconfirmed)"
+    },
+    "NPRM:FR DOC 2026-02420 / DOCKET FAA-2026-0741": {
+      "first_reported": "2026-06-27",
+      "last_reported": "2026-06-27",
+      "last_version": "2026-02-06",
+      "headline": "777-300ER — FAA NPRM (On the Horizon): SATCOM high-gain antenna adapter plate corrosion; all Boeing 777-200/-200LR/-300/-300ER; comment period closed March 23, 2026; final rule pending"
     }
   }
 }

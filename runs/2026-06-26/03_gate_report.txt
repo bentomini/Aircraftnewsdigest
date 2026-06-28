@@ -1,7 +1,0 @@
-
-[gate] kept=2 dropped=5 violations=5
-  - record trent-700-ad-2026-10-06-supersedes-2020-24-08 dropped: event_date 2026-06-12 outside 7-day window
-  - record a350-flight-control-actuator-ad-2026-12-05 dropped: event_date 2026-06-15 outside 7-day window
-  - record a350-oxygen-generator-clamp-ad-2026-09-14 dropped: event_date 2026-06-18 outside 7-day window
-  - record a330-standby-fuel-pump-ad-2026-10-19 dropped: event_date 2026-06-08 outside 7-day window
-  - record a330-p2f-oxygen-etops180-proposed-ad-faa-2026-3873 dropped: event_date 2026-04-29 outside 7-day window

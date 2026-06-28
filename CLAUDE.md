@@ -4,13 +4,13 @@ Project instructions for Claude Code. These override default behaviour for this 
 
 ## What this project is
 
-A recurring (default **weekly**) aviation technical-intelligence digest for **Cathay Pacific's
-engineering and technical-services team**. Output is a verified, fleet-scoped Markdown report
+A personal, recurring (default **weekly**) aviation technical-intelligence digest tracking the
+HK carrier fleet using public sources only. Output is a verified, fleet-scoped Markdown report
 covering ADs, EADs, SBs, SILs, service letters (SL), MSG-3 task changes, incidents, and major
 industry events (the "UPS MD-11" class of event).
 
-This is **engineer-grade** intelligence, not commercial airline news. The audience is expert
-(technical services / line & base maintenance / reliability engineering) — do NOT define
+This is **engineer-grade** intelligence, not commercial airline news. Content is written at
+expert level (technical services / line & base maintenance / reliability engineering) — do NOT define
 AD, SB, SIL, SL, EAD, MSG-3, etc. in the output.
 
 ## Public-internet-only rule
@@ -111,10 +111,10 @@ from the live primary source, and both deterministic gates passed.**
 Markdown, grouped:
 `## Directly Fleet-Relevant` → `## Read-Across (Peer Types)` → `## Major Industry Events`
 
-**Categorisation rules (audience is CX/HK — relevance to CX's own fleet is the priority):**
+**Categorisation rules (relevance to the tracked fleet is the priority):**
 - **Fleet** = same aircraft TYPE or engine TYPE as a `fleet` entry, **regardless of operator**.
-  A JAL A350-1000 / Trent XWB-97 event is *fleet*, not read-across — CX flies that exact type. An
-  AD that explicitly lists a CX variant in its effectivity is *fleet* even if discovered as a peer
+  A JAL A350-1000 / Trent XWB-97 event is *fleet*, not read-across — the tracked fleet flies that exact type. An
+  AD that explicitly lists a tracked variant in its effectivity is *fleet* even if discovered as a peer
   lead.
 - **Read-Across** = peer type only (shared system / engine family / OEM design / regulatory
   precedent). **Deliberately lower priority:** the `## Read-Across` section is **suppressed entirely
@@ -124,8 +124,7 @@ Markdown, grouped:
 - **Major Industry Events** = NOT fleet-type bounded — a channel for big worldwide events (the
   "UPS MD-11" class) whatever the aircraft type.
 - **Standing Watch** (Compliance Radar + On the Horizon) is **fleet-scoped**: only NPRMs/PADs/ADs
-  for CX's own fleet types appear — CX engineers do not watch proposed rules on aircraft they
-  don't operate.
+  for the tracked fleet types appear — proposed rules on aircraft not in the fleet are excluded.
 
 Per item:
 - **[Triage headline]** — type(s), date.

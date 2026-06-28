@@ -191,6 +191,11 @@ def parse_operator_name(text):
     return m.group(1).strip() if m else "Operator"
 
 
+def parse_digest_byline(text):
+    m = re.search(r"(?m)^\s+digest_byline:\s*(.+)$", text)
+    return m.group(1).strip() if m else None
+
+
 def parse_fleet_types(text):
     """Collect 'type:' values under the top-level 'fleet:' block."""
     types, in_block = [], False
@@ -334,6 +339,7 @@ def render_document(bundle):
     sources = render_sources_line(core_shown)
 
     operator = html_escape(bundle.get("operator", "Operator"))
+    byline = html_escape(bundle.get("digest_byline") or operator)
     fleet = html_escape(" · ".join(bundle.get("fleet_types", [])))
     date_label = html_escape(bundle.get("date_label", ""))
     body = "\n".join(x for x in (sections + [watch, sources]) if x)
@@ -343,11 +349,11 @@ def render_document(bundle):
         '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
         '%s\n<style>%s</style>\n<title>%s — Technical-Intelligence Digest</title></head>\n'
         '<body><div class="wrap">\n'
-        '<div class="mast"><div class="kick">%s · Engineering &amp; Technical Services</div>'
+        '<div class="mast"><div class="kick">%s</div>'
         '<div class="ttl">Technical-Intelligence Digest</div>'
         '<div class="sub">%s · %s</div></div>\n'
         '%s\n</div></body></html>'
-        % (FONT_LINK, STYLE, operator, operator, date_label, fleet, body)
+        % (FONT_LINK, STYLE, byline, byline, date_label, fleet, body)
     )
 
 
@@ -391,6 +397,7 @@ def main(argv=None):
     bundle = {
         "records": records, "radar": radar, "corner": corner, "images": images,
         "operator": parse_operator_name(cfg), "fleet_types": parse_fleet_types(cfg),
+        "digest_byline": parse_digest_byline(cfg),
         "min_fleet_items": parse_scalar(cfg, "read_across_min_fleet_items", 5),
         "date_label": args.date_label,
     }

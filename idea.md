@@ -1,7 +1,7 @@
 # Aviation Technical-Intelligence Digest — Build Brief
 
 ## What I'm building
-A recurring news digest for Cathay Pacific's engineering and technical-services team.
+A personal recurring news digest tracking the HK carrier fleet using public sources.
 The output is a verified, fleet-scoped Markdown report covering ADs, SBs, SILs, SLs,
 service letters, MSG-3 task changes, incidents, and major industry events.
 

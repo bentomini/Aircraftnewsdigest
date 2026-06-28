@@ -23,8 +23,8 @@ Run MANY targeted queries — do not rely on one broad search. Cover, at minimum
 - Each regulator's recent ADs/EADs (FAA, EASA, HKCAD, TC, CAAC, UK CAA).
 - **Proposed rules (for "On the Horizon" in Standing Watch)**: FAA NPRMs and EASA PADs
   affecting a **fleet type** (from `fleet` in fleet.yaml) only — do NOT include NPRMs/PADs for
-  peer types. On the Horizon is fleet-scoped: CX's engineers watch only what may directly
-  mandate action on their own aircraft. Capture the claimed docket/PAD number in `ref_number`,
+  peer types. On the Horizon is fleet-scoped: only what may directly mandate action on the
+  tracked fleet types is included. Capture the claimed docket/PAD number in `ref_number`,
   set `ref_type` to `NPRM` (FAA) or `PAD` (EASA), and `category` to `fleet`. Emit UNVERIFIED,
   discovery URL in `lead_sources`.
 - Each peer type, framed for read-across (shared system / engine / OEM / precedent).

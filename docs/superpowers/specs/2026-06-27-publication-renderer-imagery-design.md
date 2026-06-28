@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-27
 **Status:** Approved (brainstorm), ready for implementation planning
-**Project:** Aviation Technical-Intelligence Digest (Cathay Pacific Engineering & Technical Services)
+**Project:** Aviation Technical-Intelligence Digest (HK Aviation Fleet Watch)
 
 ---
 
@@ -60,8 +60,8 @@ Typography (web fonts with system fallback):
 Item layout "A": item headline + confidence chip, meta line, then prose with a photo (when present)
 floated to the right at ~140–170px wide with a caption beneath.
 
-Masthead names Cathay Pacific as the **audience**, not the publisher — this is an *unofficial internal
-digest*. Do not adopt Cathay's official logo/livery (trademark exposure for a solo operator).
+Masthead shows the digest byline ("HK Aviation Fleet Watch") — this is a personal project using
+public sources. Do not use any airline's official logo/livery.
 
 ## 4. Photo policy (decided in brainstorm)
 

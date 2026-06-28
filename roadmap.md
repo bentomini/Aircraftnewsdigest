@@ -164,6 +164,14 @@ Files: `.claude/agents/auditor.md`, `enforce_audit*` in `tools/validate_records.
       backward window (new `_effective_in_window`); such items are marked `within_window=True` (current,
       not carry-over). A *future* effective date does not rescue an item — that stays Compliance Radar's
       job. 3 new tests.
+- [x] **3rd live run (2026-06-27, fresh pass, with imagery pipeline):** `/digest weekly`, 30d window
+      (same date as 2nd run — user re-invoked; prior artifacts overwritten). 19 scanner leads → 10
+      verifier records → gate kept=10 / audit gate kept=10 / dedup new=10 → digest. **7 VERIFIED /
+      3 REPORTED / 0 UNVERIFIED.** All 7 VERIFIED independently confirmed by auditor. Imagery pipeline
+      ran live for the first time: imagery subagent found 2 illustrative photos (aerotime.aero) →
+      image gate 0 embedded / 2 link-only (off embed_allowlist) → HTML + PDF produced cleanly.
+      Stage 7 smoke **closed**. Compliance store now holds 12 ADs; dedup ledger seeded with 10 items.
+      Artifacts: `runs/2026-06-27/` (01→10), `digests/2026-06-27-weekly.{md,html,pdf}`.
 - [ ] Confirm auditor's live fetch reliability (watch for over-conservative `fetch_failed` downgrades)
 - [ ] Tune scanner query set for coverage vs. token cost
 
@@ -206,7 +214,8 @@ Plan: `docs/superpowers/plans/2026-06-27-publication-renderer-imagery.md`.
       escaping invariant on every JSON value; no chip on proposed-rule items (29 tests)
 - [x] PDF `tools/html_to_pdf.py` (Playwright/Chromium, failure-tolerant)
 - [x] Orchestrator Steps 4g/4h (imagery) + 7/7b (render/PDF) + guardrails
-- [ ] Live `/digest` smoke with real fetched imagery (the lug photo end-to-end)
+- [x] Live `/digest` smoke with real fetched imagery (2026-06-27 3rd run: scout → gate → HTML → PDF
+      end-to-end; 0 embedded / 2 link-only — both aerotime.aero, off allowlist; renderer + PDF clean)
 
 ---
 

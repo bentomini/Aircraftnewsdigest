@@ -1,5 +1,17 @@
 # Session Log
 
+## 2026-06-28 — Session 10
+**Goal:** Rebrand digest header + scrub "belongs to Cathay Pacific" framing (personal project, public sources only).
+**Built:** `digest_byline: HK Aviation Fleet Watch` in `config/fleet.yaml`; `parse_digest_byline()` + masthead wiring in `tools/render_publication.py`; H1 header instruction added to `.claude/agents/writer.md`; `digests/2026-06-27-weekly.md` header fixed retroactively; ownership framing removed from `CLAUDE.md`, `idea.md`, `docs/superpowers/specs/2026-06-26-aviation-digest-spec.md`, `docs/superpowers/specs/2026-06-27-publication-renderer-imagery-design.md`, `.claude/agents/scanner.md`.
+**Broken / deferred:** —
+**Next:** Next `/digest weekly` run from 2026-06-28 baseline (7d steady-state window).
+
+## 2026-06-27 — Session 09
+**Goal:** Complete `/digest weekly` pipeline resumed from context-limit break (picked up at Step 4c — audit gate).
+**Built:** Audit gate kept=10/0/0; dedup new=10; writer dispatched (rate-limit retry); `digests/2026-06-27-weekly.{md,html,pdf}` produced; Steps 6b–6e recorded. Imagery pipeline ran live first time: 0 embedded / 2 link-only (aerotime.aero off allowlist). Stage 7 smoke **closed**. `roadmap.md` + `memory/digest-project-state.md` updated.
+**Broken / deferred:** No embed-allowlist images found this run (no public-domain agency photos available for these items). Auditor live-fetch reliability, scanner tuning, `*Technical detail:*` density still pending.
+**Next:** Next `/digest weekly` from 2026-06-27 baseline (7d steady-state window); watch for embedded images if ntsb/faa/easa primary figures surface.
+
 ## 2026-06-27 — Session 08
 **Goal:** Brainstorm + build sub-project 2 — the HTML/PDF publication renderer + reader-relatable photos (source-extracted, e.g. the MD-11 lug) — exit-safe.
 **Built:** Spec `docs/superpowers/specs/2026-06-27-publication-renderer-imagery-design.md` + plan `docs/superpowers/plans/2026-06-27-publication-renderer-imagery.md`. Shipped (subagent-driven, spec+code-quality review per task), merged to `main` (`55c4c73`): **"Flight Deck"** brand (navy #0B2545 + teal #15B8A0, Fraunces/Inter/Source-Serif, magazine layout, chosen via visual-companion mockups). New post-digest layer: `imagery:` block in `config/fleet.yaml`; `tools/fetch_images.py` (image GATE — embeds only public-domain agency figs ntsb/faa/govinfo/easa, URL-recomputed domain so no spoofing, link-only otherwise, never raises); `.claude/agents/imagery.md` (metadata-only scout); `tools/render_publication.py` (fetch-free HTML, reproduces writer routing); `tools/html_to_pdf.py` (Playwright/Chromium, failure-tolerant); `digest.md` Steps 5c–5f + guardrails; roadmap Stage 7. **200 tests green** (fetch_images 19 / render 29). E2E dry-run (gate→render→PDF) clean; HTML+PDF sent to user.

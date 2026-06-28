@@ -1,4 +1,0 @@
-
-[gate] kept=11 dropped=2 violations=2
-  - record faa-a330-standby-fuel-pump-ad-2026-10272 dropped: event_date 2026-05-22 outside 30-day window
-  - record faa-a330-a340-airworthiness-limitations-nprm-2026-03747 dropped: event_date 2026-02-25 outside 30-day window

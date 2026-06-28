@@ -49,6 +49,54 @@
       "url": "https://www.govinfo.gov/content/pkg/FR-2026-01-12/html/2026-00330.htm",
       "headline": "FAA AD 2025-26-04: PW1122G-JM through PW1431GH-JM fuel hose clamp / fan blade fire risk (effective Feb 17, 2026) — read-across",
       "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2026-12-11 (AMENDMENT 39-23381) / FR DOC 2026-13062 / DOCKET FAA-2026-3485": {
+      "effective_date": "2026-08-03",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2026-12-11 (Amendment 39-23381) / FR doc 2026-13062 / docket FAA-2026-3485",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-29/html/2026-13062.htm",
+      "headline": "A321neo (XWB sub-variants) — FAA AD 2026-12-11 effective August 3, 2026: cold working process deviation at center fuselage frame foot joint connections, all CX fleet variants explicitly named",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2026-09-03 (AMENDMENT 39-23324) / FR DOC 2026-09169 / DOCKET FAA-2025-3989": {
+      "effective_date": "2026-06-12",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2026-09-03 (Amendment 39-23324) / FR doc 2026-09169 / docket FAA-2025-3989",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-05-08/html/2026-09169.htm",
+      "headline": "A321neo / A320 family — FAA AD 2026-09-03 effective June 12, 2026: ALS Part 2 DT-ALI Revision 11 mandatory; 90-day compliance window to approximately September 10, 2026",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2026-12-04 / FR DOC 2026-11511 / DOCKET FAA-2026-3475": {
+      "effective_date": "2026-07-14",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2026-12-04 / FR doc 2026-11511 / docket FAA-2026-3475",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-09/html/2026-11511.htm",
+      "headline": "A350-900 — FAA AD 2026-12-04 effective July 14, 2026: improper fastener retorque at CWB/belly fairing junctions; EN6115 code B rotation risk; fuel leak and ignition hazard; A350-1041 NOT in scope",
+      "recorded": "2026-06-27"
+    },
+    "AD:FAA AD 2026-12-05 / FR DOC 2026-11975 / DOCKET FAA-2026-3473": {
+      "effective_date": "2026-07-20",
+      "ref_type": "AD",
+      "ref_number": "FAA AD 2026-12-05 / FR doc 2026-11975 / docket FAA-2026-3473",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-15/html/2026-11975.htm",
+      "headline": "A350-900/-1000 — FAA AD 2026-12-05 effective July 20, 2026: primary flight control actuators exposed to mechanical overloads during production acceptance test; all affected units must be replaced",
+      "recorded": "2026-06-27"
+    },
+    "EAD:2026-0119-E": {
+      "effective_date": "2026-06-24",
+      "ref_type": "EAD",
+      "ref_number": "2026-0119-E",
+      "url": "https://ad.easa.europa.eu/ad/2026-0119-E",
+      "headline": "A380 — EASA EAD 2026-0119-E issued June 22, effective June 24, 2026: wing mid-spar cracks; 5 aircraft before-next-flight, 11 within 25 cycles (compliance detail from trade press; PDF not readable as text)",
+      "recorded": "2026-06-27"
+    },
+    "AD:EASA AD 2025-0193": {
+      "effective_date": "2025-09-22",
+      "ref_type": "AD",
+      "ref_number": "EASA AD 2025-0193",
+      "url": "https://ad.easa.europa.eu/ad/2025-0193",
+      "headline": "A321 — FAA NPRM (On the Horizon): bulk cargo door fatigue cracks at fuselage sections 16/17; EASA AD 2025-0193 confirmed as triggering document (classic A321 variants only — CX A321neo scope unconfirmed)",
+      "recorded": "2026-06-27"
     }
   }
 }
