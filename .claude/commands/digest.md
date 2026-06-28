@@ -288,6 +288,38 @@ python tools/engineers_corner.py --record \
 ```
 If the Corner was suppressed this week (`corner: null`), this is a no-op and the rotation is unchanged.
 
+## Step 6f — DRAFT EMAIL (Gmail MCP — failure-tolerant, never blocks the run)
+
+Check for recipients by running:
+```
+python -c "
+import os
+r = os.environ.get('DIGEST_RECIPIENTS', '')
+if not r:
+    try:
+        r = next((l.split('=',1)[1].strip() for l in open('.env') if l.startswith('DIGEST_RECIPIENTS=')), '')
+    except: pass
+print(r)
+"
+```
+
+If the result is empty, skip this step silently and add one line to the Step 6 report:
+"Email draft skipped — add DIGEST_RECIPIENTS to .env or set as env var to enable."
+
+If set:
+1. Read `digests/$CURRENT_DATE-{cadence}.html`. If that file does not exist (Step 5e failed),
+   fall back to `digests/$CURRENT_DATE-{cadence}.md` and send as plain text (`body` only, no `htmlBody`).
+2. Split `DIGEST_RECIPIENTS` on commas, strip whitespace from each address.
+3. Read `config/fleet.yaml` and get `operator.digest_byline` for the subject prefix.
+4. Call the Gmail MCP `create_draft` tool:
+   - `to`: the parsed recipients list
+   - `subject`: "{digest_byline} — Week of {CURRENT_DATE}"
+   - `htmlBody`: full content of the HTML file (or omit if falling back to Markdown)
+   - `body`: "{digest_byline} — please view the HTML version of this digest."
+5. Report the returned draft ID to the user and confirm the draft is ready to review in Gmail.
+
+Any failure in this step is non-fatal — log the error and continue. The digest already exists.
+
 ## Guardrails (do not violate)
 - Never write a reference, quote, date, or revision into the digest that is not in `05_final.json`.
 - Never let the Writer fetch the web or "fill in" a gap — it has no fetch tools; keep it that way.
