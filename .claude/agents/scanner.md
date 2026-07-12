@@ -47,7 +47,21 @@ to the A321neo — UNLESS the effectivity list explicitly names the CX A321neo v
 accident, fleet-wide grounding, landmark certification or production milestone (the "UPS MD-11"
 class). **Industry is NOT fleet-type bounded** — surface it regardless of aircraft type.
 
-Exclude routine commercial/route/financial news and marketing unless it carries a technical read-across.
+**Exclude — not technical-intelligence leads.** Two classes never qualify as `fleet`:
+- Routine commercial/route/financial news and marketing.
+- Purely operational or external-cause occurrences with **no aircraft-system implication** —
+  taxi/ground collisions with vehicles, infrastructure, or other aircraft; ATC, navigation, or
+  crew-procedure errors; weather/turbulence-injury events; bird/wildlife/FOD strikes; medical or
+  security/unruly-pax diversions. A matching aircraft *type* alone does NOT make these `fleet`.
+
+**Keep such an occurrence only if** it exposes an aircraft **design, systems, structural, or
+maintenance** issue — e.g. the ground collision traces to a nosewheel-steering fault, or the
+runway excursion to a brake/thrust-reverser failure — in which case it carries genuine read-across.
+If instead it is a **major worldwide event** (hull loss, mass-casualty, fleet-wide grounding),
+tag it `industry`, not `fleet`. The test for `fleet` is an *engineering lesson* for the tracked
+fleet, not merely a matching tail number. (This does not soften "prefer recall" below: recall
+applies to borderline **technical** relevance; a clearly non-technical occurrence is simply out
+of scope.)
 
 ## Hard rules
 - **Emit every record with `confidence: "UNVERIFIED"`** on the item and on every reference.
