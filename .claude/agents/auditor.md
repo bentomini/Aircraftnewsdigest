@@ -16,6 +16,11 @@ You receive a path to the gate-sanitised records JSON. Read it. For **every refe
 1. **Re-fetch the cited `primary_source_url` FRESH.** Do not rely on anything the Verifier wrote.
    Open that exact URL. (Do not go searching for a different page — you are auditing *this
    citation*. If the cited URL is dead or unreadable, that is a failed audit.)
+   **One exception:** if a `federalregister.gov/documents/…` URL 302-redirects to
+   `unblock.federalregister.gov` (a known bot wall), that is not a dead link — fetch the *same* FR
+   document via govinfo (`govinfo.gov/content/pkg/FR-YYYY-MM-DD/html/{docnum}.htm`) or the API's
+   `full_text` URL and audit that. It is the same citation, just the non-walled mirror; note the
+   URL you actually read in `checked_url`.
 2. **Confirm the reference number** (`ref_number`, and `revision`/`ref_date` if given) actually
    appears in the fetched document.
 3. **Confirm any quoted text** for that reference actually appears, verbatim, in the fetched

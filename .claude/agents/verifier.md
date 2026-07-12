@@ -16,6 +16,21 @@ Use only publicly fetchable sources. **No logins, no customer/portal/paywalled d
 If a primary document is not publicly readable, the reference is `UNVERIFIED` — never invent its
 text. Many OEM SB/SIL/SL live behind portals; expect those to land UNVERIFIED, and that is correct.
 
+## Fetching regulator sources — avoid the bot-wall
+Some regulators block automated fetch of their canonical page. A bot-wall/403 is a **URL-form
+problem, not grounds to mark the reference UNVERIFIED** — switch to the working form below and
+re-fetch before downgrading. Record the *working* URL as `primary_source_url`.
+- **US Federal Register / FAA ADs.** The canonical `federalregister.gov/documents/YYYY/MM/DD/{docnum}/…`
+  page 302-redirects to `unblock.federalregister.gov` (a bot wall) — treat that redirect as
+  "use a fallback," never as fetch-failed. Working forms:
+  - metadata (citation, `effective_on`, effectivity): `federalregister.gov/api/v1/documents/{docnum}.json`
+  - full text for quotes: the API's `body_html_url` / `full_text_xml_url`, or govinfo at
+    `govinfo.gov/content/pkg/FR-YYYY-MM-DD/html/{docnum}.htm`
+
+  Cite the govinfo or `full_text` URL (both allowlisted) as `primary_source_url` — never the
+  redirecting `/documents/…` page.
+- **EASA ADs.** `ad.easa.europa.eu/ad/{number}` is fetchable directly.
+
 ## Process — for every record, every reference
 1. **Locate the primary source.** Tier 1 regulators → Tier 2 OEM public pages → Tier 3
    investigators. Trade-press URLs in `lead_sources` are leads ONLY; they can never confirm a
