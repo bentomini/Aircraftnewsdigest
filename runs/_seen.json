@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-05",
+  "updated": "2026-07-19",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -235,6 +235,102 @@
       "last_reported": "2026-07-05",
       "last_version": "2026-06-22",
       "headline": "EASA EAD 2026-0119-E: A380 wing mid-spar cracks — emergency directive on 16 Emirates and Qantas aircraft, effective 24 June 2026 — developing carryover"
+    },
+    "AD:FR-2026-13979": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-10",
+      "headline": "FAA supersedes LEAP-1A HPT blade AD to mandate South Asia borescope inspection regime — two in-flight shutdowns cited"
+    },
+    "SB:LEAP-1A-72-00-0485-01A-930A-D ISSUE 004-00": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "004-00",
+      "headline": "FAA supersedes LEAP-1A HPT blade AD to mandate South Asia borescope inspection regime — two in-flight shutdowns cited"
+    },
+    "AD:FR-2026-13983": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-10",
+      "headline": "FAA adopts A321neo DRAIMS mandate — VHF and transponder communication loss risk; software L4.3 upgrade required"
+    },
+    "AD:FR-2026-13982": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-10",
+      "headline": "FAA supersedes multi-fleet broadband antenna adapter plate AD — A321neo, A330-300, A350-900/-1000 all in effectivity"
+    },
+    "AD:2026-0134": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "",
+      "headline": "EASA AD 2026-0134 supersedes emergency ELAC directive for A320 family — uncommanded elevator movement risk; effective July 22"
+    },
+    "AD:FR-2026-10802": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-05-29",
+      "headline": "FAA adopts A330-300 central windshield frame shot peening defect AD — production error reduces fatigue life"
+    },
+    "EVENT:cx-a350-1000-loses-radio-contact-over-romania-nato-fighters-scrambled-investigation-ongoing-possible-draims-relevance": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-04",
+      "headline": "CX A350-1000 loses radio contact over Romania — NATO fighters scrambled; investigation ongoing, possible DRAIMS relevance"
+    },
+    "EVENT:swiss-a333-third-trent-700-event-in-2026-zurich-july-17-mumbai-bound-india-aaib-preliminary-report-on-april-26-delhi-event-finds-hp-lp-turbine-and-compressor-damage": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-17",
+      "headline": "Swiss A333 third Trent 700 event in 2026 (Zurich July 17, Mumbai-bound) — India AAIB preliminary report on April 26 Delhi event finds HP/LP turbine and compressor damage"
+    },
+    "EVENT:singapore-airlines-777-300er-returns-to-zurich-with-flaps-control-malfunction-overweight-landing-procedure-required": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-11",
+      "headline": "Singapore Airlines 777-300ER returns to Zurich with flaps control malfunction — overweight landing procedure required"
+    },
+    "EVENT:jal-a350-1000-diverts-keflavik-with-trent-xwb-97-oil-system-malfunction-over-greenland-jal-cleared-fleet-after-inspection": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-06-14",
+      "headline": "JAL A350-1000 diverts Keflavik with Trent XWB-97 oil system malfunction over Greenland — JAL cleared fleet after inspection"
+    },
+    "EVENT:cx-a330-343-b-hlq-sustains-tail-strike-on-go-around-at-hong-kong-hkaaia-investigation-process-begun": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-03",
+      "headline": "CX A330-343 B-HLQ sustains tail strike on go-around at Hong Kong — HKAAIA investigation process begun"
+    },
+    "EVENT:british-airways-a320-adr-failure-and-stall-warnings-at-london-july-6-aircraft-variant-unconfirmed": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-06",
+      "headline": "British Airways A320 ADR failure and stall warnings at London (July 6) — aircraft variant unconfirmed"
+    },
+    "EVENT:british-airways-a320-232-nose-gear-steering-fault-at-london-gatwick-blocked-runway-29-minutes-9-aircraft-declare-fuel-emergencies": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-15",
+      "headline": "British Airways A320-232 nose gear steering fault at London Gatwick — blocked runway 29 minutes, 9 aircraft declare fuel emergencies"
+    },
+    "EVENT:faa-easa-certify-cfm-leap-1b-hpt-durability-kit-july-18-doubles-time-on-wing-in-hot-harsh-environments-read-across-to-concurrent-leap-1a-south-asia-ad": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-18",
+      "headline": "FAA/EASA certify CFM LEAP-1B HPT durability kit (July 18) — doubles time-on-wing in hot/harsh environments; read-across to concurrent LEAP-1A South Asia AD"
+    },
+    "EVENT:k2-airways-boeing-737-400f-hull-loss-into-arabian-sea-july-7-5-crew-presumed-dead-navigation-malfunction-reported-prior-to-rapid-descent": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-07",
+      "headline": "K2 Airways Boeing 737-400F hull loss into Arabian Sea (July 7) — 5 crew presumed dead, navigation malfunction reported prior to rapid descent"
+    },
+    "EVENT:iberia-a321xlr-and-air-europa-787-9-in-near-head-on-collision-over-atlantic-july-10-tcas-averts-collision-after-atc-assigns-same-altitude-opposing-airways": {
+      "first_reported": "2026-07-19",
+      "last_reported": "2026-07-19",
+      "last_version": "2026-07-10",
+      "headline": "Iberia A321XLR and Air Europa 787-9 in near head-on collision over Atlantic (July 10) — TCAS averts collision after ATC assigns same altitude opposing airways"
     }
   }
 }
