@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-05",
+  "updated": "2026-07-26",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -196,9 +196,9 @@
     },
     "AD:2026-10-13": {
       "first_reported": "2026-07-05",
-      "last_reported": "2026-07-05",
+      "last_reported": "2026-07-26",
       "last_version": "2026-05-29",
-      "headline": "FAA AD (FR 2026-10802, Docket FAA-2025-3988): A330 central windshield frame shot-peening production defect, effective 6 July 2026 — Compliance Radar carryover"
+      "headline": "FAA AD 2026-10-13: A330-300 central windshield frame repetitive SDI — production shot-peening defect (effective July 6)"
     },
     "AD:FR-2026-10799": {
       "first_reported": "2026-07-05",
@@ -235,6 +235,156 @@
       "last_reported": "2026-07-05",
       "last_version": "2026-06-22",
       "headline": "EASA EAD 2026-0119-E: A380 wing mid-spar cracks — emergency directive on 16 Emirates and Qantas aircraft, effective 24 June 2026 — developing carryover"
+    },
+    "AD:2026-13-06": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-02",
+      "headline": "FAA AD 2026-13-06: Trent XWB-84/-97 fuel manifold hose inspection/replacement — A350-900/-1000 fleet (effective July 17)"
+    },
+    "AD:2025-0128R1": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "R1",
+      "headline": "FAA AD 2026-13-06: Trent XWB-84/-97 fuel manifold hose inspection/replacement — A350-900/-1000 fleet (effective July 17)"
+    },
+    "AD:2026-11975": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-06-15",
+      "headline": "FAA AD (FR doc 2026-11975): A350-900/-1000 primary flight-control actuators — acceptance-test overload, replacement required (effective July 20)"
+    },
+    "AD:2025-0152": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2025-07-18",
+      "headline": "FAA AD (FR doc 2026-11975): A350-900/-1000 primary flight-control actuators — acceptance-test overload, replacement required (effective July 20)"
+    },
+    "AD:2025-0071": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2025-03-31",
+      "headline": "FAA AD 2026-10-13: A330-300 central windshield frame repetitive SDI — production shot-peening defect (effective July 6)"
+    },
+    "AD:2026-11215": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-06-04",
+      "headline": "FAA AD (FR doc 2026-11215): A350-941 CWB/belly-fairing fastener — missing overcoating sealant, electromagnetic hazard risk (effective July 9)"
+    },
+    "AD:2025-0210": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2025-09-24",
+      "headline": "FAA AD (FR doc 2026-11215): A350-941 CWB/belly-fairing fastener — missing overcoating sealant, electromagnetic hazard risk (effective July 9)"
+    },
+    "AD:2026-11511": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-06-09",
+      "headline": "FAA AD (FR doc 2026-11511) adopting EASA AD 2025-0209: A350-941 CWB fastener retorque defect — insufficient clamping / fire ignition risk (effective July 14)"
+    },
+    "AD:2025-0209": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2025-09-24",
+      "headline": "FAA AD (FR doc 2026-11511) adopting EASA AD 2025-0209: A350-941 CWB fastener retorque defect — insufficient clamping / fire ignition risk (effective July 14)"
+    },
+    "AD:2026-0134": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "",
+      "headline": "EASA AD 2026-0134: A320 family (including A321neo) ELAC solar-radiation vulnerability — supersedes EAD 2025-0268-E (effective July 22)"
+    },
+    "EAD:2025-0268-E": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2025-11-28",
+      "headline": "EASA AD 2026-0134: A320 family (including A321neo) ELAC solar-radiation vulnerability — supersedes EAD 2025-0268-E (effective July 22)"
+    },
+    "AD:2026-13979": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-10",
+      "headline": "FAA AD (FR doc 2026-13979): LEAP-1A HPT stage 1 blade BSI scope expanded — South Asia dust cracking, A321neo (published July 10, effective July 27)"
+    },
+    "SB:LEAP-1A-72-00-0485-01A-930A-D": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "Issue 004-00",
+      "headline": "FAA AD (FR doc 2026-13979): LEAP-1A HPT stage 1 blade BSI scope expanded — South Asia dust cracking, A321neo (published July 10, effective July 27)"
+    },
+    "EVENT:kalitta-air-777-300er-converted-freighter-tail-strike-during-go-around-at-cincinnati-faa-investigating-july-19": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-19",
+      "headline": "Kalitta Air 777-300ER converted freighter tail strike during go-around at Cincinnati — FAA investigating (July 19)"
+    },
+    "EVENT:swiss-a330-300-returns-to-zurich-with-unexplained-rumbling-noise-on-takeoff-no-technical-finding-confirmed-july-17": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-17",
+      "headline": "Swiss A330-300 returns to Zurich with unexplained rumbling noise on takeoff — no technical finding confirmed (July 17)"
+    },
+    "EVENT:cathay-pacific-a330-343-b-hlq-cx509-tail-strike-during-go-around-at-hkia-hkcad-aaia-investigating-july-3-developing-carryover": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-03",
+      "headline": "Cathay Pacific A330-343 B-HLQ / CX509 tail strike during go-around at HKIA — HKCAD/AAIA investigating (July 3, developing carryover)"
+    },
+    "AD:2026-10806": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-05-29",
+      "headline": "FAA AD (FR doc 2026-10806): Goodrich cabin attendant seat track attachments — non-compliant, replacement before further flight (effective July 6, A330-300 affected)"
+    },
+    "AD:2026-13982": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-10",
+      "headline": "FAA AD (FR doc 2026-13982, Compliance Radar — effective Aug 14): A330/A350 broadband antenna adapter plate corrosion — in-flight detachment risk (published July 10)"
+    },
+    "AD:2026-13983": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-10",
+      "headline": "FAA AD (FR doc 2026-13983, Compliance Radar — effective Aug 14): A321neo DRAIMS software upgrade — VHF/transponder total-loss risk (published July 10)"
+    },
+    "AD:2025-0118R1": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "R1",
+      "headline": "FAA AD (FR doc 2026-13983, Compliance Radar — effective Aug 14): A321neo DRAIMS software upgrade — VHF/transponder total-loss risk (published July 10)"
+    },
+    "EVENT:air-france-a350-900-tail-strike-toronto-jan-2024-tsb-july-2026-update-airbus-fctm-amended-air-france-training-overhauled-developing-carryover": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2024-01-21",
+      "headline": "Air France A350-900 tail strike Toronto (Jan 2024) — TSB July 2026 update: Airbus FCTM amended, Air France training overhauled (developing carryover)"
+    },
+    "EVENT:two-british-airways-777-200ers-return-to-heathrow-with-undisclosed-technical-faults-within-48-hours-aging-fleet-pattern-july-9-10": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-10",
+      "headline": "Two British Airways 777-200ERs return to Heathrow with undisclosed technical faults within 48 hours — aging-fleet pattern (July 9–10)"
+    },
+    "EVENT:alaska-airlines-787-9-genx-1b-engine-vibration-emergency-over-atlantic-diverts-to-rome-july-19": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-19",
+      "headline": "Alaska Airlines 787-9 (GEnx-1B) engine-vibration emergency over Atlantic — diverts to Rome (July 19)"
+    },
+    "EVENT:british-airways-a320neo-g-ttnr-hydraulic-failure-on-approach-to-heathrow-landing-gear-affected-single-runway-ops-declared-july-22": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-22",
+      "headline": "British Airways A320neo (G-TTNR) hydraulic failure on approach to Heathrow — landing gear affected, single-runway ops declared (July 22)"
+    },
+    "EVENT:air-india-flight-171-787-8-crash-june-2025-aaib-to-supreme-court-final-report-october-2026-fuel-switch-focus-continues-july-16-developing": {
+      "first_reported": "2026-07-26",
+      "last_reported": "2026-07-26",
+      "last_version": "2026-07-16",
+      "headline": "Air India Flight 171 (787-8 crash, June 2025): AAIB to Supreme Court — final report October 2026; fuel-switch focus continues (July 16, developing)"
     }
   }
 }
