@@ -80,12 +80,17 @@ def record_store(store, records, current_date, warn=None):
     return store
 
 
-def select(store, current_date, forward_days, max_items):
-    """Entries whose effective_date is in [current_date, current_date+forward_days], soonest first."""
+def select(store, current_date, forward_days, max_items, exclude=None):
+    """Entries whose effective_date is in [current_date, current_date+forward_days],
+    soonest first. Entries whose ref_id is in ``exclude`` are skipped — used to
+    keep the radar from repeating a reference already in this week's digest body."""
     today = date.fromisoformat(current_date)
     horizon = today + timedelta(days=forward_days)
+    exclude = exclude or set()
     upcoming = []
-    for entry in store.values():
+    for key, entry in store.items():
+        if key in exclude:
+            continue
         try:
             eff = date.fromisoformat(entry["effective_date"])
         except (ValueError, KeyError, TypeError):
@@ -94,6 +99,11 @@ def select(store, current_date, forward_days, max_items):
             upcoming.append(entry)
     upcoming.sort(key=lambda e: e["effective_date"])
     return upcoming[:max_items]
+
+
+def collect_ref_ids(records):
+    """All ref_ids present in a records list, any confidence (same-week exclusion)."""
+    return {ref_id(r) for rec in records for r in (rec.get("references") or [])}
 
 
 def load_store(path):
@@ -142,6 +152,9 @@ def main(argv=None):
     ap.add_argument("--infile", default="-", help="Records JSON path (record mode), or - for stdin.")
     ap.add_argument("--record", action="store_true",
                     help="Record mode: upsert this run's VERIFIED ADs into the store.")
+    ap.add_argument("--exclude-infile", default=None,
+                    help="Records JSON whose references are excluded from the radar "
+                         "(build mode; pass this week's 06_deduped.json).")
     args = ap.parse_args(argv)
 
     cfg = ""
@@ -165,10 +178,19 @@ def main(argv=None):
         sys.stderr.write("[radar] store now holds %d AD(s)\n" % len(store))
         return 0
 
-    radar = select(store, args.current_date, forward_days, max_items)
+    exclude = set()
+    if args.exclude_infile:
+        try:
+            with open(args.exclude_infile, encoding="utf-8") as f:
+                p = json.load(f)
+            exclude = collect_ref_ids(p.get("records", []) if isinstance(p, dict) else p)
+        except (OSError, ValueError):
+            pass  # fail-safe: unreadable exclude file never blocks the radar
+
+    radar = select(store, args.current_date, forward_days, max_items, exclude=exclude)
     sys.stdout.write(json.dumps({"radar": radar}, indent=2, ensure_ascii=False))
-    sys.stderr.write("\n[radar] %d upcoming within %dd (showing <=%d)\n"
-                     % (len(radar), forward_days, max_items))
+    sys.stderr.write("\n[radar] %d upcoming within %dd (showing <=%d, %d excluded as in-body)\n"
+                     % (len(radar), forward_days, max_items, len(exclude)))
     return 0
 
 
