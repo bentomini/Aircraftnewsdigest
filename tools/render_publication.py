@@ -24,6 +24,14 @@ def html_escape(s):
             .replace(">", "&gt;").replace('"', "&quot;"))
 
 
+def lead_url(record):
+    """First plausible discovery URL. NEVER proof — renders as [reporting] only."""
+    for u in (record.get("lead_sources") or []):
+        if isinstance(u, str) and u.startswith("http"):
+            return u
+    return None
+
+
 CONF_CLASS = {"VERIFIED": "v", "REPORTED": "r", "UNVERIFIED": "u"}
 CONF_BRACKET = {
     "VERIFIED": "[VERIFIED — primary source]",
@@ -75,6 +83,7 @@ def render_image(directive):
 
 
 def render_technical(record):
+    lead = lead_url(record)
     parts = []
     for r in (record.get("references") or []):
         rt = (r.get("ref_type") or "").strip()
@@ -83,7 +92,12 @@ def render_technical(record):
         tag = conf_inline(r.get("confidence"), rt)
         eff = (" — effective %s" % html_escape(r.get("effective_date"))) if r.get("effective_date") else ""
         url = r.get("primary_source_url")
-        src = ' <a class="src" href="%s">[source]</a>' % html_escape(url) if url else ""
+        if url:
+            src = ' <a class="src" href="%s">[source]</a>' % html_escape(url)
+        elif lead:
+            src = ' <a class="rep" href="%s">[reporting]</a>' % html_escape(lead)
+        else:
+            src = ""
         seg = " ".join([s for s in [label, tag] if s]) + eff + src
         parts.append(seg.strip())
     bits = []
@@ -120,7 +134,11 @@ def render_item(record, directive, proposed=False):
 
     body = []
     if record.get("summary"):
-        body.append('<p><span class="lbl">What happened:</span> %s</p>' % html_escape(record["summary"]))
+        rep = ""
+        if not (record.get("references")) and lead_url(record):
+            rep = ' <a class="rep" href="%s">[reporting]</a>' % html_escape(lead_url(record))
+        body.append('<p><span class="lbl">What happened:</span> %s%s</p>'
+                    % (html_escape(record["summary"]), rep))
     tech = render_technical(record)
     if tech:
         body.append(tech)
@@ -274,6 +292,9 @@ p{margin:6px 0;} .lbl{font-style:italic;color:#5b6b7d;}
 .tag.v{background:#DCF6F1;color:#0E7C6B;} .tag.r{background:#FFF4E5;color:#B26A00;}
 .tag.u{background:#eceff3;color:#5a6470;}
 .src{font-family:'Inter',Arial,sans-serif;color:#0E8C7A;font-size:12px;text-decoration:none;}
+.rep{font-family:'Inter',Arial,sans-serif;color:#8a97a8;font-size:12px;text-decoration:none;}
+.degraded{background:#B3261E;color:#fff;font-family:'Inter',Arial,sans-serif;font-size:12px;
+  font-weight:700;padding:8px 26px;}
 .carry,.updated{font-family:'Inter',Arial,sans-serif;font-size:10px;color:#B26A00;}
 .verbatim{font-style:italic;color:#3a4654;border-left:3px solid var(--accent);
   padding-left:10px;margin-left:2px;}
@@ -344,6 +365,12 @@ def render_document(bundle):
     date_label = html_escape(bundle.get("date_label", ""))
     body = "\n".join(x for x in (sections + [watch, sources]) if x)
 
+    health = bundle.get("health") or {}
+    degraded_html = ""
+    if health.get("degraded"):
+        degraded_html = ('<div class="degraded">[DEGRADED — verification pipeline impaired: %s]</div>'
+                         % html_escape(health.get("reason") or "unknown"))
+
     return (
         '<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
@@ -352,8 +379,9 @@ def render_document(bundle):
         '<div class="mast"><div class="kick">%s</div>'
         '<div class="ttl">Technical-Intelligence Digest</div>'
         '<div class="sub">%s · %s</div></div>\n'
+        '%s\n'
         '%s\n</div></body></html>'
-        % (FONT_LINK, STYLE, byline, byline, date_label, fleet, body)
+        % (FONT_LINK, STYLE, byline, byline, date_label, fleet, degraded_html, body)
     )
 
 
@@ -377,6 +405,7 @@ def main(argv=None):
     ap.add_argument("--radar", default=None, help="07_radar.json")
     ap.add_argument("--corner", default=None, help="08_corner.json")
     ap.add_argument("--images", default=None, help="10_images.json")
+    ap.add_argument("--health", default=None, help="11_health.json")
     ap.add_argument("--config", default="config/fleet.yaml")
     ap.add_argument("--date-label", required=True, help='e.g. "Week of 2026-06-27"')
     ap.add_argument("--outfile", required=True)
@@ -400,6 +429,7 @@ def main(argv=None):
         "digest_byline": parse_digest_byline(cfg),
         "min_fleet_items": parse_scalar(cfg, "read_across_min_fleet_items", 5),
         "date_label": args.date_label,
+        "health": _load(args.health) if args.health else None,
     }
     html = render_document(bundle)
     with open(args.outfile, "w", encoding="utf-8") as f:
