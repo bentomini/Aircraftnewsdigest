@@ -26,6 +26,7 @@ Stdlib only. Usage:
     python finalize_digest.py --infile digests/x.md --in-place --config config/fleet.yaml
 """
 import argparse
+import json
 import re
 import sys
 
@@ -91,6 +92,53 @@ def strip_other_ref_type(text):
     text = re.sub(r"(\*Technical detail:\*\s+)other\s+(?=[A-Z])", r"\1", text)
     text = re.sub(r"(;\s+)other\s+(?=[A-Z])", r"\1", text)
     return text
+
+
+DEGRADED_REF_TYPES = {"AD", "EAD", "NPRM", "PAD"}
+_BANNER_FMT = "**[DEGRADED — verification pipeline impaired: %s]**"
+
+
+def strip_radar_artifacts(text):
+    """Remove writer routing artifacts like ', Compliance Radar — effective Aug 14'
+    from bold item headlines (seen in the 2026-07-26 digest). Applies only to
+    lines starting with '**' so the '### Compliance Radar' heading and radar
+    bullet lines are never touched."""
+    def _clean(m):
+        line = m.group(0)
+        line = re.sub(r",\s*Compliance Radar\s*—[^)\n]*", "", line)
+        line = re.sub(r"\(\s*Compliance Radar\s*—[^)\n]*\)\s*", "", line)
+        return line
+    return re.sub(r"(?m)^\*\*.*$", _clean, text)
+
+
+def compute_degraded(preflight, records):
+    """(degraded, reason). Degraded iff no primary endpoint was reachable at run
+    start, or >=1 regulatory reference (AD/EAD/NPRM/PAD) is present yet none is
+    VERIFIED. A quiet week with no regulatory references is NOT degraded."""
+    if preflight is not None and not preflight.get("any_ok", True):
+        return True, "no primary-source endpoint reachable at run start"
+    refs = [r for rec in records for r in (rec.get("references") or [])
+            if (r.get("ref_type") or "").upper() in DEGRADED_REF_TYPES]
+    if refs and not any((r.get("confidence") or "").upper() == "VERIFIED" for r in refs):
+        return True, "%d regulatory reference(s) in scope, 0 VERIFIED" % len(refs)
+    return False, None
+
+
+def insert_degraded_banner(text, reason):
+    """Insert the banner after the '**Week of …**' header line when present
+    (first 5 lines), else after the H1. Formatting-only: adds a flag line,
+    never touches a reference or fact."""
+    lines = text.split("\n")
+    idx = 0
+    for i, line in enumerate(lines[:5]):
+        if line.startswith("# "):
+            idx = i
+        if line.startswith("**Week of"):
+            idx = i
+            break
+    lines.insert(idx + 1, "")
+    lines.insert(idx + 2, _BANNER_FMT % reason)
+    return "\n".join(lines)
 
 
 def _read_fleet_threshold(config_path="config/fleet.yaml"):
@@ -175,6 +223,7 @@ def finalize(text, config_path="config/fleet.yaml"):
     text = unescape_entities(text)
     text = dedupe_ref_type(text)
     text = strip_other_ref_type(text)
+    text = strip_radar_artifacts(text)
     text = suppress_readacross(text, config_path)
     text = reorder_sections(text)
     return text
@@ -193,11 +242,37 @@ def main(argv=None):
                     help="Rewrite the file in place instead of printing to stdout.")
     ap.add_argument("--config", default="config/fleet.yaml",
                     help="Path to fleet.yaml (default: config/fleet.yaml).")
+    ap.add_argument("--preflight", default=None,
+                    help="00_preflight.json from tools/preflight.py (optional).")
+    ap.add_argument("--records", default=None,
+                    help="06_deduped.json final records (optional; enables the degraded rule).")
+    ap.add_argument("--health-out", default=None,
+                    help="Write {degraded, reason} JSON here for downstream steps.")
     args = ap.parse_args(argv)
 
     with open(args.infile, encoding="utf-8") as fh:
         text = fh.read()
     fixed = finalize(text, config_path=args.config)
+
+    def _load_json(path):
+        if not path:
+            return None
+        try:
+            with open(path, encoding="utf-8") as fh2:
+                return json.load(fh2)
+        except (OSError, ValueError):
+            return None
+
+    preflight = _load_json(args.preflight)
+    payload = _load_json(args.records)
+    records = (payload or {}).get("records", []) if isinstance(payload, dict) else (payload or [])
+    degraded, reason = compute_degraded(preflight, records)
+    if degraded:
+        fixed = insert_degraded_banner(fixed, reason)
+        print("[finalise] DEGRADED: %s" % reason, file=sys.stderr)
+    if args.health_out:
+        with open(args.health_out, "w", encoding="utf-8") as fh2:
+            json.dump({"degraded": degraded, "reason": reason}, fh2)
 
     if args.in_place:
         with open(args.infile, "w", encoding="utf-8") as fh:
