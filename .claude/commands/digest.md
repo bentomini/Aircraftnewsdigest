@@ -326,7 +326,9 @@ If set:
 2. Split `DIGEST_RECIPIENTS` on commas, strip whitespace from each address.
 2b. Read `runs/$CURRENT_DATE/11_health.json`. If `degraded` is true, prefix the subject with
     `[DEGRADED] ` — e.g. `[DEGRADED] {digest_byline} — Week of {CURRENT_DATE}` — so an impaired
-    run can never arrive looking healthy. If the file is missing, treat as not degraded.
+    run can never arrive looking healthy. If the file is missing, treat as not degraded **and
+    report the missing health file prominently in the Step 6 report** — a partially-executed
+    run must never ship a healthy-looking email in silence.
 3. Read `config/fleet.yaml` and get `operator.digest_byline` for the subject prefix.
 4. Call the Gmail MCP `create_draft` tool:
    - `to`: the parsed recipients list
@@ -343,21 +345,30 @@ The state files are what make next week's run correct (dedup, self-healing windo
 The July 2026 stateless-cloud failure (weeks of repeated items, frozen window) is the reason
 this step exists. Explicit paths only — NEVER `git add -A`.
 
-1. `git pull --rebase` — on conflict: `git rebase --abort`, skip this step, and report
-   "STATE NOT PERSISTED (rebase conflict)" prominently.
-2. Stage exactly:
+Stage → commit → pull --rebase → push, in that order — the state files are tracked and Steps
+6b/6c/6d already modified them, so the tree must be clean (committed) *before* rebasing, or
+`git pull --rebase` refuses with "cannot pull with rebase: You have unstaged changes" every run.
+
+1. Stage exactly:
    ```
    git add runs/_state.json runs/_seen.json runs/_compliance.json runs/_corner.json
    git add digests/$CURRENT_DATE-{cadence}.md
    git add runs/$CURRENT_DATE 2>/dev/null || true   # skip silently if gitignored
    ```
-3. `git commit -m "digest: $CURRENT_DATE {cadence} (automated)"` — if nothing staged, report
-   and skip push.
-4. `git push` — on failure, report "PUSH FAILED — state not shared; next run will repeat
-   items and over-widen its window" prominently in the Step 6 report. Never retry with force.
+   If nothing staged, report "STATE NOT PERSISTED (nothing to stage)" and skip the remaining
+   sub-steps.
+2. `git commit -m "digest: $CURRENT_DATE {cadence} (automated)"` — if the commit fails, report
+   "STATE NOT PERSISTED (commit failed)" prominently and skip the remaining sub-steps.
+3. `git pull --rebase` — on conflict or other failure: `git rebase --abort`, and report
+   "STATE COMMITTED LOCALLY, NOT PUSHED (rebase failed)" prominently. This is materially
+   better than total loss: the commit still exists locally, and the next successful pull can
+   still carry it forward.
+4. `git push` — on failure, report "PUSH FAILED — state committed locally but not shared;
+   next run will repeat items and over-widen its window" prominently in the Step 6 report.
+   Never retry with force.
 
-Any failure here is non-fatal to the digest, but must always be REPORTED loudly — silent
-state loss is exactly the failure mode this round fixes.
+Any failure here is non-fatal to the digest, but must always be REPORTED loudly, with the
+specific sub-step named — silent state loss is exactly the failure mode this round fixes.
 
 ## Guardrails (do not violate)
 - Never write a reference, quote, date, or revision into the digest that is not in `05_final.json`.

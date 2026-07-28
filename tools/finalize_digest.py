@@ -105,7 +105,7 @@ def strip_radar_artifacts(text):
     bullet lines are never touched."""
     def _clean(m):
         line = m.group(0)
-        line = re.sub(r",\s*Compliance Radar\s*—[^)\n]*", "", line)
+        line = re.sub(r",\s*Compliance Radar\s*—[^),\n]*(?=\))", "", line)
         line = re.sub(r"\(\s*Compliance Radar\s*—[^)\n]*\)\s*", "", line)
         return line
     return re.sub(r"(?m)^\*\*.*$", _clean, text)
@@ -254,17 +254,19 @@ def main(argv=None):
         text = fh.read()
     fixed = finalize(text, config_path=args.config)
 
-    def _load_json(path):
+    def _load_json(path, rule):
         if not path:
             return None
         try:
             with open(path, encoding="utf-8") as fh2:
                 return json.load(fh2)
         except (OSError, ValueError):
+            print("[finalise] WARNING: --%s %s supplied but unreadable — "
+                  "%s degraded rule partially disabled" % (rule, path, rule), file=sys.stderr)
             return None
 
-    preflight = _load_json(args.preflight)
-    payload = _load_json(args.records)
+    preflight = _load_json(args.preflight, "preflight")
+    payload = _load_json(args.records, "records")
     records = (payload or {}).get("records", []) if isinstance(payload, dict) else (payload or [])
     degraded, reason = compute_degraded(preflight, records)
     if degraded:
@@ -272,7 +274,9 @@ def main(argv=None):
         print("[finalise] DEGRADED: %s" % reason, file=sys.stderr)
     if args.health_out:
         with open(args.health_out, "w", encoding="utf-8") as fh2:
-            json.dump({"degraded": degraded, "reason": reason}, fh2)
+            json.dump({"degraded": degraded, "reason": reason,
+                       "inputs": {"preflight": preflight is not None,
+                                  "records": payload is not None}}, fh2)
 
     if args.in_place:
         with open(args.infile, "w", encoding="utf-8") as fh:
