@@ -31,6 +31,13 @@ Dispatch each stage with the Agent tool using whichever of these your Claude Cod
 - Compute today's date: `date +%F` → call this `CURRENT_DATE`. **Always compute at runtime; never hardcode.**
 - Set `NOMINAL_LOOKBACK`: from `config/fleet.yaml` `run.lookback_days` (7 for weekly, 1 for daily) — override if the cadence arg differs.
 - Create the run directory: `mkdir -p runs/$CURRENT_DATE digests`.
+- **Preflight (deterministic, never skip).** Probe the primary-source endpoints:
+  ```
+  python tools/preflight.py --outfile runs/$CURRENT_DATE/00_preflight.json
+  ```
+  Exit 1 means ALL endpoints are blocked — do NOT abort (a REPORTED-only digest is still
+  worth shipping) but tell the user now, and expect the finaliser to mark the run DEGRADED.
+  Include the per-endpoint OK/BLOCKED lines in the Step 6 report.
 - **Compute the self-healing window (deterministic, never skip).** The lookback grows to cover the
   gap since the last successful run of this cadence (capped by `run.cold_start_lookback_days`), so a
   first run or a skipped run never silently misses recent items:
@@ -132,6 +139,7 @@ python tools/compliance_radar.py \
   --store runs/_compliance.json \
   --config config/fleet.yaml \
   --current-date $CURRENT_DATE \
+  --exclude-infile runs/$CURRENT_DATE/06_deduped.json \
   > runs/$CURRENT_DATE/07_radar.json \
   2> runs/$CURRENT_DATE/07_radar_report.txt
 ```
@@ -169,11 +177,16 @@ The Writer is an LLM and does not reliably honour pure formatting rules by instr
 re-escapes `&` as `&amp;`, doubles the reference type, and can mis-order sections). Enforce them
 mechanically — structure over instruction, the same principle as the gates:
 ```
-python tools/finalize_digest.py --infile digests/$CURRENT_DATE-{cadence}.md --in-place
+python tools/finalize_digest.py --infile digests/$CURRENT_DATE-{cadence}.md --in-place \
+  --preflight runs/$CURRENT_DATE/00_preflight.json \
+  --records runs/$CURRENT_DATE/06_deduped.json \
+  --health-out runs/$CURRENT_DATE/11_health.json
 ```
 This unescapes HTML entities, collapses a doubled ref type (`AD AD …` → `AD …`), and forces section
 order (Directly Fleet-Relevant → Read-Across → Major Industry Events) with the Sources line last. It
 only reformats text already in the file — it never adds or changes a reference, quote, or fact.
+If stderr shows `[finalise] DEGRADED: …`, surface that line prominently in the Step 6 report.
+`11_health.json` now records the run's health for the renderer (5e) and the email subject (6f).
 
 ---
 **Publication layer (Steps 5c–5f).** The verified Markdown digest is now COMPLETE (Steps 5/5b). The
@@ -216,6 +229,7 @@ python tools/render_publication.py \
   --radar runs/$CURRENT_DATE/07_radar.json \
   --corner runs/$CURRENT_DATE/08_corner.json \
   --images runs/$CURRENT_DATE/10_images.json \
+  --health runs/$CURRENT_DATE/11_health.json \
   --config config/fleet.yaml \
   --date-label "Week of $CURRENT_DATE" \
   --outfile digests/$CURRENT_DATE-{cadence}.html
@@ -310,6 +324,9 @@ If set:
 1. Read `digests/$CURRENT_DATE-{cadence}.html`. If that file does not exist (Step 5e failed),
    fall back to `digests/$CURRENT_DATE-{cadence}.md` and send as plain text (`body` only, no `htmlBody`).
 2. Split `DIGEST_RECIPIENTS` on commas, strip whitespace from each address.
+2b. Read `runs/$CURRENT_DATE/11_health.json`. If `degraded` is true, prefix the subject with
+    `[DEGRADED] ` — e.g. `[DEGRADED] {digest_byline} — Week of {CURRENT_DATE}` — so an impaired
+    run can never arrive looking healthy. If the file is missing, treat as not degraded.
 3. Read `config/fleet.yaml` and get `operator.digest_byline` for the subject prefix.
 4. Call the Gmail MCP `create_draft` tool:
    - `to`: the parsed recipients list
@@ -319,6 +336,28 @@ If set:
 5. Report the returned draft ID to the user and confirm the draft is ready to review in Gmail.
 
 Any failure in this step is non-fatal — log the error and continue. The digest already exists.
+
+## Step 6g — PERSIST STATE (Bash — failure-tolerant, never blocks the digest)
+
+The state files are what make next week's run correct (dedup, self-healing window, radar).
+The July 2026 stateless-cloud failure (weeks of repeated items, frozen window) is the reason
+this step exists. Explicit paths only — NEVER `git add -A`.
+
+1. `git pull --rebase` — on conflict: `git rebase --abort`, skip this step, and report
+   "STATE NOT PERSISTED (rebase conflict)" prominently.
+2. Stage exactly:
+   ```
+   git add runs/_state.json runs/_seen.json runs/_compliance.json runs/_corner.json
+   git add digests/$CURRENT_DATE-{cadence}.md
+   git add runs/$CURRENT_DATE 2>/dev/null || true   # skip silently if gitignored
+   ```
+3. `git commit -m "digest: $CURRENT_DATE {cadence} (automated)"` — if nothing staged, report
+   and skip push.
+4. `git push` — on failure, report "PUSH FAILED — state not shared; next run will repeat
+   items and over-widen its window" prominently in the Step 6 report. Never retry with force.
+
+Any failure here is non-fatal to the digest, but must always be REPORTED loudly — silent
+state loss is exactly the failure mode this round fixes.
 
 ## Guardrails (do not violate)
 - Never write a reference, quote, date, or revision into the digest that is not in `05_final.json`.
@@ -345,3 +384,7 @@ Any failure in this step is non-fatal — log the error and continue. The digest
 - The publication layer (Steps 5c–5f) runs AFTER the Markdown digest is finalised and must NEVER
   block it. Any imagery or PDF failure degrades gracefully (link-only / HTML-only); the digest still
   completes.
+- Never skip the preflight (Step 1) or Step 6g (persist state). A run that cannot push state
+  must SAY so in its report.
+- The [DEGRADED] flag is deterministic (11_health.json). Never suppress or soften it in the
+  digest, the HTML, or the email subject.
