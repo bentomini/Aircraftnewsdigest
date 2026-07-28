@@ -63,7 +63,13 @@ Per item:
   {effectivity if present}; {oem_regulator_position if present}; {root_cause if present}. Put the
   inline confidence tag after each reference. **If the reference has a non-null
   `primary_source_url`, append a clickable source link `([source]({primary_source_url}))`
-  immediately after the reference** so every claim is traceable. If there are no references,
+  immediately after the reference** so every claim is traceable.
+  If the reference has NO `primary_source_url` but the record has a `lead_sources` URL, append
+  `([reporting]({first lead_sources URL}))` instead — `[reporting]` marks trade-press provenance
+  and is deliberately distinct from `[source]`, which is reserved for primary documents. For an
+  item with no references at all but a `lead_sources` URL, append `([reporting]({url}))` at the
+  end of the *What happened:* line. Never label a lead_sources URL as `[source]`.
+  If there are no references,
   write the OEM/regulator position or root cause if present, tagged with the item confidence.
   When joining fields, do not produce doubled punctuation (e.g. ".;") — if a field already ends
   in a period, drop the following separator.
