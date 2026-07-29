@@ -7,6 +7,10 @@ runs/20*/
 runs/*-verifyproof/
 runs/*/assets/
 
+# Local unattended-scheduler log (Windows task "AviationDigestWeekly").
+# Console output of a local run — never belongs in the public repo.
+runs/scheduler.log
+
 # =============================================================================
 # Generated publication files — rebuilt from the .md digest on demand.
 # .md digests ARE tracked (they are the primary human-readable output).
