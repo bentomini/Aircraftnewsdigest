@@ -88,7 +88,16 @@ def render_technical(record):
     for r in (record.get("references") or []):
         rt = (r.get("ref_type") or "").strip()
         num = (r.get("ref_number") or "").strip()
-        label = html_escape(("%s %s" % (rt, num)).strip()) if rt and rt != "other" else html_escape(num)
+        # ref_number often already names the type (e.g. "AD 2026-15-01" or
+        # "FAA AD 2025-25-12") -- skip the prepend so it doesn't double
+        # ("AD AD 2026-15-01"). Bridge is letters-only (a regulator name) so
+        # it never crosses into an unrelated later reference.
+        already_named = bool(rt) and re.match(
+            r"^([A-Za-z]+\s+)?%s\b" % re.escape(rt), num, re.IGNORECASE)
+        if rt and rt != "other" and not already_named:
+            label = html_escape(("%s %s" % (rt, num)).strip())
+        else:
+            label = html_escape(num)
         tag = conf_inline(r.get("confidence"), rt)
         eff = (" — effective %s" % html_escape(r.get("effective_date"))) if r.get("effective_date") else ""
         url = r.get("primary_source_url")

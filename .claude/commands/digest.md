@@ -349,9 +349,15 @@ Stage → commit → pull --rebase → push, in that order — the state files a
 6b/6c/6d already modified them, so the tree must be clean (committed) *before* rebasing, or
 `git pull --rebase` refuses with "cannot pull with rebase: You have unstaged changes" every run.
 
-1. Stage exactly:
+1. Stage exactly — one `git add` per file, never combined in a single invocation. A combined
+   `git add fileA fileB fileC` aborts the ENTIRE command (staging nothing, not even fileA) if any
+   one pathspec doesn't exist on disk — and `runs/_corner.json` only exists once Engineer's Corner
+   has fired at least once, so a combined add can silently skip persisting the other state files
+   on every run until then. Loop so a missing file can never block the rest:
    ```
-   git add runs/_state.json runs/_seen.json runs/_compliance.json runs/_corner.json
+   for f in runs/_state.json runs/_seen.json runs/_compliance.json runs/_corner.json; do
+     [ -f "$f" ] && git add "$f"
+   done
    git add digests/$CURRENT_DATE-{cadence}.md
    git add runs/$CURRENT_DATE 2>/dev/null || true   # skip silently if gitignored
    ```
