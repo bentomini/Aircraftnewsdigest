@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-05",
+  "updated": "2026-07-31",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -235,6 +235,102 @@
       "last_reported": "2026-07-05",
       "last_version": "2026-06-22",
       "headline": "EASA EAD 2026-0119-E: A380 wing mid-spar cracks — emergency directive on 16 Emirates and Qantas aircraft, effective 24 June 2026 — developing carryover"
+    },
+    "AD:AD 2026-15-01; AMENDMENT 39-23413; DOCKET FAA-2026-3873; PROJECT MCAI-2025-00197-T": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-30",
+      "headline": "A330-200/-300 (STC-modified) flightcrew oxygen AD limits ETOPS-180 to three crew"
+    },
+    "AD:AD 2026-15-02; AMENDMENT 39-23414; DOCKET FAA-2025-2546; PROJECT IDENTIFIER AD-2025-01060-T; SUPERSEDES AD 2024-19-14": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-28",
+      "headline": "777-300ER fuel-tank bonding AD finalized as AD 2026-15-02 (corrects scanner's speculative number), effective Sept 1"
+    },
+    "AD:AD 2026-13-06; AMENDMENT 39-23388; DOCKET FAA-2026-4661; REFERENCES EASA AD 2025-0128R1 DATED 2025-06-17; SUPERSEDES AD 2024-25-10": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-02",
+      "headline": "Trent XWB-97 fuel-manifold hose AD finalized as AD 2026-13-06 (Trent XWB-97 explicitly named)"
+    },
+    "AD:AD 2026-14-04; AMENDMENT 39-23405; DOCKET FAA-2026-3480; PROJECT MCAI-2025-01031-T; SUPERSEDES AD 2025-10-12": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-10",
+      "headline": "A321neo (incl. -251NX/-252NX/-253NX/-271NX/-272NX) broadband-antenna adapter-plate AD superseded, adds A321-271NY"
+    },
+    "AD:AD 2026-14-05; AMENDMENT 39-23406; DOCKET FAA-2026-3481; PROJECT MCAI-2025-00970-T; SUPERSEDES AD 2025-11-02; REFERENCES EASA AD 2025-0118R1": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-10",
+      "headline": "A321neo DRAIMS software-modification AD superseded, adds A321-271NY"
+    },
+    "AD:AD 2026-11-08; AMENDMENT 39-23369; DOCKET FAA-2026-2280; PROJECT MCAI-2025-01562-T; PROPOSED AS NPRM FR DOC. 2026-06563 (DOCKET FAA-2026-3475, APRIL 3, 2026); REFERENCES EASA AD 2025-0209 DATED 2025-09-24": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-06-04",
+      "headline": "A350-900 (A350-941) center-wing-box/belly-fairing fastener AD — missing production sealant coat, not a retorque error"
+    },
+    "AD:AD 2026-12-05; AMENDMENT 39-23375; DOCKET FAA-2026-3473; PROPOSED AS NPRM FR DOC. 2026-06492 (APRIL 3, 2026)": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-06-15",
+      "headline": "A350-900/-1000 primary flight-control actuator overload AD — reduced fatigue life from production acceptance test"
+    },
+    "AD:AD 2026-14-06; AMENDMENT 39-23407; DOCKET FAA-2026-7214; PROJECT IDENTIFIER AD-2026-00225-E; REPLACES AD 2025-21-03 (AMENDMENT 39-23175)": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-10",
+      "headline": "LEAP-1A HPT stage-1 blade AD tightened (AD 2026-14-06) after two in-flight shutdowns (South Asia dust exposure)"
+    },
+    "AD:AD 2026-15-13; AMENDMENT 39-23425; DOCKET FAA-2026-3874; PROJECT MCAI-2025-01426-T; SUPERSEDES AD 2025-16-12; REFERENCES EASA AD 2025-0096": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-29",
+      "headline": "A320/A321neo HPV butterfly-seal retention-clip AD superseded (AD 2026-15-13), confirmed to include -NX variants"
+    },
+    "NPRM:NPRM; FR DOC. 2026-13024; DOCKET FAA-2026-7201; PROJECT MCAI-2025-01290-T": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-06-29",
+      "headline": "On the Horizon: A330-300 nacelle anti-ice piccolo-tube restraint-bracket NPRM (comments due Aug 13) [PROPOSED — not yet final]"
+    },
+    "AD:EASA AD 2026-0134; SUPERSEDES EAD 2025-0268-E DATED 28 NOV 2025": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-08",
+      "headline": "EASA finalizes A320-family ELAC AD (AD 2026-0134, incl. A321neo NX variants) after JetBlue flight 1230 upset — 'solar-radiation' cause NOT confirmed by EASA text"
+    },
+    "AD:AD 2026-15-10; AMENDMENT 39-23422; DOCKET FAA-2026-4639; PROJECT MCAI-2025-01360-T; DIRECTS COMPLIANCE WITH EASA AD 2025-0179 DATED 2025-08-13": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-30",
+      "headline": "A330neo (A330-841/-941) sloping-rib crack AD (AD 2026-15-10) — read-across to CX A330-300 (Trent 700)"
+    },
+    "AD:AD 2026-10-05; AMENDMENT 39-23345; DOCKET FAA-2025-1360; PROJECT IDENTIFIER AD-2024-00710-Q,T": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-05-29",
+      "headline": "A340 Goodrich cabin-attendant seat-track AD (AD 2026-10-05) — non-compliant part number"
+    },
+    "NPRM:NPRM; FR DOC. 2026-14882; DOCKET FAA-2026-7225; WOULD SUPERSEDE AD 2023-12-16": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-23",
+      "headline": "Trent 1000 HPT triple-seal NPRM (787) — read-across to CX Trent-family engines [PROPOSED — not yet final]"
+    },
+    "EVENT:british-airways-a320-adr-failure-forces-alternate-law-reversion-stall-warnings-near-heathrow": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-06",
+      "headline": "British Airways A320 ADR failure forces Alternate Law reversion, stall warnings near Heathrow"
+    },
+    "EVENT:k2-airways-737-400-freighter-lost-in-arabian-sea-after-reported-nav-system-malfunction-all-5-crew-missing": {
+      "first_reported": "2026-07-31",
+      "last_reported": "2026-07-31",
+      "last_version": "2026-07-07",
+      "headline": "K2 Airways 737-400 freighter lost in Arabian Sea after reported nav-system malfunction, all 5 crew missing"
     }
   }
 }

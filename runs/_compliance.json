@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-05",
+  "updated": "2026-07-31",
   "ads": {
     "AD:FAA AD 2026-12-06": {
       "effective_date": "2026-06-30",
@@ -97,6 +97,102 @@
       "url": "https://ad.easa.europa.eu/ad/2025-0193",
       "headline": "A321 — FAA NPRM (On the Horizon): bulk cargo door fatigue cracks at fuselage sections 16/17; EASA AD 2025-0193 confirmed as triggering document (classic A321 variants only — CX A321neo scope unconfirmed)",
       "recorded": "2026-06-27"
+    },
+    "AD:AD 2026-15-01; AMENDMENT 39-23413; DOCKET FAA-2026-3873; PROJECT MCAI-2025-00197-T": {
+      "effective_date": "2026-09-03",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-15-01; Amendment 39-23413; Docket FAA-2026-3873; Project MCAI-2025-00197-T",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/30/2026-15455.html",
+      "headline": "A330-200/-300 (STC-modified) flightcrew oxygen AD limits ETOPS-180 to three crew",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-15-02; AMENDMENT 39-23414; DOCKET FAA-2025-2546; PROJECT IDENTIFIER AD-2025-01060-T; SUPERSEDES AD 2024-19-14": {
+      "effective_date": "2026-09-01",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-15-02; Amendment 39-23414; Docket FAA-2025-2546; Project Identifier AD-2025-01060-T; supersedes AD 2024-19-14",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/28/2026-15239.html",
+      "headline": "777-300ER fuel-tank bonding AD finalized as AD 2026-15-02 (corrects scanner's speculative number), effective Sept 1",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-13-06; AMENDMENT 39-23388; DOCKET FAA-2026-4661; REFERENCES EASA AD 2025-0128R1 DATED 2025-06-17; SUPERSEDES AD 2024-25-10": {
+      "effective_date": "2026-07-17",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-13-06; Amendment 39-23388; Docket FAA-2026-4661; references EASA AD 2025-0128R1 dated 2025-06-17; supersedes AD 2024-25-10",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/02/2026-13481.html",
+      "headline": "Trent XWB-97 fuel-manifold hose AD finalized as AD 2026-13-06 (Trent XWB-97 explicitly named)",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-14-04; AMENDMENT 39-23405; DOCKET FAA-2026-3480; PROJECT MCAI-2025-01031-T; SUPERSEDES AD 2025-10-12": {
+      "effective_date": "2026-08-14",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-14-04; Amendment 39-23405; Docket FAA-2026-3480; Project MCAI-2025-01031-T; supersedes AD 2025-10-12",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13982.html",
+      "headline": "A321neo (incl. -251NX/-252NX/-253NX/-271NX/-272NX) broadband-antenna adapter-plate AD superseded, adds A321-271NY",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-14-05; AMENDMENT 39-23406; DOCKET FAA-2026-3481; PROJECT MCAI-2025-00970-T; SUPERSEDES AD 2025-11-02; REFERENCES EASA AD 2025-0118R1": {
+      "effective_date": "2026-08-14",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-14-05; Amendment 39-23406; Docket FAA-2026-3481; Project MCAI-2025-00970-T; supersedes AD 2025-11-02; references EASA AD 2025-0118R1",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13983.html",
+      "headline": "A321neo DRAIMS software-modification AD superseded, adds A321-271NY",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-11-08; AMENDMENT 39-23369; DOCKET FAA-2026-2280; PROJECT MCAI-2025-01562-T; PROPOSED AS NPRM FR DOC. 2026-06563 (DOCKET FAA-2026-3475, APRIL 3, 2026); REFERENCES EASA AD 2025-0209 DATED 2025-09-24": {
+      "effective_date": "2026-07-09",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-11-08; Amendment 39-23369; Docket FAA-2026-2280; Project MCAI-2025-01562-T; proposed as NPRM FR Doc. 2026-06563 (Docket FAA-2026-3475, April 3, 2026); references EASA AD 2025-0209 dated 2025-09-24",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/06/04/2026-11215.html",
+      "headline": "A350-900 (A350-941) center-wing-box/belly-fairing fastener AD — missing production sealant coat, not a retorque error",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-12-05; AMENDMENT 39-23375; DOCKET FAA-2026-3473; PROPOSED AS NPRM FR DOC. 2026-06492 (APRIL 3, 2026)": {
+      "effective_date": "2026-07-20",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-12-05; Amendment 39-23375; Docket FAA-2026-3473; proposed as NPRM FR Doc. 2026-06492 (April 3, 2026)",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/06/15/2026-11975.html",
+      "headline": "A350-900/-1000 primary flight-control actuator overload AD — reduced fatigue life from production acceptance test",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-14-06; AMENDMENT 39-23407; DOCKET FAA-2026-7214; PROJECT IDENTIFIER AD-2026-00225-E; REPLACES AD 2025-21-03 (AMENDMENT 39-23175)": {
+      "effective_date": "2026-07-27",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-14-06; Amendment 39-23407; Docket FAA-2026-7214; Project Identifier AD-2026-00225-E; replaces AD 2025-21-03 (Amendment 39-23175)",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13979.html",
+      "headline": "LEAP-1A HPT stage-1 blade AD tightened (AD 2026-14-06) after two in-flight shutdowns (South Asia dust exposure)",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-15-13; AMENDMENT 39-23425; DOCKET FAA-2026-3874; PROJECT MCAI-2025-01426-T; SUPERSEDES AD 2025-16-12; REFERENCES EASA AD 2025-0096": {
+      "effective_date": "2026-09-02",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-15-13; Amendment 39-23425; Docket FAA-2026-3874; Project MCAI-2025-01426-T; supersedes AD 2025-16-12; references EASA AD 2025-0096",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/29/2026-15308.html",
+      "headline": "A320/A321neo HPV butterfly-seal retention-clip AD superseded (AD 2026-15-13), confirmed to include -NX variants",
+      "recorded": "2026-07-31"
+    },
+    "AD:EASA AD 2026-0134; SUPERSEDES EAD 2025-0268-E DATED 28 NOV 2025": {
+      "effective_date": "2026-07-22",
+      "ref_type": "AD",
+      "ref_number": "EASA AD 2026-0134; supersedes EAD 2025-0268-E dated 28 Nov 2025",
+      "url": "https://ad.easa.europa.eu/ad/2026-0134",
+      "headline": "EASA finalizes A320-family ELAC AD (AD 2026-0134, incl. A321neo NX variants) after JetBlue flight 1230 upset — 'solar-radiation' cause NOT confirmed by EASA text",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-15-10; AMENDMENT 39-23422; DOCKET FAA-2026-4639; PROJECT MCAI-2025-01360-T; DIRECTS COMPLIANCE WITH EASA AD 2025-0179 DATED 2025-08-13": {
+      "effective_date": "2026-09-03",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-15-10; Amendment 39-23422; Docket FAA-2026-4639; Project MCAI-2025-01360-T; directs compliance with EASA AD 2025-0179 dated 2025-08-13",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/30/2026-15410.html",
+      "headline": "A330neo (A330-841/-941) sloping-rib crack AD (AD 2026-15-10) — read-across to CX A330-300 (Trent 700)",
+      "recorded": "2026-07-31"
+    },
+    "AD:AD 2026-10-05; AMENDMENT 39-23345; DOCKET FAA-2025-1360; PROJECT IDENTIFIER AD-2024-00710-Q,T": {
+      "effective_date": "2026-07-06",
+      "ref_type": "AD",
+      "ref_number": "AD 2026-10-05; Amendment 39-23345; Docket FAA-2025-1360; Project Identifier AD-2024-00710-Q,T",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/05/29/2026-10806.html",
+      "headline": "A340 Goodrich cabin-attendant seat-track AD (AD 2026-10-05) — non-compliant part number",
+      "recorded": "2026-07-31"
     }
   }
 }
