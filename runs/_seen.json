@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-31",
+  "updated": "2026-08-07",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -331,6 +331,54 @@
       "last_reported": "2026-07-31",
       "last_version": "2026-07-07",
       "headline": "K2 Airways 737-400 freighter lost in Arabian Sea after reported nav-system malfunction, all 5 crew missing"
+    },
+    "PAD:26-087": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-07-21",
+      "headline": "EASA PAD 26-087 proposes inspection of A350-900/-1000 fire integrated control panel after in-flight engine shutdown"
+    },
+    "AD:2025-0274": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "R1",
+      "headline": "EASA AD 2025-0274R1 (Fire Panel Inspection) covers CX's A321neo; BALPA renews warning after continued fire-switch shutdown reports"
+    },
+    "NPRM:FR DOC. 2026-13024 (DOCKET FAA-2026-7201; PROJECT IDENTIFIER MCAI-2025-01290-T)": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-06-29",
+      "headline": "FAA NPRM proposes AD for A330-300 (Trent 700) nacelle anti-ice piccolo-tube restraint brackets; comment period open to Aug 13"
+    },
+    "OTHER:PLR-2026-02": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-07-31",
+      "headline": "AAIA preliminary report: Cathay Pacific A330-343 B-HLQ tail contacted runway during go-around at HKG; structural cracking found in aft fuselage"
+    },
+    "EVENT:lufthansa-a350-900-d-aixn-returns-to-munich-after-cabin-pressurization-malfunction-on-lh722": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-08-01",
+      "headline": "Lufthansa A350-900 (D-AIXN) returns to Munich after cabin-pressurization malfunction on LH722"
+    },
+    "AD:FR DOC. 2026-15239 (DOCKET FAA-2025-2546); SUPERSEDES AD 2024-19-14": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-07-28",
+      "headline": "FAA supersedes 777 fuel-tank bonding-jumper AD (GE90-115B); effective September 1, 2026 - Compliance Radar"
+    },
+    "NPRM:FR DOC. 2026-16157 (DOCKET FAA-2026-7233; PROJECT IDENTIFIER AD-2026-00062-T)": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-08-07",
+      "headline": "FAA proposes AD for 787/Trent 1000 fan-cowl protection against cross-engine debris"
+    },
+    "OTHER:FAA AMENDED TYPE CERTIFICATE - BOEING 737-7 (737 MAX 7)": {
+      "first_reported": "2026-08-07",
+      "last_reported": "2026-08-07",
+      "last_version": "2026-08-03",
+      "headline": "FAA grants Boeing 737 MAX 7 amended type certificate after near-decade delay"
     }
   }
 }

@@ -213,6 +213,7 @@ verified_domains:
   - bea.aero
   - tsb.gc.ca
   - thb.gov.hk
+  - tlb.gov.hk        # HK AAIA moved here when the Transport & Housing Bureau became the Transport & Logistics Bureau
   # OEMs (only when the document text is publicly fetchable)
   - boeing.com
   - airbus.com

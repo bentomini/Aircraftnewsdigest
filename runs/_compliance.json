@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-31",
+  "updated": "2026-08-07",
   "ads": {
     "AD:FAA AD 2026-12-06": {
       "effective_date": "2026-06-30",
@@ -193,6 +193,14 @@
       "url": "https://www.federalregister.gov/documents/full_text/html/2026/05/29/2026-10806.html",
       "headline": "A340 Goodrich cabin-attendant seat-track AD (AD 2026-10-05) — non-compliant part number",
       "recorded": "2026-07-31"
+    },
+    "AD:FR DOC. 2026-15239 (DOCKET FAA-2025-2546); SUPERSEDES AD 2024-19-14": {
+      "effective_date": "2026-09-01",
+      "ref_type": "AD",
+      "ref_number": "FR Doc. 2026-15239 (Docket FAA-2025-2546); supersedes AD 2024-19-14",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/28/2026-15239.html",
+      "headline": "FAA supersedes 777 fuel-tank bonding-jumper AD (GE90-115B); effective September 1, 2026 - Compliance Radar",
+      "recorded": "2026-08-07"
     }
   }
 }
