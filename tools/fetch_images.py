@@ -87,7 +87,7 @@ def parse_imagery_config(text):
             cfg["download_timeout_s"] = int(m.group(1))
             in_list = False
             continue
-        if re.match(r"^\s+embed_allowlist:\s*$", line):
+        if re.match(r"^\s+embed_allowlist:\s*(?:#.*)?$", line):
             in_list = True
             continue
         m = re.match(r"^\s+-\s*(\S+)", line)

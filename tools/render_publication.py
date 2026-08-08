@@ -175,7 +175,13 @@ CONF_RANK = {"VERIFIED": 0, "REPORTED": 1, "UNVERIFIED": 2}
 
 
 def is_horizon(record):
-    """A proposed rule: has references and ALL of them are NPRM/PAD."""
+    """A fleet-scoped proposed rule: has references and ALL of them are NPRM/PAD.
+
+    On the Horizon is fleet-scoped, so a peer-type or industry proposal stays in
+    its own core section rather than being promoted into Standing Watch.
+    """
+    if (record.get("category") or "").lower() != "fleet":
+        return False
     refs = record.get("references") or []
     return bool(refs) and all((r.get("ref_type") or "").upper() in PROPOSED_TYPES for r in refs)
 
@@ -366,7 +372,7 @@ def render_document(bundle):
 
     watch = render_standing_watch(bundle.get("radar", []), by_cat.get("_horizon", []),
                                   bundle.get("corner"), images)
-    sources = render_sources_line(core_shown)
+    sources = render_sources_line(core_shown + by_cat.get("_horizon", []))
 
     operator = html_escape(bundle.get("operator", "Operator"))
     byline = html_escape(bundle.get("digest_byline") or operator)
