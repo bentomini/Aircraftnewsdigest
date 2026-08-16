@@ -159,6 +159,15 @@ def enumerate_easa(start, end, fetch_fn):
         except Exception as exc:  # noqa: BLE001 — any failure ends coverage here
             reason = "biweekly %02d-%d not available (%s)" % (issue, year, exc)
             break
+        # A soft-404 (HTTP 200 with an HTML interstitial, maintenance page, or
+        # truncated body) does not raise, but isn't a PDF either. Treated as
+        # covered, it would report zero ADs as a fully-covered window — the
+        # exact false comfort this function exists to prevent. A genuinely
+        # quiet period (valid PDF, zero ADs) must still count as covered.
+        if not raw or raw.lstrip()[:4] != b"%PDF":
+            reason = "biweekly %02d-%d did not return a PDF (got %d bytes)" % (
+                issue, year, len(raw or b""))
+            break
         ads.extend(parse_biweekly(extract_pdf_text(raw)))
         covered_to = min(p_end, end)
     coverage = {
