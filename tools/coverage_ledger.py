@@ -97,7 +97,7 @@ def manufacturer_is_tracked(hint, oems):
     if not h:
         return None
     for division in _NON_TRACKED_DIVISIONS:
-        if division in h:
+        if re.search(r"\b%s\b" % re.escape(division), h):
             return False
     for oem in oems:
         head = (oem.split() or [oem])[0]

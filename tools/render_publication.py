@@ -374,17 +374,23 @@ def render_document(bundle):
                                   bundle.get("corner"), images)
     sources = render_sources_line(core_shown + by_cat.get("_horizon", []))
 
-    operator = html_escape(bundle.get("operator", "Operator"))
-    byline = html_escape(bundle.get("digest_byline") or operator)
-    fleet = html_escape(" · ".join(bundle.get("fleet_types", [])))
-    date_label = html_escape(bundle.get("date_label", ""))
-    body = "\n".join(x for x in (sections + [watch, sources]) if x)
-
     health = bundle.get("health") or {}
     degraded_html = ""
     if health.get("degraded"):
         degraded_html = ('<div class="degraded">[DEGRADED — verification pipeline impaired: %s]</div>'
                          % html_escape(health.get("reason") or "unknown"))
+
+    recall_html = ""
+    if health.get("recall_partial"):
+        recall_html = ('<p class="sources"><strong>Recall note:</strong> regulator enumeration was '
+                       'incomplete for this window — %s. Items above are unaffected.</p>'
+                       % html_escape(health.get("recall_reason") or "unknown"))
+
+    operator = html_escape(bundle.get("operator", "Operator"))
+    byline = html_escape(bundle.get("digest_byline") or operator)
+    fleet = html_escape(" · ".join(bundle.get("fleet_types", [])))
+    date_label = html_escape(bundle.get("date_label", ""))
+    body = "\n".join(x for x in (sections + [watch, recall_html, sources]) if x)
 
     return (
         '<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8">\n'
