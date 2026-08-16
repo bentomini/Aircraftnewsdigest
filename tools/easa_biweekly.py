@@ -82,13 +82,18 @@ def extract_pdf_text(raw):
 # No trailing \b: real biweekly text glues the ref number directly onto the
 # next column's digits with no separator (e.g. "...Inspection 2026-01442026-
 # 07-21AIRBUS..."), so a digit-to-digit transition never satisfies \b.
-# Leading lookbehind excludes a preceding letter/digit/hyphen so a glued
-# alpha-prefixed number (e.g. appliance AD "G-2026-0003") isn't truncated
-# into a fabricated standalone ref. The revision group requires a non-digit
+# Leading lookbehind excludes only "<letter>-" immediately before the number
+# — the specific shape of a letter-prefixed identifier (e.g. appliance AD
+# "G-2026-0003") whose numeric tail must not be truncated into a fabricated
+# standalone ref. A bare AD number is legitimately glued to arbitrary
+# preceding text at page/column breaks (e.g. "...Subject2026-0145...",
+# "...20262026-0153...") and must NOT be excluded just because a letter or
+# digit precedes it — only excluding "<letter>-" fixes the alpha-prefix case
+# without dropping those real ADs. The revision group requires a non-digit
 # right after it (?!\d), so a revision glued to a following date (e.g.
 # "2023-0148R12026-07-24") is never guessed — it falls back to the real base
 # number "2023-0148" instead of fabricating "2023-0148R12".
-_AD_NUM = re.compile(r"(?<![A-Za-z0-9-])(\d{4}-\d{4}(?:R\d{1,2}(?!\d))?(?:-E)?)")
+_AD_NUM = re.compile(r"(?<![A-Za-z]-)(\d{4}-\d{4}(?:R\d{1,2}(?!\d))?(?:-E)?)")
 # Lookaround instead of \b on both sides: same glued-text problem as _AD_NUM
 # — a type token is often glued to the next column with no separator (e.g.
 # "...A320, A321Wings - Main Landing..."). A glued *letter* is tolerated
