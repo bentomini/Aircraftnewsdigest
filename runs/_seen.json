@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-07",
+  "updated": "2026-08-16",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -379,6 +379,48 @@
       "last_reported": "2026-08-07",
       "last_version": "2026-08-03",
       "headline": "FAA grants Boeing 737 MAX 7 amended type certificate after near-decade delay"
+    },
+    "AD:AD 2026-14-05 (AMENDMENT 39-23406)": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-07-10",
+      "headline": "A321neo AD 2026-14-05 mandates RMP/DRAIMS software fix for comms-loss risk, effective Aug 14"
+    },
+    "NPRM:DOCKET FAA-2026-7201; PROJECT IDENTIFIER MCAI-2025-01290-T": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-06-29",
+      "headline": "FAA NPRM would mandate A330-300 nacelle anti-ice piccolo-tube bracket fix"
+    },
+    "AD:AD 2026-15-02 (AMENDMENT 39-23414)": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-07-28",
+      "headline": "FAA finalizes expanded 777-300ER lightning-protection fuel-feed inspection AD (AD 2026-15-02), effective Sept 1"
+    },
+    "NPRM:DOCKET FAA-2026-7233 (FR DOC. 2026-16157)": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-08-07",
+      "headline": "FAA proposes 787 left fan-cowl fix over cross-engine debris / dual-IFSD risk (Trent 1000)"
+    },
+    "AD:AD 2026-16-08 (AMENDMENT 39-23438)": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-08-14",
+      "headline": "FAA adopts final AD 2026-16-08 for Trent 1000 IP-compressor VIGV cracking, effective Sept 18"
+    },
+    "EVENT:air-india-a320neo-ai2379-sequential-hydraulic-system-failure-triggers-300ft-altitude-drop-dgca-airbus-probe-continues": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-08-04",
+      "headline": "Air India A320neo (AI2379) sequential hydraulic-system failure triggers 300ft altitude drop; DGCA/Airbus probe continues"
+    },
+    "AD:AD 2026-15-10 (AMENDMENT 39-23422)": {
+      "first_reported": "2026-08-16",
+      "last_reported": "2026-08-16",
+      "last_version": "2026-07-30",
+      "headline": "FAA final AD 2026-15-10 requires repetitive sloping-rib inspections on A330neo (A330-841/-941), effective Sept 3"
     }
   }
 }
