@@ -14,6 +14,8 @@ from datetime import date, timedelta
 ANCHOR_YEAR = 2026
 ANCHOR_START = date(2025, 12, 22)
 PERIOD_DAYS = 14
+# YEAR_DAYS verified by live fetch of EASA biweekly PDFs 16-2025, 01-2026, 26-2025
+# on 2026-08-16 — all returned HTTP 200 with valid PDF magic bytes.
 YEAR_DAYS = 364
 
 
