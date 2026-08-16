@@ -44,7 +44,7 @@ def biweekly_url(issue_no, year, start, end):
             % (start.isoformat(), end.isoformat(), issue_no, year))
 
 
-_STREAM = re.compile(b"stream\r?\n(.*?)endstream", re.S)
+_STREAM = re.compile(rb"\d+ \d+ obj\s*(<<.*?>>)\s*stream\r?\n(.*?)endstream", re.S)
 _SHOWN = re.compile(r"\((?:\\.|[^()\\])*\)", re.S)
 
 
@@ -52,15 +52,20 @@ def extract_pdf_text(raw):
     """Readable text from a PDF's content streams.
 
     Tries FlateDecode first; real EASA biweekly PDFs were found (2026-08-16
-    live fetch) to ship literal, uncompressed content streams, so streams
-    that don't inflate are used as-is rather than dropped.
+    live fetch) to ship literal, uncompressed content streams (no /Filter
+    declared), so a stream that fails to inflate is used as-is ONLY when its
+    own object dict declares no /Filter at all — that's the PDF-spec signal
+    that the stream is meant to be literal. A stream whose dict DOES declare
+    a filter (FlateDecode that still failed, or a binary filter like
+    DCTDecode for an embedded image) is skipped rather than treated as text.
     """
     parts = []
-    for m in _STREAM.finditer(raw):
+    for obj_dict, content in _STREAM.findall(raw):
         try:
-            parts.append(zlib.decompress(m.group(1)))
+            parts.append(zlib.decompress(content))
         except zlib.error:
-            parts.append(m.group(1))
+            if b"/Filter" not in obj_dict:
+                parts.append(content)
     if not parts:
         return ""
     blob = b"\n".join(parts).decode("latin-1")
@@ -76,10 +81,24 @@ def extract_pdf_text(raw):
 
 # No trailing \b: real biweekly text glues the ref number directly onto the
 # next column's digits with no separator (e.g. "...Inspection 2026-01442026-
-# 07-21AIRBUS..."), so a digit-to-digit transition never satisfies \b. Revision
-# digits are capped at 2 so a glued-on date can't be swallowed as a revision.
-_AD_NUM = re.compile(r"(?<!\d)(\d{4}-\d{4}(?:R\d{1,2})?(?:-E)?)")
-_TYPE_TOKEN = re.compile(r"\bA3[0-9]{2}\b|\bA2[0-9]{2}\b|\bB7[0-9]{2}\b")
+# 07-21AIRBUS..."), so a digit-to-digit transition never satisfies \b.
+# Leading lookbehind excludes a preceding letter/digit/hyphen so a glued
+# alpha-prefixed number (e.g. appliance AD "G-2026-0003") isn't truncated
+# into a fabricated standalone ref. The revision group requires a non-digit
+# right after it (?!\d), so a revision glued to a following date (e.g.
+# "2023-0148R12026-07-24") is never guessed — it falls back to the real base
+# number "2023-0148" instead of fabricating "2023-0148R12".
+_AD_NUM = re.compile(r"(?<![A-Za-z0-9-])(\d{4}-\d{4}(?:R\d{1,2}(?!\d))?(?:-E)?)")
+# Lookaround instead of \b on both sides: same glued-text problem as _AD_NUM
+# — a type token is often glued to the next column with no separator (e.g.
+# "...A320, A321Wings - Main Landing..."). A glued *letter* is tolerated
+# (still a valid boundary for a model code); a glued *digit* is not, since
+# that would mean the match landed inside a longer number.
+_TYPE_TOKEN = re.compile(
+    r"(?<![A-Za-z0-9])A3[0-9]{2}(?![0-9])"
+    r"|(?<![A-Za-z0-9])A2[0-9]{2}(?![0-9])"
+    r"|(?<![A-Za-z0-9])B7[0-9]{2}(?![0-9])"
+)
 _LANG_TAG = re.compile(r"\b(?:en|fr|de)-[A-Z]{2}\b")
 _SUBJECT_WINDOW = 160
 
