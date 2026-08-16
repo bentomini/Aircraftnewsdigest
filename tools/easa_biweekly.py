@@ -8,6 +8,8 @@ derivable from any date. Verified anchors: issue 06-2026 covers
 See docs/superpowers/specs/2026-08-08-regulator-sweep-design.md
 Stdlib only.
 """
+import re
+import zlib
 from datetime import date, timedelta
 
 # Issue 01-2026 starts here; 26 periods of 14 days = 364 days per AD-year.
@@ -40,3 +42,24 @@ def biweekly_url(issue_no, year, start, end):
     """The public PDF URL for a biweekly issue."""
     return ("https://ad.easa.europa.eu/blob/easa_biweekly_%s_%s_%02d-%d.pdf/biweekly"
             % (start.isoformat(), end.isoformat(), issue_no, year))
+
+
+_STREAM = re.compile(b"stream\r?\n(.*?)endstream", re.S)
+_SHOWN = re.compile(r"\((?:\\.|[^()\\])*\)", re.S)
+
+
+def extract_pdf_text(raw):
+    """Readable text from a FlateDecode PDF. Returns '' when nothing inflates."""
+    parts = []
+    for m in _STREAM.finditer(raw):
+        try:
+            parts.append(zlib.decompress(m.group(1)))
+        except zlib.error:
+            continue
+    if not parts:
+        return ""
+    blob = b"\n".join(parts).decode("latin-1")
+    text = "".join(t[1:-1] for t in _SHOWN.findall(blob))
+    for a, b in (("\\(", "("), ("\\)", ")"), ("\\\\", "\\"), ("\\n", " "), ("\\r", " ")):
+        text = text.replace(a, b)
+    return re.sub(r"\s+", " ", text).strip()
