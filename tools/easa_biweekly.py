@@ -132,3 +132,40 @@ def parse_biweekly(text):
             "types_hint": sorted(set(_TYPE_TOKEN.findall(window))),
         })
     return out
+
+
+def _periods_spanning(start, end):
+    """Every biweekly period touching [start, end], in chronological order."""
+    periods, cursor = [], start
+    while cursor <= end:
+        issue, year, p_start, p_end = biweekly_period(cursor)
+        periods.append((issue, year, p_start, p_end))
+        cursor = p_end + timedelta(days=1)
+    return periods
+
+
+def enumerate_easa(start, end, fetch_fn):
+    """(ads, coverage) for every EASA AD published in [start, end].
+
+    Stops at the first unpublished period and reports the covered boundary —
+    the biweekly publishes in arrears, so the tail of a window is routinely
+    unavailable and must never be silently claimed as covered.
+    """
+    ads, covered_to, reason = [], None, None
+    for issue, year, p_start, p_end in _periods_spanning(start, end):
+        url = biweekly_url(issue, year, p_start, p_end)
+        try:
+            raw = fetch_fn(url)
+        except Exception as exc:  # noqa: BLE001 — any failure ends coverage here
+            reason = "biweekly %02d-%d not available (%s)" % (issue, year, exc)
+            break
+        ads.extend(parse_biweekly(extract_pdf_text(raw)))
+        covered_to = min(p_end, end)
+    coverage = {
+        "regulator": "EASA",
+        "from": start.isoformat(),
+        "to": covered_to.isoformat() if covered_to else None,
+        "complete": covered_to is not None and covered_to >= end,
+        "reason": reason,
+    }
+    return ads, coverage
