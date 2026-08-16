@@ -106,10 +106,30 @@ _TYPE_TOKEN = re.compile(
 )
 _LANG_TAG = re.compile(r"\b(?:en|fr|de)-[A-Z]{2}\b")
 _SUBJECT_WINDOW = 160
+_LEADING_DATE = re.compile(r"^\s*\d{4}-\d{2}-\d{2}")
+_LEADING_REV = re.compile(r"^R\d{1,2}(?=\d{4}-\d{2}-\d{2})")
+_NEXT_REF = re.compile(r"\d{4}-\d{4}")
+_MANUFACTURER_SPAN = 60
 
 
 def _clean(fragment):
     return re.sub(r"\s+", " ", _LANG_TAG.sub(" ", fragment)).strip()
+
+
+def _manufacturer_hint(window):
+    """Rough manufacturer text following the ref/date, truncated before the
+    next row's reference number so a single hint never blends two
+    manufacturers together. A revision suffix (R1, R2, ...) that _AD_NUM
+    declined to attach to the preceding ref number (see
+    test_real_fixture_never_fabricates_glued_revision_number) can be left
+    glued to the front of the window, immediately before the date — stripped
+    here too, so it never gets read as part of the manufacturer name.
+    Membership test only."""
+    tail = _LEADING_REV.sub("", window, count=1)
+    tail = _LEADING_DATE.sub("", tail, count=1)
+    next_ref = _NEXT_REF.search(tail)
+    end = next_ref.start() if next_ref else len(tail)
+    return tail[:min(end, _MANUFACTURER_SPAN)].strip()
 
 
 def parse_biweekly(text):
@@ -130,6 +150,7 @@ def parse_biweekly(text):
             "ref_number": ref,
             "subject": window,
             "types_hint": sorted(set(_TYPE_TOKEN.findall(window))),
+            "manufacturer_hint": _manufacturer_hint(window),
         })
     return out
 

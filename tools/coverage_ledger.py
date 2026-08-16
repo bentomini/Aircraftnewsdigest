@@ -15,6 +15,7 @@ import sys
 
 _TYPE = re.compile(r"^\s+-\s+type:\s*(.+?)\s*$", re.MULTILINE)
 _ALIASES = re.compile(r"^\s+aliases:\s*\[(.*?)\]\s*$", re.MULTILINE)
+_OEM = re.compile(r"^\s+oem:\s*(.+?)\s*$", re.MULTILINE)
 _DOCKET = re.compile(r"Docket\s+(?:No\.?\s*)?[A-Z]{2,4}-\d{4}-\d+", re.IGNORECASE)
 _REF_NUM = re.compile(r"\d{4}-\d{4,5}")
 # Reference-key prefixes dedup_ledger.py writes (see tools/dedup_ledger.py ref_key());
@@ -36,6 +37,16 @@ def tracked_tokens(config_text):
     return sorted(tokens)
 
 
+def tracked_oems(config_text):
+    """Manufacturer names from fleet.yaml, lowercased. Airframe and engine OEMs both."""
+    seen = []
+    for m in _OEM.finditer(config_text):
+        name = m.group(1).strip().strip('"\'').lower()
+        if name and name not in seen:
+            seen.append(name)
+    return seen
+
+
 def matches_fleet(types_hint, tokens):
     """True when any hint token overlaps a tracked type.
 
@@ -44,6 +55,15 @@ def matches_fleet(types_hint, tokens):
     """
     if not types_hint:
         return True
+    return matches_fleet_strict(types_hint, tokens)
+
+
+def matches_fleet_strict(types_hint, tokens):
+    """True when any hint token overlaps a tracked type. Empty hint returns
+    False plainly — unlike `matches_fleet`, the empty case is not special-cased
+    here; callers that need fail-loud-on-empty handle it explicitly."""
+    if not types_hint:
+        return False
     for hint in types_hint:
         h = hint.strip().lower()
         for tok in tokens:
@@ -52,15 +72,50 @@ def matches_fleet(types_hint, tokens):
     return False
 
 
-def classify(ad, reported_refs, seen_refs, tokens):
+# The tracked fleet is fixed-wing only (Airbus S.A.S. + Boeing commercial
+# aircraft). These OEM-branded divisions build different, permanently
+# out-of-scope products (rotorcraft, defence/space) even though their
+# manufacturer text shares the tracked OEM's first word — e.g. "AIRBUS
+# HELICOPTERS" would otherwise match plain "airbus" and stay loud forever.
+# Checked BEFORE the tracked-OEM substring test. Extend as similar
+# false-positive divisions turn up.
+_NON_TRACKED_DIVISIONS = (
+    "airbus helicopters",
+    "airbus defence",
+    "boeing helicopters",
+)
+
+
+def manufacturer_is_tracked(hint, oems):
+    """True when the hint names a tracked OEM. Empty hint returns None (unknown)."""
+    h = (hint or "").strip().lower()
+    if not h:
+        return None
+    for division in _NON_TRACKED_DIVISIONS:
+        if division in h:
+            return False
+    for oem in oems:
+        head = oem.split()[0] if oem.split() else oem
+        if head and head in h:
+            return True
+    return False
+
+
+def classify(ad, reported_refs, seen_refs, tokens, oems=()):
     ref = (ad.get("ref_number") or "").strip()
     if ref in reported_refs:
         return "reported"
     if ref in seen_refs:
         return "suppressed"
-    if not matches_fleet(ad.get("types_hint"), tokens):
+    hint = ad.get("types_hint")
+    if matches_fleet_strict(hint, tokens):        # non-empty AND matching
+        return "unaccounted"
+    if hint:                                       # non-empty but no tracked type
         return "excluded"
-    return "unaccounted"
+    tracked = manufacturer_is_tracked(ad.get("manufacturer_hint"), oems)
+    if tracked is False:                           # known, and not ours
+        return "excluded"
+    return "unaccounted"                           # tracked OEM, or no signal at all
 
 
 def reported_refs_from(records):
@@ -82,11 +137,12 @@ def reported_refs_from(records):
 
 def build_ledger(sweep, records, seen_refs, config_text):
     tokens = tracked_tokens(config_text)
+    oems = tracked_oems(config_text)
     reported = reported_refs_from(records)
     out = {"reported": [], "suppressed": [], "excluded": [], "unaccounted": [],
            "coverage": sweep.get("coverage", [])}
     for ad in sweep.get("ads") or []:
-        bucket = classify(ad, reported, seen_refs, tokens)
+        bucket = classify(ad, reported, seen_refs, tokens, oems)
         entry = {"ref_number": ad.get("ref_number"), "regulator": ad.get("regulator"),
                  "subject": ad.get("subject"), "source_url": ad.get("source_url")}
         if bucket == "excluded":
