@@ -87,7 +87,12 @@ _NON_TRACKED_DIVISIONS = (
 
 
 def manufacturer_is_tracked(hint, oems):
-    """True when the hint names a tracked OEM. Empty hint returns None (unknown)."""
+    """True when the hint names a tracked OEM. Empty hint returns None (unknown).
+
+    Word-boundary matching, not substring: the OEM head "ge" (GE Aerospace) would
+    otherwise match inside "Landing Gear", which appears in most airframe AD
+    subjects and would keep every one of them permanently loud.
+    """
     h = (hint or "").strip().lower()
     if not h:
         return None
@@ -95,8 +100,8 @@ def manufacturer_is_tracked(hint, oems):
         if division in h:
             return False
     for oem in oems:
-        head = oem.split()[0] if oem.split() else oem
-        if head and head in h:
+        head = (oem.split() or [oem])[0]
+        if head and re.search(r"\b%s\b" % re.escape(head), h):
             return True
     return False
 
