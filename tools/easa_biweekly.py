@@ -150,6 +150,13 @@ def enumerate_easa(start, end, fetch_fn):
     Stops at the first unpublished period and reports the covered boundary —
     the biweekly publishes in arrears, so the tail of a window is routinely
     unavailable and must never be silently claimed as covered.
+
+    Deliberately break-on-first-failure, unlike the FAA sibling (which
+    continues past a failing term): these periods are sequential in time, so
+    once one is missing the tail of the window is genuinely unknown and
+    `covered_to` records exactly how far enumeration got. FAA's terms are
+    independent manufacturer searches with no such ordering, so one failing
+    there says nothing about the rest — do not "harmonise" these two loops.
     """
     ads, covered_to, reason = [], None, None
     for issue, year, p_start, p_end in _periods_spanning(start, end):

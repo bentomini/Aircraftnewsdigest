@@ -73,31 +73,46 @@ def parse_fr_response(payload):
 
 
 def enumerate_faa(terms, start, end, fetch_json_fn):
-    """(ads, coverage) for every FAA AD document matching any term in the window."""
-    ads, seen, reason = [], set(), None
+    """(ads, coverage) for every FAA AD document matching any term in the window.
+
+    Unlike the EASA sibling (which breaks on the first gap because its biweekly
+    periods are sequential in time — the tail is genuinely unknown once one
+    period is missing), FAA terms are independent manufacturer searches. One
+    term failing tells you nothing about the others, so a failure here must
+    NOT abandon the remaining terms — that would silently drop every
+    manufacturer queried after the failing one. Continue past failures,
+    collect ADs from every term that succeeded, and report which term(s)
+    failed.
+    """
+    ads, seen, failures = [], set(), []
     for term in terms:
         try:
             payload = fetch_json_fn(fr_query_url(term, start, end))
-            # A 200 response with an unexpected shape (rate-limit error body,
-            # {"errors": [...]}, a bare list, None) must not be silently read as
-            # "zero results" — that would report complete=True for a term that
-            # actually failed. Validated inside the guarded region so a non-dict
-            # payload can't raise AttributeError past this function either.
-            if not isinstance(payload, dict) or not isinstance(payload.get("results"), list):
+            # A real Federal Register response always carries a "count" key,
+            # including the well-formed zero-hit case, which omits "results"
+            # entirely (observed live: {'description': ..., 'count': 0}).
+            # Error bodies ({"error": "rate limited"}), a bare list, and None
+            # all lack "count" and are rejected. Reading results as
+            # `.get("results") or []` then correctly treats "no results key"
+            # the same as "empty results list" for a payload we've already
+            # confirmed is a genuine API response, not silently swallowing a
+            # response we don't recognize.
+            if not isinstance(payload, dict) or "count" not in payload:
                 raise ValueError("unexpected payload shape: %r" % (payload,))
         except Exception as exc:  # noqa: BLE001
-            reason = "term %r failed: %s" % (term, exc)
-            break
+            failures.append("term %r failed: %s" % (term, exc))
+            continue
         for ad in parse_fr_response(payload):
             if ad["ref_number"] in seen:
                 continue
             seen.add(ad["ref_number"])
             ads.append(ad)
+    complete = not failures
     coverage = {
         "regulator": "FAA",
         "from": start.isoformat(),
-        "to": end.isoformat() if reason is None else None,
-        "complete": reason is None,
-        "reason": reason,
+        "to": end.isoformat() if complete else None,
+        "complete": complete,
+        "reason": "; ".join(failures) if failures else None,
     }
     return ads, coverage
