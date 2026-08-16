@@ -15,6 +15,11 @@ import sys
 
 _TYPE = re.compile(r"^\s+-\s+type:\s*(.+?)\s*$", re.MULTILINE)
 _ALIASES = re.compile(r"^\s+aliases:\s*\[(.*?)\]\s*$", re.MULTILINE)
+_DOCKET = re.compile(r"Docket\s+[A-Z]{2,4}-\d{4}-\d+", re.IGNORECASE)
+_REF_NUM = re.compile(r"\d{4}-\d{4,5}")
+# Reference-key prefixes dedup_ledger.py writes (see tools/dedup_ledger.py ref_key());
+# EVENT: keys are headline slugs, not references, and must never be scanned for digits.
+_REF_KEY_PREFIXES = {"AD", "EAD", "NPRM", "PAD", "SB", "SIL", "SL", "MSG-3", "OTHER"}
 
 
 def tracked_tokens(config_text):
@@ -65,8 +70,12 @@ def reported_refs_from(records):
             num = (r.get("ref_number") or "").strip()
             if num:
                 refs.add(num)
-                # FR docket strings embed the number, e.g. "FR Doc. 2026-15239 (Docket …)"
-                for token in re.findall(r"\d{4}-\d{4,5}", num):
+                # FR docket strings embed the number, e.g. "FR Doc. 2026-15239 (Docket …)".
+                # Strip the docket clause first so its own YYYY-NNNNN-shaped number is
+                # never mistaken for the AD/FR document number (that would falsely mark
+                # a genuinely-missed AD as reported).
+                stripped = _DOCKET.sub("", num)
+                for token in _REF_NUM.findall(stripped):
                     refs.add(token)
     return refs
 
@@ -94,7 +103,13 @@ def load_seen_refs(path):
         return set()
     refs = set()
     for key in (data.get("seen") or {}):
-        for token in re.findall(r"\d{4}-\d{4,5}", str(key)):
+        # Ledger keys are 'TYPE:NUMBER' for references, 'EVENT:<slug>' for ref-less
+        # items. Only extract from the value half of an actual reference key — an
+        # EVENT slug can embed date-like digits that must never read as a ref number.
+        prefix, sep, value = str(key).partition(":")
+        if not sep or prefix.strip().upper() not in _REF_KEY_PREFIXES:
+            continue
+        for token in _REF_NUM.findall(value):
             refs.add(token)
     return refs
 
