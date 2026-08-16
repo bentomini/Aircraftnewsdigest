@@ -60,6 +60,10 @@ def extract_pdf_text(raw):
         return ""
     blob = b"\n".join(parts).decode("latin-1")
     text = "".join(t[1:-1] for t in _SHOWN.findall(blob))
-    for a, b in (("\\(", "("), ("\\)", ")"), ("\\\\", "\\"), ("\\n", " "), ("\\r", " ")):
-        text = text.replace(a, b)
+    text = re.sub(
+        r"\\(.)",
+        lambda m: {"(": "(", ")": ")", "\\": "\\",
+                   "n": " ", "r": " "}.get(m.group(1), m.group(1)),
+        text,
+    )
     return re.sub(r"\s+", " ", text).strip()
