@@ -49,13 +49,18 @@ _SHOWN = re.compile(r"\((?:\\.|[^()\\])*\)", re.S)
 
 
 def extract_pdf_text(raw):
-    """Readable text from a FlateDecode PDF. Returns '' when nothing inflates."""
+    """Readable text from a PDF's content streams.
+
+    Tries FlateDecode first; real EASA biweekly PDFs were found (2026-08-16
+    live fetch) to ship literal, uncompressed content streams, so streams
+    that don't inflate are used as-is rather than dropped.
+    """
     parts = []
     for m in _STREAM.finditer(raw):
         try:
             parts.append(zlib.decompress(m.group(1)))
         except zlib.error:
-            continue
+            parts.append(m.group(1))
     if not parts:
         return ""
     blob = b"\n".join(parts).decode("latin-1")
@@ -67,3 +72,39 @@ def extract_pdf_text(raw):
         text,
     )
     return re.sub(r"\s+", " ", text).strip()
+
+
+# No trailing \b: real biweekly text glues the ref number directly onto the
+# next column's digits with no separator (e.g. "...Inspection 2026-01442026-
+# 07-21AIRBUS..."), so a digit-to-digit transition never satisfies \b. Revision
+# digits are capped at 2 so a glued-on date can't be swallowed as a revision.
+_AD_NUM = re.compile(r"(?<!\d)(\d{4}-\d{4}(?:R\d{1,2})?(?:-E)?)")
+_TYPE_TOKEN = re.compile(r"\bA3[0-9]{2}\b|\bA2[0-9]{2}\b|\bB7[0-9]{2}\b")
+_LANG_TAG = re.compile(r"\b(?:en|fr|de)-[A-Z]{2}\b")
+_SUBJECT_WINDOW = 160
+
+
+def _clean(fragment):
+    return re.sub(r"\s+", " ", _LANG_TAG.sub(" ", fragment)).strip()
+
+
+def parse_biweekly(text):
+    """AD entries found in extracted biweekly text.
+
+    Deliberately loose: the sweep only needs a reference number to chase. The
+    verifier confirms everything downstream, and an empty types_hint is treated
+    as fleet-matching by the coverage ledger, so a parse miss fails loud.
+    """
+    out, seen = [], set()
+    for m in _AD_NUM.finditer(text):
+        ref = m.group(1)
+        if ref in seen:
+            continue
+        seen.add(ref)
+        window = _clean(text[m.end():m.end() + _SUBJECT_WINDOW])
+        out.append({
+            "ref_number": ref,
+            "subject": window,
+            "types_hint": sorted(set(_TYPE_TOKEN.findall(window))),
+        })
+    return out
