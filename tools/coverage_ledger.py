@@ -15,7 +15,7 @@ import sys
 
 _TYPE = re.compile(r"^\s+-\s+type:\s*(.+?)\s*$", re.MULTILINE)
 _ALIASES = re.compile(r"^\s+aliases:\s*\[(.*?)\]\s*$", re.MULTILINE)
-_DOCKET = re.compile(r"Docket\s+[A-Z]{2,4}-\d{4}-\d+", re.IGNORECASE)
+_DOCKET = re.compile(r"Docket\s+(?:No\.?\s*)?[A-Z]{2,4}-\d{4}-\d+", re.IGNORECASE)
 _REF_NUM = re.compile(r"\d{4}-\d{4,5}")
 # Reference-key prefixes dedup_ledger.py writes (see tools/dedup_ledger.py ref_key());
 # EVENT: keys are headline slugs, not references, and must never be scanned for digits.
