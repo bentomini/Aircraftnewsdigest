@@ -92,21 +92,30 @@ def enumerate_faa(terms, start, end, fetch_json_fn):
             # including the well-formed zero-hit case, which omits "results"
             # entirely (observed live: {'description': ..., 'count': 0}).
             # Error bodies ({"error": "rate limited"}), a bare list, and None
-            # all lack "count" and are rejected. Reading results as
+            # all lack "count" and are rejected. `results`, when present, must
+            # be a list — a "count" key alone doesn't rule out a malformed
+            # results value (e.g. a string or dict) that would otherwise blow
+            # up parse_fr_response's iteration below. Reading results as
             # `.get("results") or []` then correctly treats "no results key"
             # the same as "empty results list" for a payload we've already
-            # confirmed is a genuine API response, not silently swallowing a
-            # response we don't recognize.
-            if not isinstance(payload, dict) or "count" not in payload:
+            # confirmed is a genuine, well-shaped API response.
+            if (not isinstance(payload, dict) or "count" not in payload
+                    or not isinstance(payload.get("results", []), list)):
                 raise ValueError("unexpected payload shape: %r" % (payload,))
+            # Parsing happens inside the same guarded region as the fetch: a
+            # payload can pass the shape check above yet still contain
+            # per-record garbage that trips something in parse_fr_response
+            # (or dedup below). That must attribute to this term as a
+            # failure too, not escape enumerate_faa and discard every ad
+            # already collected from earlier, successful terms.
+            for ad in parse_fr_response(payload):
+                if ad["ref_number"] in seen:
+                    continue
+                seen.add(ad["ref_number"])
+                ads.append(ad)
         except Exception as exc:  # noqa: BLE001
             failures.append("term %r failed: %s" % (term, exc))
             continue
-        for ad in parse_fr_response(payload):
-            if ad["ref_number"] in seen:
-                continue
-            seen.add(ad["ref_number"])
-            ads.append(ad)
     complete = not failures
     coverage = {
         "regulator": "FAA",
