@@ -55,6 +55,15 @@ Dispatch each stage with the Agent tool using whichever of these your Claude Cod
   verifier prompt, and both gates' `--lookback-days`.
 - Tell the user the run parameters before proceeding: `CURRENT_DATE`, cadence, `NOMINAL_LOOKBACK` vs
   the effective `LOOKBACK_DAYS`, and the reason line from the tool's stderr.
+- **Regulator sweep (deterministic, never skip).** Enumerate every AD EASA and the FAA published
+  in the window, so a scanner miss cannot silently become a coverage gap:
+  ```
+  python tools/regulator_sweep.py --config config/fleet.yaml \
+    --current-date $CURRENT_DATE --lookback-days $LOOKBACK_DAYS \
+    --outfile runs/$CURRENT_DATE/00_sweep.json
+  ```
+  Surface every `[sweep]` line in the Step 6 report. A `SEARCH-ONLY` line means that portion of
+  the window was not enumerated — report it; do NOT present the run as fully covered.
 
 ## Step 2 — SCAN (dispatch the `scanner` subagent)
 Use the Agent tool with `subagent_type: scanner`. In the prompt, pass:
@@ -64,10 +73,22 @@ Use the Agent tool with `subagent_type: scanner`. In the prompt, pass:
 Save the subagent's returned JSON verbatim to `runs/$CURRENT_DATE/01_scanner.json`
 (strip any ``` code fences if present). If it returned no records, report that and stop.
 
+## Step 2b — MERGE LEADS (Bash — deterministic, never skip)
+Union the swept ADs with the scanner's leads. Where both name the same AD the sweep's reference
+number wins — it came from the agency listing, not a search result:
+```
+python tools/merge_leads.py \
+  --sweep runs/$CURRENT_DATE/00_sweep.json \
+  --scanner runs/$CURRENT_DATE/01_scanner.json \
+  > runs/$CURRENT_DATE/01b_merged.json \
+  2> runs/$CURRENT_DATE/01b_merge_report.txt
+```
+**Step 3 now verifies `01b_merged.json`, not `01_scanner.json`.**
+
 ## Step 3 — VERIFY (dispatch the `verifier` subagent)
 Use the Agent tool with `subagent_type: verifier`. In the prompt, pass:
 > current_date = {CURRENT_DATE}, lookback_days = {LOOKBACK_DAYS}.
-> Verify the leads in `runs/{CURRENT_DATE}/01_scanner.json` per your instructions. Read that file.
+> Verify the leads in `runs/{CURRENT_DATE}/01b_merged.json` per your instructions. Read that file.
 > Fetch primary sources, confirm references, assign confidence, enforce the window.
 > Return ONLY the cleaned `{ "records": [...] }`.
 
@@ -162,6 +183,20 @@ python tools/engineers_corner.py \
 The rotation pointer is read-only here (advanced in Step 6e, after the digest succeeds). A busy week
 (≥ `standing_watch.corner_min_core_items` substantive core items) yields `{ "corner": null }`.
 
+## Step 4g — COVERAGE LEDGER (Bash — deterministic, never skip)
+Prove every swept AD was consciously handled:
+```
+python tools/coverage_ledger.py \
+  --sweep runs/$CURRENT_DATE/00_sweep.json \
+  --infile runs/$CURRENT_DATE/06_deduped.json \
+  --ledger runs/_seen.json --config config/fleet.yaml \
+  --outfile runs/$CURRENT_DATE/12_coverage.json \
+  2> runs/$CURRENT_DATE/12_coverage_report.txt
+```
+A non-zero exit means at least one fleet-matching AD was enumerated but never reported.
+**Surface every `!! UNACCOUNTED` line prominently in the Step 6 report** — that is the recall
+gap this step exists to catch.
+
 ## Step 5 — WRITE (dispatch the `writer` subagent)
 Use the Agent tool with `subagent_type: writer`. In the prompt, pass:
 > Render the digest from `runs/{CURRENT_DATE}/06_deduped.json` per your instructions.
@@ -180,6 +215,7 @@ mechanically — structure over instruction, the same principle as the gates:
 python tools/finalize_digest.py --infile digests/$CURRENT_DATE-{cadence}.md --in-place \
   --preflight runs/$CURRENT_DATE/00_preflight.json \
   --records runs/$CURRENT_DATE/06_deduped.json \
+  --sweep runs/$CURRENT_DATE/00_sweep.json \
   --health-out runs/$CURRENT_DATE/11_health.json
 ```
 This unescapes HTML entities, collapses a doubled ref type (`AD AD …` → `AD …`), and forces section
@@ -254,6 +290,11 @@ Print:
 - A one-line reminder that gated OEM SB/SIL/SL are marked UNVERIFIED (public-internet-only rule),
   that every VERIFIED item was confirmed by two independent fetches, and that the per-stage
   artifacts in `runs/$CURRENT_DATE/` (01→05) are kept for audit.
+- The regulator sweep coverage lines (every `[sweep]` line from Step 1c, including any
+  `SEARCH-ONLY` span that was not enumerated).
+- The coverage-ledger tallies from Step 4g (reported / suppressed / excluded / unaccounted counts).
+- Any `!! UNACCOUNTED` entries from Step 4g, surfaced prominently — these are fleet-matching ADs
+  that were enumerated but never reported.
 
 ## Step 6b — Record the run (Bash — deterministic, never skip)
 The digest now exists, so advance the per-cadence run marker. This makes the *next* run's window
@@ -403,5 +444,7 @@ specific sub-step named — silent state loss is exactly the failure mode this r
   completes.
 - Never skip the preflight (Step 1) or Step 6g (persist state). A run that cannot push state
   must SAY so in its report.
+- Never skip Step 1c (sweep), Step 2b (merge) or Step 4g (coverage ledger). A run whose
+  enumeration was partial must SAY so.
 - The [DEGRADED] flag is deterministic (11_health.json). Never suppress or soften it in the
   digest, the HTML, or the email subject.
