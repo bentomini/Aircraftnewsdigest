@@ -55,8 +55,8 @@ Dispatch each stage with the Agent tool using whichever of these your Claude Cod
   verifier prompt, and both gates' `--lookback-days`.
 - Tell the user the run parameters before proceeding: `CURRENT_DATE`, cadence, `NOMINAL_LOOKBACK` vs
   the effective `LOOKBACK_DAYS`, and the reason line from the tool's stderr.
-- **Regulator sweep (deterministic, never skip).** Enumerate every AD EASA and the FAA published
-  in the window, so a scanner miss cannot silently become a coverage gap:
+- **Step 1c — Regulator sweep (deterministic, never skip).** Enumerate every AD EASA and the FAA
+  published in the window, so a scanner miss cannot silently become a coverage gap:
   ```
   python tools/regulator_sweep.py --config config/fleet.yaml \
     --current-date $CURRENT_DATE --lookback-days $LOOKBACK_DAYS \
@@ -71,7 +71,9 @@ Use the Agent tool with `subagent_type: scanner`. In the prompt, pass:
 > Scan per your instructions and the scope in config/fleet.yaml. Return ONLY `{ "records": [...] }`.
 
 Save the subagent's returned JSON verbatim to `runs/$CURRENT_DATE/01_scanner.json`
-(strip any ``` code fences if present). If it returned no records, report that and stop.
+(strip any ``` code fences if present). An empty scanner result is NOT by itself a reason to
+stop — the sweep may still have enumerated leads the scanner missed. Save `{ "records": [] }` and
+continue to Step 2b regardless.
 
 ## Step 2b — MERGE LEADS (Bash — deterministic, never skip)
 Union the swept ADs with the scanner's leads. Where both name the same AD the sweep's reference
@@ -83,7 +85,11 @@ python tools/merge_leads.py \
   > runs/$CURRENT_DATE/01b_merged.json \
   2> runs/$CURRENT_DATE/01b_merge_report.txt
 ```
-**Step 3 now verifies `01b_merged.json`, not `01_scanner.json`.**
+Read `runs/$CURRENT_DATE/01b_merge_report.txt` and surface its
+`[merge] N swept + M scanned -> K lead(s)` line to the user. **Step 3 now verifies
+`01b_merged.json`, not `01_scanner.json`.** If `01b_merged.json` contains no records at all
+(neither swept nor scanned — the only case where there is truly nothing to verify), report that
+and stop.
 
 ## Step 3 — VERIFY (dispatch the `verifier` subagent)
 Use the Agent tool with `subagent_type: verifier`. In the prompt, pass:
