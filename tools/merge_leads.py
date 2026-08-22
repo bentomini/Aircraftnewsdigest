@@ -10,10 +10,35 @@ Stdlib only.
 """
 import argparse
 import json
+import re
 import sys
+
+# Same approach as coverage_ledger.py's _DOCKET: strip docket clauses before
+# looking for a document number, so a docket number (FAA-2026-7201) is never
+# mistaken for the document it accompanies.
+_DOCKET = re.compile(r"Docket\s+(?:No\.?\s*)?[A-Z]{2,4}-\d{4}-\d+", re.IGNORECASE)
+_FAA_DOC = re.compile(r"\d{4}-\d{4,5}")
+_EASA_DOC = re.compile(r"\d{4}-\d{4}(?:R\d+)?(?:-E)?")
+
+
+def canonical_number(ref_number):
+    """The regulator document number inside free text, or None if none is present.
+
+    The sweep and the scanner format the same document differently (sweep:
+    "2026-16157"; scanner: "FR Doc. 2026-16157", ref_type NPRM vs AD) — match
+    on this canonical number, not the raw string or ref_type.
+    """
+    if not ref_number:
+        return None
+    text = _DOCKET.sub(" ", ref_number)
+    m = _FAA_DOC.search(text) or _EASA_DOC.search(text)
+    return m.group(0).upper() if m else None
 
 
 def _key(ref_type, ref_number):
+    canon = canonical_number(ref_number)
+    if canon:
+        return "DOC:%s" % canon
     return "%s:%s" % ((ref_type or "AD").upper(), (ref_number or "").strip().upper())
 
 
