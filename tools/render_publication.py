@@ -386,11 +386,19 @@ def render_document(bundle):
                        'incomplete for this window — %s. Items above are unaffected.</p>'
                        % html_escape(health.get("recall_reason") or "unknown"))
 
+    gap_html = ""
+    unaccounted_count = health.get("unaccounted_count") or 0
+    if unaccounted_count:
+        refs = ", ".join(health.get("unaccounted_refs") or []) or "see run coverage ledger"
+        gap_html = ('<p class="sources"><strong>Recall gap:</strong> the regulator sweep '
+                   'enumerated %d fleet-matching AD(s) that this run never reported — %s.</p>'
+                   % (unaccounted_count, html_escape(refs)))
+
     operator = html_escape(bundle.get("operator", "Operator"))
     byline = html_escape(bundle.get("digest_byline") or operator)
     fleet = html_escape(" · ".join(bundle.get("fleet_types", [])))
     date_label = html_escape(bundle.get("date_label", ""))
-    body = "\n".join(x for x in (sections + [watch, recall_html, sources]) if x)
+    body = "\n".join(x for x in (sections + [watch, recall_html, gap_html, sources]) if x)
 
     return (
         '<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8">\n'

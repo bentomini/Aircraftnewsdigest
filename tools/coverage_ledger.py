@@ -97,7 +97,15 @@ def manufacturer_is_tracked(hint, oems):
     if not h:
         return None
     for division in _NON_TRACKED_DIVISIONS:
-        if re.search(r"\b%s\b" % re.escape(division), h):
+        # LEADING boundary only, no trailing \b: real biweekly/FR hints glue the
+        # division name directly onto the next column with no separator (e.g.
+        # "AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225..."), so a trailing \b
+        # never matches (the transition into "SA..." isn't a word boundary,
+        # since both sides are word characters). A leading boundary is enough
+        # to avoid a false mid-word match, and \s* between the division's own
+        # words tolerates it being glued together the same way.
+        pattern = r"\b" + r"\s*".join(re.escape(w) for w in division.split())
+        if re.search(pattern, h):
             return False
     for oem in oems:
         head = (oem.split() or [oem])[0]

@@ -116,6 +116,19 @@ def _clean(fragment):
     return re.sub(r"\s+", " ", _LANG_TAG.sub(" ", fragment)).strip()
 
 
+def _issue_date(window):
+    """The AD's own issue date (e.g. '2026-07-20'), captured from the same
+    position _manufacturer_hint strips past — real biweekly text glues it
+    directly onto the ref number, sometimes behind a revision suffix (R1) the
+    ref-number regex declined to attach. Returns None when the window's
+    leading text isn't shaped like an ISO date: a genuine parse gap must
+    surface as a missing event_date (which then fails the downstream window
+    gate loud), never fabricate a date."""
+    tail = _LEADING_REV.sub("", window, count=1)
+    m = _LEADING_DATE.match(tail)
+    return m.group(0).strip() if m else None
+
+
 def _manufacturer_hint(window):
     """Rough manufacturer text following the ref/date, truncated before the
     next row's reference number so a single hint never blends two
@@ -151,6 +164,7 @@ def parse_biweekly(text):
             "subject": window,
             "types_hint": sorted(set(_TYPE_TOKEN.findall(window))),
             "manufacturer_hint": _manufacturer_hint(window),
+            "issue_date": _issue_date(window),
         })
     return out
 

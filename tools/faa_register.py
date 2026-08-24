@@ -27,6 +27,32 @@ API = "https://www.federalregister.gov/api/v1/documents.json"
 _TYPE_TOKEN = re.compile(r"\bA3[0-9]{2}\b|\bA2[0-9]{2}\b|\b7[0-9]7(?:-[0-9A-Za-z]+)?\b")
 FIELDS = ("document_number", "publication_date", "title", "type", "abstract")
 
+# Federal Register AD titles always name the manufacturer verbatim right after
+# this boilerplate, e.g. "Airworthiness Directives; Airbus Helicopters" ->
+# "Airbus Helicopters". Without this, coverage_ledger.classify() sees a `None`
+# manufacturer_hint for every FAA AD whose abstract carries no model-code
+# types_hint, and treats it as unknown -> unconditionally `unaccounted`.
+_TITLE_BOILERPLATE = re.compile(r"^\s*Airworthiness Directives;\s*", re.IGNORECASE)
+
+# The Federal Register document "type" field has been observed as both the
+# human label ("Rule", "Proposed Rule") and the API's own filter code ("RULE",
+# "PRORULE") — normalise away case and whitespace before mapping either form.
+_REF_TYPE_MAP = {"RULE": "AD", "PRORULE": "NPRM", "PROPOSEDRULE": "NPRM"}
+
+
+def _manufacturer_hint_from_title(title):
+    return _TITLE_BOILERPLATE.sub("", title or "", count=1).strip()
+
+
+def _ref_type_from_doc_type(doc_type):
+    """Map the FR document type to the pipeline's ref_type. RULE -> AD (a final
+    rule is how the FAA issues an AD); PRORULE -> NPRM (a proposed rule is not
+    yet an AD, and must route to Standing Watch -> On the Horizon, not the core
+    sections). Unrecognised/missing types default to AD, preserving prior
+    behaviour for anything this map doesn't yet know about."""
+    key = re.sub(r"\s+", "", (doc_type or "").strip().upper())
+    return _REF_TYPE_MAP.get(key, "AD")
+
 
 def fr_query_url(term, start, end):
     """Federal Register API URL for AD documents matching `term` in the window.
@@ -66,6 +92,8 @@ def parse_fr_response(payload):
             "ref_number": num,
             "subject": (doc.get("title") or "").strip(),
             "types_hint": sorted(set(_TYPE_TOKEN.findall(blob))),
+            "manufacturer_hint": _manufacturer_hint_from_title(doc.get("title")),
+            "ref_type": _ref_type_from_doc_type(doc.get("type")),
             "source_url": full_text_url(num, pub),
             "issue_date": pub,
         })

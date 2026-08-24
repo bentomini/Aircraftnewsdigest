@@ -47,7 +47,10 @@ def build_sweep(easa_result, faa_result):
         ads.append(dict(ad, regulator="EASA", ref_type="AD",
                         source_url=ad.get("source_url") or easa_portal_url(ad["ref_number"])))
     for ad in faa_ads:
-        ads.append(dict(ad, regulator="FAA", ref_type="AD"))
+        # faa_register already derives ref_type from the FR document's own
+        # "type" field (RULE -> AD, PRORULE -> NPRM); a missing key (e.g. from
+        # an older cached payload) falls back to AD rather than raising.
+        ads.append(dict(ad, regulator="FAA", ref_type=ad.get("ref_type") or "AD"))
     return {"coverage": [easa_cov, faa_cov], "ads": ads}
 
 

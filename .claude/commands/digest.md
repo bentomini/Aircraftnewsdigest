@@ -222,13 +222,17 @@ python tools/finalize_digest.py --infile digests/$CURRENT_DATE-{cadence}.md --in
   --preflight runs/$CURRENT_DATE/00_preflight.json \
   --records runs/$CURRENT_DATE/06_deduped.json \
   --sweep runs/$CURRENT_DATE/00_sweep.json \
+  --coverage runs/$CURRENT_DATE/12_coverage.json \
   --health-out runs/$CURRENT_DATE/11_health.json
 ```
 This unescapes HTML entities, collapses a doubled ref type (`AD AD …` → `AD …`), and forces section
 order (Directly Fleet-Relevant → Read-Across → Major Industry Events) with the Sources line last. It
 only reformats text already in the file — it never adds or changes a reference, quote, or fact.
 If stderr shows `[finalise] DEGRADED: …`, surface that line prominently in the Step 6 report.
-`11_health.json` now records the run's health for the renderer (5e) and the email subject (6f).
+If stderr shows `[finalise] RECALL GAP: N unaccounted AD(s): …`, surface that line prominently too —
+it means the coverage ledger (Step 4g) found fleet-matching ADs this run never reported.
+`11_health.json` now records the run's health (degraded / recall_partial / unaccounted_count) for
+the renderer (5e) and the email subject (6f).
 
 ---
 **Publication layer (Steps 5c–5f).** The verified Markdown digest is now COMPLETE (Steps 5/5b). The
@@ -376,6 +380,11 @@ If set:
     run can never arrive looking healthy. If the file is missing, treat as not degraded **and
     report the missing health file prominently in the Step 6 report** — a partially-executed
     run must never ship a healthy-looking email in silence.
+    If `unaccounted_count` is > 0, also prefix the subject with `[RECALL GAP: N]` (N =
+    `unaccounted_count`) — this means the coverage ledger enumerated N fleet-matching ADs this run
+    never reported, a distinct signal from `[DEGRADED]` (verification impaired) and
+    `recall_partial` (enumeration incomplete). If both `degraded` and a recall gap apply, put
+    `[DEGRADED]` first, e.g. `[DEGRADED][RECALL GAP: 2] {digest_byline} — Week of {CURRENT_DATE}`.
 3. Read `config/fleet.yaml` and get `operator.digest_byline` for the subject prefix.
 4. Call the Gmail MCP `create_draft` tool:
    - `to`: the parsed recipients list
