@@ -18,7 +18,13 @@ It fixes these rendering/editorial rules:
   * Read-Across suppression — if the Directly Fleet-Relevant section contains
     >= ``standing_watch.read_across_min_fleet_items`` items (default 5), the
     entire ## Read-Across (Peer Types) section is removed. A busy fleet week
-    should not be diluted by peer-type items.
+    should not be diluted by peer-type items;
+  * a recall-gap notice — when ``--coverage`` (12_coverage.json) shows a
+    non-zero ``unaccounted`` count, a notice naming the count and reference
+    numbers is inserted and ``unaccounted_count``/``unaccounted_refs`` are
+    written to ``--health-out`` so the email subject (Step 6f) can carry
+    ``[RECALL GAP: N]`` — otherwise the coverage ledger's alarm never reaches
+    a delivered artifact on an unattended run.
 
 Stdlib only. Usage:
     python finalize_digest.py --infile digests/2026-06-26-weekly.md > clean.md
@@ -141,6 +147,71 @@ def insert_degraded_banner(text, reason):
     return "\n".join(lines)
 
 
+def compute_recall_partial(sweep):
+    """(recall_partial, reason). True when a regulator did not cover the whole window.
+
+    Distinct from ``degraded``: the verification pipeline is sound here, only the
+    enumeration window was not fully swept (e.g. EASA's biweekly listing not yet
+    published for the tail of the window). Never touches the email subject."""
+    if not sweep:
+        return False, None
+    gaps = [c for c in (sweep.get("coverage") or []) if not c.get("complete")]
+    if not gaps:
+        return False, None
+    reason = "; ".join(
+        "%s enumerated only to %s (%s)" % (c.get("regulator"), c.get("to") or "n/a",
+                                           c.get("reason") or "unknown")
+        for c in gaps)
+    return True, reason
+
+
+_RECALL_NOTICE = ("> **Recall note:** regulator enumeration was incomplete for this window — %s. "
+                  "Items above are unaffected; coverage of that gap relied on search alone.\n\n")
+
+
+def insert_recall_notice(text, reason):
+    """Place the notice immediately before the Sources & Confidence line."""
+    notice = _RECALL_NOTICE % reason
+    marker = "**Sources & Confidence:**"
+    idx = text.find(marker)
+    if idx == -1:
+        return text.rstrip() + "\n\n" + notice
+    return text[:idx] + notice + text[idx:]
+
+
+def compute_unaccounted(coverage):
+    """(count, refs) from a loaded 12_coverage.json. refs is the list of
+    ref_number strings, capped at 10, for the notice/health payload.
+
+    Distinct from both `degraded` and `recall_partial`: the coverage ledger
+    proves enumeration SUCCEEDED and found N fleet-matching ADs the digest
+    never reported — a recall gap, not an enumeration gap. Nothing previously
+    consumed 12_coverage.json downstream of Step 4g, so this alarm never
+    reached a delivered artifact on an unattended run."""
+    if not coverage:
+        return 0, []
+    items = coverage.get("unaccounted") or []
+    refs = [str(e.get("ref_number")) for e in items if e.get("ref_number")]
+    return len(items), refs[:10]
+
+
+_RECALL_GAP_NOTICE = ("> **Recall gap:** the regulator sweep enumerated %d fleet-matching AD(s) "
+                     "that this run never reported — %s. Investigate before treating this "
+                     "digest as complete.\n\n")
+
+
+def insert_recall_gap_notice(text, count, refs):
+    """Place the notice immediately before the Sources & Confidence line,
+    adjacent to the recall-partial notice (if any)."""
+    ref_list = ", ".join(refs) if refs else "see runs/DATE/12_coverage.json"
+    notice = _RECALL_GAP_NOTICE % (count, ref_list)
+    marker = "**Sources & Confidence:**"
+    idx = text.find(marker)
+    if idx == -1:
+        return text.rstrip() + "\n\n" + notice
+    return text[:idx] + notice + text[idx:]
+
+
 def _read_fleet_threshold(config_path="config/fleet.yaml"):
     """Read read_across_min_fleet_items from fleet.yaml; return default if absent."""
     try:
@@ -246,6 +317,10 @@ def main(argv=None):
                     help="00_preflight.json from tools/preflight.py (optional).")
     ap.add_argument("--records", default=None,
                     help="06_deduped.json final records (optional; enables the degraded rule).")
+    ap.add_argument("--sweep", default=None,
+                    help="00_sweep.json (optional; enables the recall_partial rule).")
+    ap.add_argument("--coverage", default=None,
+                    help="12_coverage.json (optional; enables the unaccounted/recall-gap rule).")
     ap.add_argument("--health-out", default=None,
                     help="Write {degraded, reason} JSON here for downstream steps.")
     args = ap.parse_args(argv)
@@ -272,9 +347,40 @@ def main(argv=None):
     if degraded:
         fixed = insert_degraded_banner(fixed, reason)
         print("[finalise] DEGRADED: %s" % reason, file=sys.stderr)
+
+    sweep = None
+    if args.sweep:
+        try:
+            with open(args.sweep, encoding="utf-8") as fh3:
+                sweep = json.load(fh3)
+        except (OSError, ValueError):
+            print("[finalise] WARNING: cannot read sweep %s; recall rule disabled" % args.sweep,
+                  file=sys.stderr)
+    recall, recall_reason = compute_recall_partial(sweep)
+    if recall:
+        fixed = insert_recall_notice(fixed, recall_reason)
+        print("[finalise] RECALL PARTIAL: %s" % recall_reason, file=sys.stderr)
+
+    coverage = None
+    if args.coverage:
+        try:
+            with open(args.coverage, encoding="utf-8") as fh4:
+                coverage = json.load(fh4)
+        except (OSError, ValueError):
+            print("[finalise] WARNING: cannot read coverage %s; recall-gap rule disabled"
+                  % args.coverage, file=sys.stderr)
+    unaccounted_count, unaccounted_refs = compute_unaccounted(coverage)
+    if unaccounted_count:
+        fixed = insert_recall_gap_notice(fixed, unaccounted_count, unaccounted_refs)
+        print("[finalise] RECALL GAP: %d unaccounted AD(s): %s"
+              % (unaccounted_count, ", ".join(unaccounted_refs)), file=sys.stderr)
+
     if args.health_out:
         with open(args.health_out, "w", encoding="utf-8") as fh2:
             json.dump({"degraded": degraded, "reason": reason,
+                       "recall_partial": recall, "recall_reason": recall_reason,
+                       "unaccounted_count": unaccounted_count,
+                       "unaccounted_refs": unaccounted_refs,
                        "inputs": {"preflight": preflight is not None,
                                   "records": payload is not None}}, fh2)
 

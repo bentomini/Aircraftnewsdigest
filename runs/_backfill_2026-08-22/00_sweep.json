@@ -1,0 +1,1356 @@
+{
+  "coverage": [
+    {
+      "regulator": "EASA",
+      "from": "2026-06-26",
+      "to": "2026-08-16",
+      "complete": false,
+      "reason": "biweekly 18-2026 not available (HTTP Error 404: Not Found)"
+    },
+    {
+      "regulator": "FAA",
+      "from": "2026-06-26",
+      "to": "2026-08-22",
+      "complete": true,
+      "reason": null
+    }
+  ],
+  "ads": [
+    {
+      "ref_number": "2026-0129",
+      "subject": "2026-07-03AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225Main Rotor Drive - Main Gearbox FlexibleMounting Plate - Maintenance Task 2026-01232026-07-03GE AVIATION CZE",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225Main Rotor Drive -",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0129"
+    },
+    {
+      "ref_number": "2026-0123",
+      "subject": "2026-07-03GE AVIATION CZECHH75, H80, H85Time Limits / Maintenance Checks -Airworthiness Limitations Section - Amendment 2025-0094R12026-07-03LEONARDO S.p.A. HEL",
+      "types_hint": [],
+      "manufacturer_hint": "GE AVIATION CZECHH75, H80, H85Time Limits / Maintenance Chec",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0123"
+    },
+    {
+      "ref_number": "2025-0094",
+      "subject": "R12026-07-03LEONARDO S.p.A. HELICOPTERSAB139/AW139Electrical Power - Overhead Panel WiresInterference - Inspection / Modification 2025-0171R22026-07-03CFM INTER",
+      "types_hint": [],
+      "manufacturer_hint": "LEONARDO S.p.A. HELICOPTERSAB139/AW139Electrical Power - Ove",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2025-0094"
+    },
+    {
+      "ref_number": "2025-0171",
+      "subject": "R22026-07-03CFM INTERNATIONALLEAP-1A/-1CEngine - High Pressure Turbine Rotor Stage 1Blade - Inspection CF-2026-262026-07-03AIRBUS CANADA LPBD-500 (A220 Series)F",
+      "types_hint": [
+        "A220"
+      ],
+      "manufacturer_hint": "CFM INTERNATIONALLEAP-1A/-1CEngine - High Pressure Turbine R",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2025-0171"
+    },
+    {
+      "ref_number": "2026-0128",
+      "subject": "2026-07-02SAFRAN HELICOPTER ENGINESARRIUS 1Engine Fuel & Control - HydromechanicalMetering Unit - Replacement US-2026-13-132026-07-01BOEING737Navigation - 5G C-",
+      "types_hint": [],
+      "manufacturer_hint": "SAFRAN HELICOPTER ENGINESARRIUS 1Engine Fuel & Control - Hyd",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0128"
+    },
+    {
+      "ref_number": "2026-0124",
+      "subject": "2026-07-01TECNAM, Costruzioni AeronauticheP2006TFlight Controls - Aileron Hinge / Cotter Pins -Inspection US-2026-13-022026-07-01APPLIANCESATA 31 INSTRUMENTS, A",
+      "types_hint": [],
+      "manufacturer_hint": "TECNAM, Costruzioni AeronauticheP2006TFlight Controls - Aile",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0124"
+    },
+    {
+      "ref_number": "2026-0127",
+      "subject": "2026-06-30AIRBUS HELICOPTERS DEUTSCHLANDMBB-BK 117Main Rotor - Swashplate - Inspection 2026-0125R12026-06-30DIAMOND AIRCRAFT INDUSTRIESDA 42Landing Gear - Nose",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERS DEUTSCHLANDMBB-BK 117Main Rotor - Swashpl",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0127"
+    },
+    {
+      "ref_number": "2026-0125",
+      "subject": "R12026-06-30DIAMOND AIRCRAFT INDUSTRIESDA 42Landing Gear - Nose landing Gear HydraulicActuator Rod End - Inspection 2026-0126-CN2026-06-30DASSAULT AVIATIONFalco",
+      "types_hint": [],
+      "manufacturer_hint": "DIAMOND AIRCRAFT INDUSTRIESDA 42Landing Gear - Nose landing",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0125"
+    },
+    {
+      "ref_number": "2026-0126",
+      "subject": "-CN2026-06-30DASSAULT AVIATIONFalcon 2000, MystÃ¨re-Falcon 900CANCELLED: Fire Protection - Safe SelectorSwitches on the Control Panel with MetallicSnap Wire 202",
+      "types_hint": [],
+      "manufacturer_hint": "-CN2026-06-30DASSAULT AVIATIONFalcon 2000, MystÃ¨re-Falcon 9",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0126"
+    },
+    {
+      "ref_number": "2026-0122",
+      "subject": "2026-06-26AIRBUS S.A.S.A350Flight Controls - Droop Nose Geared RotaryActuator Ring - Inspection / Replacement 2025-0288R12026-06-26ROLLS-ROYCE DEUTSCHLAND Ltd &",
+      "types_hint": [
+        "A350"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A350Flight Controls - Droop Nose Geared RotaryA",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0122"
+    },
+    {
+      "ref_number": "2025-0288",
+      "subject": "R12026-06-26ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGRB211 TRENT 700Engine - Low Pressure Compressor Blades -Removal from Service CF-2026-33R12026-06-25AIRBUS CANADA",
+      "types_hint": [],
+      "manufacturer_hint": "ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGRB211 TRENT 700Engine - L",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2025-0288"
+    },
+    {
+      "ref_number": "2025-0237",
+      "subject": "R12026-06-24AIRBUS S.A.S.A318, A319, A320, A321[Correction] Equipment / Furnishings - 80 VURack Attachments - Inspection / Repair 2026-0121-E2026-06-24BRP-ROTAX",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321[Correction] Equipment /",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2025-0237"
+    },
+    {
+      "ref_number": "2026-0121-E",
+      "subject": "2026-06-24BRP-ROTAX GmbH & Co KG912 A, 912 F, 912 S, 912 iSc, 914 FEngine - Propeller Gearbox - Inspection 2026-01202026-06-23AIRBUS S.A.S.A319, A320, A321Fusel",
+      "types_hint": [
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "BRP-ROTAX GmbH & Co KG912 A, 912 F, 912 S, 912 iSc, 914 FEng",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0121-E"
+    },
+    {
+      "ref_number": "2026-0120",
+      "subject": "2026-06-23AIRBUS S.A.S.A319, A320, A321Fuselage - Lateral Window Frame - Inspections CF-2026-07R12026-06-22MHI RJ Aviation ULCCL-600 (Regional Jet)Ice and Rain",
+      "types_hint": [
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A319, A320, A321Fuselage - Lateral Window Frame",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0120"
+    },
+    {
+      "ref_number": "2026-0118",
+      "subject": "2026-06-22AIRBUS HELICOPTERSSA/AS 365 / EC 155Rotors Flight Control - Tail Rotor Actuator -Inspection CF-2026-272026-06-22AIRBUS CANADA LPBD-500 (A220 Series)Na",
+      "types_hint": [
+        "A220"
+      ],
+      "manufacturer_hint": "AIRBUS HELICOPTERSSA/AS 365 / EC 155Rotors Flight Control -",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0118"
+    },
+    {
+      "ref_number": "2026-0119-E",
+      "subject": "2026-06-22AIRBUS S.A.S.A380Wings - Wing Mid Spars - Inspection CF-2026-09R12026-06-22MHI RJ Aviation ULCCL-600 (Regional Jet)Ice and Rain Protection - Engine Co",
+      "types_hint": [
+        "A380"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A380Wings - Wing Mid Spars - Inspection CF-2026",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0119-E"
+    },
+    {
+      "ref_number": "2026-0141",
+      "subject": "2026-07-17ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 7000Engine Oil - Lubrication / Scavenge Oil Pumps - InstallationCriteria US-2026-13-072026-07-17BOEING787Equi",
+      "types_hint": [],
+      "manufacturer_hint": "ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 7000Engine Oil - Lu",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0141"
+    },
+    {
+      "ref_number": "2026-0140",
+      "subject": "2026-07-15DIAMOND AIRCRAFT INDUSTRIESDA 50Flight Controls - Flap Actuator - Inspections / Modification G-2026-00022026-07-15BAE SYSTEMS (OPERATIONS) LTDJetstrea",
+      "types_hint": [],
+      "manufacturer_hint": "DIAMOND AIRCRAFT INDUSTRIESDA 50Flight Controls - Flap Actua",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0140"
+    },
+    {
+      "ref_number": "2026-0139",
+      "subject": "2026-07-14SAAB AB340Air Conditioning - Air Distribution / Air Recirculation Fans -Inspection(s) US-2026-14-112026-07-13BOEING737Air Conditioning - AFM Operating",
+      "types_hint": [],
+      "manufacturer_hint": "SAAB AB340Air Conditioning - Air Distribution / Air Recircul",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0139"
+    },
+    {
+      "ref_number": "2026-0138",
+      "subject": "2026-07-13DASSAULT AVIATIONFalcon 6XLanding Gear - Main Landing Gear Axle Beam - Inspection 2026-01372026-07-10PIPISTREL VERTICAL SOLUTIONS d.o.o.Virus SWDoors",
+      "types_hint": [],
+      "manufacturer_hint": "DASSAULT AVIATIONFalcon 6XLanding Gear - Main Landing Gear A",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0138"
+    },
+    {
+      "ref_number": "2026-0137",
+      "subject": "2026-07-10PIPISTREL VERTICAL SOLUTIONS d.o.o.Virus SWDoors - Door Locking Mechanism - Modification 2026-01362026-07-10AIRBUS S.A.S.A318, A319, A320, A321Flights",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "PIPISTREL VERTICAL SOLUTIONS d.o.o.Virus SWDoors - Door Lock",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0137"
+    },
+    {
+      "ref_number": "2026-0136",
+      "subject": "2026-07-10AIRBUS S.A.S.A318, A319, A320, A321Flights Controls - Trimmable Horizontal Stabilizer ActuatorBallscrew Lower Splines - Inspection / Replacement 2026-",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321Flights Controls - Trimma",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0136"
+    },
+    {
+      "ref_number": "2026-0135",
+      "subject": "2026-07-09AIRBUS S.A.S., ELBE FLUGZEUGWERKE GmbHA330, EASA STC 10063798Fuselage - Rear Fuselage - Inspections 2026-0052R12026-07-08AIRBUS HELICOPTERSAS 350 / EC",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS S.A.S., ELBE FLUGZEUGWERKE GmbHA330, EASA STC 1006379",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0135"
+    },
+    {
+      "ref_number": "2026-0052",
+      "subject": "R12026-07-08AIRBUS HELICOPTERSAS 350 / EC 130Instruments - Fuse Cover Attachment of Circuit Breaker Panel -Modification 2026-01322026-07-08AIRBUS HELICOPTERSAS",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERSAS 350 / EC 130Instruments - Fuse Cover At",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0052"
+    },
+    {
+      "ref_number": "2026-0132",
+      "subject": "2026-07-08AIRBUS HELICOPTERSAS 350 / EC 130, AS 355Rotors Flight Control - Upper Ball Bearing End of the Main RotorServo-Controls - Inspection 2026-01332026-07-",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERSAS 350 / EC 130, AS 355Rotors Flight Contr",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0132"
+    },
+    {
+      "ref_number": "2026-0133",
+      "subject": "2026-07-08AIRBUS S.A.S.A318, A319, A320, A321Fuselage - Centre Fuselage Forward Pressure Bulkhead -Inspection 2026-01342026-07-08AIRBUS S.A.S.A319, A320, A321Fl",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321Fuselage - Centre Fuselag",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0133"
+    },
+    {
+      "ref_number": "2026-0134",
+      "subject": "2026-07-08AIRBUS S.A.S.A319, A320, A321Flight Controls - Elevator Aileron Computer - Replacement 2025-0158R22026-07-07AIRBUS S.A.S.A318, A319, A320, A321Landing",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A319, A320, A321Flight Controls - Elevator Aile",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0134"
+    },
+    {
+      "ref_number": "2025-0158",
+      "subject": "R22026-07-07AIRBUS S.A.S.A318, A319, A320, A321Landing Gear - Main Landing Gear Door Actuators - Inspections US-2026-13-032026-07-07BOEING747Fuselage - Stringer",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321Landing Gear - Main Landi",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2025-0158"
+    },
+    {
+      "ref_number": "2025-0274",
+      "subject": "R12026-07-07AIRBUS S.A.S.A318, A319, A320, A321Fire Protection - Fire Panel - Inspection 2026-01312026-07-06SAFRAN HELICOPTER ENGINESARRIUS 2Engine Fuel & Contr",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321Fire Protection - Fire Pa",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2025-0274"
+    },
+    {
+      "ref_number": "2026-0131",
+      "subject": "2026-07-06SAFRAN HELICOPTER ENGINESARRIUS 2Engine Fuel & Control - Electronic Engine Control Unit - SoftwareUpdate Engine Fuel & Control - Preference Injector -",
+      "types_hint": [],
+      "manufacturer_hint": "SAFRAN HELICOPTER ENGINESARRIUS 2Engine Fuel & Control - Ele",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0131"
+    },
+    {
+      "ref_number": "2026-0130",
+      "subject": "2026-07-06AIRBUS S.A.S.A318, A319, A320, A321Electrical Systems Installation - Battery Retaining Rods -Identification / Replacement Publ. numberIssue DateTC Hol",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321Electrical Systems Instal",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0130"
+    },
+    {
+      "ref_number": "2026-0153",
+      "subject": "2026-07-31SAFRAN HELICOPTER ENGINESARRIEL 2Time Limits / Maintenance Checks - AirworthinessLimitations Section - Amendment 2026-01572026-07-31AIRBUS S.A.S.A380T",
+      "types_hint": [
+        "A380"
+      ],
+      "manufacturer_hint": "SAFRAN HELICOPTER ENGINESARRIEL 2Time Limits / Maintenance C",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0153"
+    },
+    {
+      "ref_number": "2026-0157",
+      "subject": "2026-07-31AIRBUS S.A.S.A380Time Limits / Maintenance Checks - AirworthinessLimitations Section Part 4, System EquipmentMaintenance Requirements - Amendment 2026",
+      "types_hint": [
+        "A380"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A380Time Limits / Maintenance Checks - Airworth",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0157"
+    },
+    {
+      "ref_number": "2026-0156",
+      "subject": "2026-07-31AIRBUS S.A.S.A380Time Limits / Maintenance Checks - AirworthinessLimitations Section Part 3, Certification MaintenanceRequirements - Amendment 2026-01",
+      "types_hint": [
+        "A380"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A380Time Limits / Maintenance Checks - Airworth",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0156"
+    },
+    {
+      "ref_number": "2026-0155",
+      "subject": "2026-07-31AIRBUS S.A.S.A380Time Limits / Maintenance Checks - AirworthinessLimitations Section Part 2, Damage TolerantAirworthiness Limitation Items - Amendment",
+      "types_hint": [
+        "A380"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A380Time Limits / Maintenance Checks - Airworth",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0155"
+    },
+    {
+      "ref_number": "2026-0154",
+      "subject": "2026-07-31AIRBUS S.A.S.A380Time Limits / Maintenance Checks - AirworthinessLimitations Section Part 1, Safe Life AirworthinessLimitations Items - Amendment CF-2",
+      "types_hint": [
+        "A380"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A380Time Limits / Maintenance Checks - Airworth",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0154"
+    },
+    {
+      "ref_number": "2026-0152",
+      "subject": "2026-07-30AIRBUS HELICOPTERS DEUTSCHLANDMBB-BK 117Air Conditioning - Vapor Cycle Air ConditioningSystem - Inspection 2026-01512026-07-30AIRBUS HELICOPTERS DEUTS",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERS DEUTSCHLANDMBB-BK 117Air Conditioning - V",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0152"
+    },
+    {
+      "ref_number": "2026-0151",
+      "subject": "2026-07-30AIRBUS HELICOPTERS DEUTSCHLANDMBB-BK 117Main Rotor Drive - Rotor Hub-Shaft - Inspection US-2026-15-052026-07-30TEXTRON AVIATION INC.300 (Super King Ai",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERS DEUTSCHLANDMBB-BK 117Main Rotor Drive - R",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0151"
+    },
+    {
+      "ref_number": "2026-0149",
+      "subject": "2026-07-28PILATUS AIRCRAFT LTDPC-24Integrated Modular Avionics - Primus APEX DFZBuild 6.0 Software - Modification 2026-01482026-07-28AIRBUS HELICOPTERSSA 330 /",
+      "types_hint": [],
+      "manufacturer_hint": "PILATUS AIRCRAFT LTDPC-24Integrated Modular Avionics - Primu",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0149"
+    },
+    {
+      "ref_number": "2026-0148",
+      "subject": "2026-07-28AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225Electrical Power - Direct Current Electrical MasterBox - Inspection BR-2026-07-012026-07-28EMBRAER S.A.ERJ 1",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225Electrical Power -",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0148"
+    },
+    {
+      "ref_number": "2026-0146",
+      "subject": "2026-07-24AIRBUS HELICOPTERSAS 350 / EC 130, AS 355Equipment / Furnishings - Mechanical DroppingControl - Inspection 2023-0148R12026-07-24AIRBUS HELICOPTERSSA 3",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERSAS 350 / EC 130, AS 355Equipment / Furnish",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0146"
+    },
+    {
+      "ref_number": "2023-0148",
+      "subject": "R12026-07-24AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225Main Rotor Drive - Main Gearbox - ReplacementPlacards and Markings - ENG1 Training Idle Switch -Installati",
+      "types_hint": [],
+      "manufacturer_hint": "AIRBUS HELICOPTERSSA 330 / AS 332 / EC 225Main Rotor Drive -",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2023-0148"
+    },
+    {
+      "ref_number": "2026-0145",
+      "subject": "2026-07-23DASSAULT AVIATIONFalcon 7XFlight Controls - Maintenance and Avionics InterfaceComputer Software - Modification Airplane FlightManual - Amendment 2026-",
+      "types_hint": [],
+      "manufacturer_hint": "DASSAULT AVIATIONFalcon 7XFlight Controls - Maintenance and",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0145"
+    },
+    {
+      "ref_number": "2026-0147",
+      "subject": "2026-07-23GUIMBAL, HELICOPTERESCABRIMain Rotor Drive - Main Rotor Mast - Inspection 2026-01442026-07-21AIRBUS S.A.S.A320, A321Stabilizers - Rudder Outer Skin -",
+      "types_hint": [
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "GUIMBAL, HELICOPTERESCABRIMain Rotor Drive - Main Rotor Mast",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0147"
+    },
+    {
+      "ref_number": "2026-0144",
+      "subject": "2026-07-21AIRBUS S.A.S.A320, A321Stabilizers - Rudder Outer Skin - Inspection 2026-01422026-07-20AIRBUS S.A.S.A318, A319, A320, A321Wings - Main Landing Gear Su",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A320, A321Stabilizers - Rudder Outer Skin - Ins",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0144"
+    },
+    {
+      "ref_number": "2026-0142",
+      "subject": "2026-07-20AIRBUS S.A.S.A318, A319, A320, A321Wings - Main Landing Gear Support Rib 5 -Inspections 2026-01432026-07-20ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 10",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A318, A319, A320, A321Wings - Main Landing Gear",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0142"
+    },
+    {
+      "ref_number": "2026-0143",
+      "subject": "2026-07-20ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 1000, TRENT 7000Engine - Intermediate Pressure Compressor ShaftAssembly / Front Air Seal - Inspection",
+      "types_hint": [],
+      "manufacturer_hint": "ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 1000, TRENT 7000Eng",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0143"
+    },
+    {
+      "ref_number": "2026-0164",
+      "subject": "2026-08-13ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGRB211 TRENT 900Time Limits / Maintenance Checks - EngineTime Limits Manual - Amendment 2016-0193R22026-08-13ROLLS-R",
+      "types_hint": [],
+      "manufacturer_hint": "ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGRB211 TRENT 900Time Limit",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0164"
+    },
+    {
+      "ref_number": "2016-0193",
+      "subject": "R22026-08-13ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGRB211 TRENT 900Engine - Low Pressure Turbine Exhaust Caseand Support Assembly (Tail Bearing Housing) -Inspection",
+      "types_hint": [],
+      "manufacturer_hint": "ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGRB211 TRENT 900Engine - L",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2016-0193"
+    },
+    {
+      "ref_number": "2026-0163",
+      "subject": "2026-08-12AIRBUS S.A.S.A350Navigation - GLU-2100 Global NavigationSatellite System Clock Oscillator - OperationalLimitation 2026-0117R12026-08-12ROLLS-ROYCE DEU",
+      "types_hint": [
+        "A350"
+      ],
+      "manufacturer_hint": "AIRBUS S.A.S.A350Navigation - GLU-2100 Global NavigationSate",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0163"
+    },
+    {
+      "ref_number": "2026-0117",
+      "subject": "R12026-08-12ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 1000Engine - Low Pressure Turbine Discs -Inspection 2026-01622026-08-11DEUTSCHE AIRCRAFT GmbHDornier 328Fli",
+      "types_hint": [],
+      "manufacturer_hint": "ROLLS-ROYCE DEUTSCHLAND Ltd & Co KGTRENT 1000Engine - Low Pr",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0117"
+    },
+    {
+      "ref_number": "2026-0162",
+      "subject": "2026-08-11DEUTSCHE AIRCRAFT GmbHDornier 328Flight Controls - Roll Spoiler Actuator Mount -Inspection 2026-0145R12026-08-11DASSAULT AVIATIONFalcon 7XFlight Contr",
+      "types_hint": [],
+      "manufacturer_hint": "DEUTSCHE AIRCRAFT GmbHDornier 328Flight Controls - Roll Spoi",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0162"
+    },
+    {
+      "ref_number": "2026-0145",
+      "subject": "R12026-08-11DASSAULT AVIATIONFalcon 7XFlight Controls - Maintenance and AvionicsInterface Computer Software - Modification CF-2026-392026-08-11BELL TEXTRON CANA",
+      "types_hint": [],
+      "manufacturer_hint": "DASSAULT AVIATIONFalcon 7XFlight Controls - Maintenance and",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0145"
+    },
+    {
+      "ref_number": "2024-0004",
+      "subject": "R12026-08-10LEONARDO S.p.A. HELICOPTERSA109/A119Fuselage - Centre Fuselage Frame Assembly -Inspection / Repair / Modification US-2026-14-032026-08-10GENERAL ELE",
+      "types_hint": [],
+      "manufacturer_hint": "LEONARDO S.p.A. HELICOPTERSA109/A119Fuselage - Centre Fusela",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2024-0004"
+    },
+    {
+      "ref_number": "2026-0161",
+      "subject": "2026-08-07CFM INTERNATIONALCFM56-7BTime Limits / Maintenance Checks -Airworthiness Limitations Section - Amendment US-2026-15-112026-08-07BOEING737Fuselage - Fu",
+      "types_hint": [],
+      "manufacturer_hint": "CFM INTERNATIONALCFM56-7BTime Limits / Maintenance Checks -A",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0161"
+    },
+    {
+      "ref_number": "2026-0128",
+      "subject": "2026-08-03SAFRAN HELICOPTER ENGINESARRIUS 1[Correction] Engine Fuel & Control -Hydromechanical Metering Unit - Replacement 2026-01582026-08-03DASSAULT AVIATIONF",
+      "types_hint": [],
+      "manufacturer_hint": "SAFRAN HELICOPTER ENGINESARRIUS 1[Correction] Engine Fuel &",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0128"
+    },
+    {
+      "ref_number": "2026-0158",
+      "subject": "2026-08-03DASSAULT AVIATIONFan Jet Falcon, MystÃ¨re-Falcon 20, MystÃ¨re-Falcon 20GF/200Fire Protection - Pyrotechnical Cartridge -Inspection",
+      "types_hint": [],
+      "manufacturer_hint": "DASSAULT AVIATIONFan Jet Falcon, MystÃ¨re-Falcon 20, MystÃ¨r",
+      "regulator": "EASA",
+      "ref_type": "AD",
+      "source_url": "https://ad.easa.europa.eu/ad/2026-0158"
+    },
+    {
+      "ref_number": "2026-16874",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A330"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/19/2026-16874.html",
+      "issue_date": "2026-08-19",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16641",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/14/2026-16641.html",
+      "issue_date": "2026-08-14",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16640",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/14/2026-16640.html",
+      "issue_date": "2026-08-14",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16567",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A330",
+        "A340"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16567.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16566",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A318",
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16566.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16507",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16507.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16506",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16506.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16505",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16505.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16047",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/06/2026-16047.html",
+      "issue_date": "2026-08-06",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15585",
+      "subject": "Requirements for Interference-Tolerant Radio Altimeter Systems",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/31/2026-15585.html",
+      "issue_date": "2026-07-31",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15455",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A330"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/30/2026-15455.html",
+      "issue_date": "2026-07-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15411",
+      "subject": "Airworthiness Directives; Airbus Canada Limited Partnership (Type Certificate Previously Held by C Series Aircraft Limited Partnership (CSALP); Bombardier, Inc.) Airplanes",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/30/2026-15411.html",
+      "issue_date": "2026-07-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15410",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A330"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/30/2026-15410.html",
+      "issue_date": "2026-07-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15374",
+      "subject": "Airworthiness Directives; Airbus Helicopters Deutschland GmbH (AHD) Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/30/2026-15374.html",
+      "issue_date": "2026-07-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15308",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/29/2026-15308.html",
+      "issue_date": "2026-07-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15283",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/29/2026-15283.html",
+      "issue_date": "2026-07-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15073",
+      "subject": "Airworthiness Directives; Airbus Canada Limited Partnership (Type Certificate Previously Held by C Series Aircraft Limited Partnership (CSALP); Bombardier, Inc.) Airplanes",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/27/2026-15073.html",
+      "issue_date": "2026-07-27",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-14886",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/23/2026-14886.html",
+      "issue_date": "2026-07-23",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13983",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A319",
+        "A320",
+        "A321"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13983.html",
+      "issue_date": "2026-07-10",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13982",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A319",
+        "A320",
+        "A321",
+        "A330",
+        "A350",
+        "A380"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13982.html",
+      "issue_date": "2026-07-10",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13979",
+      "subject": "Airworthiness Directives; CFM International, S.A. Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13979.html",
+      "issue_date": "2026-07-10",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13977",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/10/2026-13977.html",
+      "issue_date": "2026-07-10",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13655",
+      "subject": "Airworthiness Directives; Airbus Canada Limited Partnership (Type Certificate Previously Held by C Series Aircraft Limited Partnership (CSALP); Bombardier, Inc.) Airplanes",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/07/2026-13655.html",
+      "issue_date": "2026-07-07",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13540",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/06/2026-13540.html",
+      "issue_date": "2026-07-06",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13538",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/06/2026-13538.html",
+      "issue_date": "2026-07-06",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13368",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/02/2026-13368.html",
+      "issue_date": "2026-07-02",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13162",
+      "subject": "Airworthiness Directives; Transport and Commuter Category Airplanes",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13162.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13064",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13064.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13063",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13063.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13062",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A321"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13062.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13060",
+      "subject": "Airworthiness Directives; Airbus Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13060.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13034",
+      "subject": "Airworthiness Directives; Airbus Helicopters Deutschland GmbH (AHD) Helicopters",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13034.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13024",
+      "subject": "Airworthiness Directives; Airbus SAS Airplanes",
+      "types_hint": [
+        "A330"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13024.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13023",
+      "subject": "Airworthiness Directives; Airbus Canada Limited Partnership (Type Certificate Previously Held by C Series Aircraft Limited Partnership (CSALP); Bombardier, Inc.) Airplanes",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13023.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-17056",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "787-8"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/20/2026-17056.html",
+      "issue_date": "2026-08-20",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16795",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/18/2026-16795.html",
+      "issue_date": "2026-08-18",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16504",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "767-300"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16504.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16389",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "787-10",
+        "787-8",
+        "787-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/12/2026-16389.html",
+      "issue_date": "2026-08-12",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16157",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "787-10",
+        "787-8",
+        "787-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/07/2026-16157.html",
+      "issue_date": "2026-08-07",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15936",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737-8",
+        "737-8200",
+        "737-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/06/2026-15936.html",
+      "issue_date": "2026-08-06",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15532",
+      "subject": "Airworthiness Directives; CFM International, S.A. Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/31/2026-15532.html",
+      "issue_date": "2026-07-31",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15239",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "777",
+        "777-200",
+        "777-300ER"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/28/2026-15239.html",
+      "issue_date": "2026-07-28",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15192",
+      "subject": "Perchloroethylene (PCE) and Carbon Tetrachloride (CTC); Regulation under the Toxic Substances Control Act (TSCA); Compliance Date Extensions",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/28/2026-15192.html",
+      "issue_date": "2026-07-28",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-15072",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737-8",
+        "737-8200",
+        "737-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/27/2026-15072.html",
+      "issue_date": "2026-07-27",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-14478",
+      "subject": "Airworthiness Directives; General Electric Company Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/17/2026-14478.html",
+      "issue_date": "2026-07-17",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-14090",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737-8",
+        "737-8200",
+        "737-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/13/2026-14090.html",
+      "issue_date": "2026-07-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13869",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "747-400"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/09/2026-13869.html",
+      "issue_date": "2026-07-09",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13475",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "787-10",
+        "787-8",
+        "787-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/02/2026-13475.html",
+      "issue_date": "2026-07-02",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13474",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "747-8F"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/02/2026-13474.html",
+      "issue_date": "2026-07-02",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13440",
+      "subject": "Enabling Supersonic Overland Flight",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/02/2026-13440.html",
+      "issue_date": "2026-07-02",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13280",
+      "subject": "Special Conditions: AMAC Aerospace, The Boeing Company Model 747- 8 Airplane; Side-Facing Seats",
+      "types_hint": [
+        "747",
+        "747-8"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/01/2026-13280.html",
+      "issue_date": "2026-07-01",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13241",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737-8",
+        "737-8200",
+        "737-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/01/2026-13241.html",
+      "issue_date": "2026-07-01",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13218",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "757",
+        "767"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13218.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13217",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "787-10",
+        "787-8",
+        "787-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13217.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13216",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "747-8",
+        "777"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13216.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13208",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737-8",
+        "737-8200",
+        "737-9"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13208.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13207",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "747-100"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13207.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13206",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "737",
+        "737-200"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13206.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13205",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "707",
+        "717",
+        "727"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13205.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13129",
+      "subject": "Airworthiness Directives; The Boeing Company Airplanes",
+      "types_hint": [
+        "747-400"
+      ],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/30/2026-13129.html",
+      "issue_date": "2026-06-30",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-12922",
+      "subject": "Transport Airplane and Propulsion Certification Modernization",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/26/2026-12922.html",
+      "issue_date": "2026-06-26",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16956",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/20/2026-16956.html",
+      "issue_date": "2026-08-20",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16705",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/17/2026-16705.html",
+      "issue_date": "2026-08-17",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16636",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/14/2026-16636.html",
+      "issue_date": "2026-08-14",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16502",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/13/2026-16502.html",
+      "issue_date": "2026-08-13",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-14882",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/23/2026-14882.html",
+      "issue_date": "2026-07-23",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-14281",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/15/2026-14281.html",
+      "issue_date": "2026-07-15",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13541",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/06/2026-13541.html",
+      "issue_date": "2026-07-06",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13481",
+      "subject": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/07/02/2026-13481.html",
+      "issue_date": "2026-07-02",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-16655",
+      "subject": "Airworthiness Directives; Pratt & Whitney Canada Corp. Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/08/14/2026-16655.html",
+      "issue_date": "2026-08-14",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    },
+    {
+      "ref_number": "2026-13058",
+      "subject": "Airworthiness Directives; Pratt & Whitney Canada Corp. Engines",
+      "types_hint": [],
+      "source_url": "https://www.federalregister.gov/documents/full_text/html/2026/06/29/2026-13058.html",
+      "issue_date": "2026-06-29",
+      "regulator": "FAA",
+      "ref_type": "AD"
+    }
+  ]
+}
