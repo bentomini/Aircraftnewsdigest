@@ -63,6 +63,12 @@ enters the report.**
 **Multi-agent pipeline orchestrated by one slash command** — chosen because the verification
 gate must be *structural*, not merely instructed:
 
+0. **Regulator sweep** (`tools/regulator_sweep.py`): deterministic. Enumerates every AD EASA and
+   the FAA published in the window, from the agencies' own listings (EASA biweekly PDF, Federal
+   Register API) rather than from search. Merged into the scanner's leads by
+   `tools/merge_leads.py`, where the agency's reference number wins any collision. Emits
+   **UNVERIFIED leads only** — it improves *recall*, never confidence. → `00_sweep.json`,
+   `01b_merged.json`.
 1. **Orchestrator (slash command):** computes runtime date, loads fleet config, sets lookback
    window, dispatches stages.
 2. **Scanner subagent(s):** run many targeted queries across source tiers; output candidate
@@ -82,9 +88,21 @@ gate must be *structural*, not merely instructed:
 7. **Writer subagent:** receives ONLY `05_final.json`, emits the Markdown. Has **no web/fetch
    tools** — it physically cannot cite a reference the pipeline didn't supply. Renders a clickable
    `[source]` link on every reference.
+8. **Coverage ledger** (`tools/coverage_ledger.py`): deterministic. Diffs the sweep against what
+   actually reached the digest and buckets every enumerated AD as `reported`, `suppressed`,
+   `excluded` or `unaccounted`. A fleet-matching AD that reached no digest lands in `unaccounted`,
+   exits non-zero, and surfaces as `[RECALL GAP: N]` in the digest, the HTML and the email subject.
+   An absent or unparseable signal fails **loud** — absence of evidence never becomes exclusion.
+   → `12_coverage.json`.
 
 **A reference keeps `[VERIFIED]` only if BOTH the Verifier and the independent Auditor confirmed it
 from the live primary source, and both deterministic gates passed.**
+
+**The sweep is a recall gate, never a confidence path.** Every swept AD enters `UNVERIFIED` with a
+null `primary_source_url`, so the Verifier, the Auditor and both deterministic gates remain the only
+route to `[VERIFIED]`. Added because the pipeline previously could not distinguish *"no AD was
+issued"* from *"we didn't find it"* — EASA publishes ADs as PDFs behind a JS portal that search
+engines index poorly, and six fleet-relevant ADs were missed over the first two months.
 
 ### What makes the gates enforced, not instructed
 - **Context isolation:** the writer never sees unverified data.
@@ -93,6 +111,10 @@ from the live primary source, and both deterministic gates passed.**
   `fetched_text_snippet`; records missing them are auto-dropped before the writer runs.
 - **Provenance allowlist:** `primary_source_url` must match a regulator/OEM domain allowlist,
   so trade-press URLs can never satisfy a `[VERIFIED]` claim.
+- **Three distinct health signals, never overloaded:** `[DEGRADED]` = verification impaired, do not
+  trust this digest; `recall_partial` = enumeration was incomplete (e.g. the EASA biweekly for the
+  tail of the window is published in arrears), so this may be missing items; `[RECALL GAP: N]` =
+  enumeration succeeded and found N fleet-matching ADs the digest never reported.
 - **Independent re-fetch:** a separate auditor must re-confirm the cited text from the live source;
   a single agent's hallucination cannot survive two independent fetches + two deterministic gates.
 
