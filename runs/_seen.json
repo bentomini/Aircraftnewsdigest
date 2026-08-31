@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-16",
+  "updated": "2026-08-31",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -340,9 +340,9 @@
     },
     "AD:2025-0274": {
       "first_reported": "2026-08-07",
-      "last_reported": "2026-08-07",
+      "last_reported": "2026-08-31",
       "last_version": "R1",
-      "headline": "EASA AD 2025-0274R1 (Fire Panel Inspection) covers CX's A321neo; BALPA renews warning after continued fire-switch shutdown reports"
+      "headline": "EASA proposes fire-switch ICP inspection for A350-900/-1000 after in-flight engine shutdown; narrowbody fix already in force"
     },
     "NPRM:FR DOC. 2026-13024 (DOCKET FAA-2026-7201; PROJECT IDENTIFIER MCAI-2025-01290-T)": {
       "first_reported": "2026-08-07",
@@ -421,6 +421,48 @@
       "last_reported": "2026-08-16",
       "last_version": "2026-07-30",
       "headline": "FAA final AD 2026-15-10 requires repetitive sloping-rib inspections on A330neo (A330-841/-941), effective Sept 3"
+    },
+    "NPRM:2026-16705": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-08-17",
+      "headline": "FAA proposes AD for Trent XWB-84 front bearing housing oil feed tube (A350-900)"
+    },
+    "PAD:PAD 26-087": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-07-21",
+      "headline": "EASA proposes fire-switch ICP inspection for A350-900/-1000 after in-flight engine shutdown; narrowbody fix already in force"
+    },
+    "AD:2026-17551": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-08-27",
+      "headline": "FAA supersedes A320-family MLG door actuator AD, now requires replacement (incl. A321neo)"
+    },
+    "EVENT:malaysia-airlines-a330-300-rejects-takeoff-at-narita-after-engine-bang-smoke-flames": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-08-20",
+      "headline": "Malaysia Airlines A330-300 rejects takeoff at Narita after engine bang/smoke/flames"
+    },
+    "AD:2026-17582": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-08-28",
+      "headline": "FAA AD mandates action on Trent 7000 lubrication/scavenge oil pump IFSD risk (read-across)"
+    },
+    "NPRM:2026-16956": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-08-20",
+      "headline": "FAA proposes to supersede Trent 7000 HPT blade AD with tighter time limits (read-across)"
+    },
+    "NPRM:2026-17056": {
+      "first_reported": "2026-08-31",
+      "last_reported": "2026-08-31",
+      "last_version": "2026-08-20",
+      "headline": "FAA proposes 787-8 forward cargo door split-frame material inspection (read-across)"
     }
   }
 }

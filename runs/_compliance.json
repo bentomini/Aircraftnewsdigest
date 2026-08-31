@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-16",
+  "updated": "2026-08-31",
   "ads": {
     "AD:FAA AD 2026-12-06": {
       "effective_date": "2026-06-30",
@@ -233,6 +233,14 @@
       "url": "https://www.govinfo.gov/content/pkg/FR-2026-07-30/html/2026-15410.htm",
       "headline": "FAA final AD 2026-15-10 requires repetitive sloping-rib inspections on A330neo (A330-841/-941), effective Sept 3",
       "recorded": "2026-08-16"
+    },
+    "AD:2025-0274": {
+      "effective_date": "2026-07-14",
+      "ref_type": "AD",
+      "ref_number": "2025-0274",
+      "url": "https://ad.easa.europa.eu/ad/2025-0274R1",
+      "headline": "EASA proposes fire-switch ICP inspection for A350-900/-1000 after in-flight engine shutdown; narrowbody fix already in force",
+      "recorded": "2026-08-31"
     }
   }
 }
