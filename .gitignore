@@ -62,9 +62,9 @@ SESSION_LOG.md
 runs/_sample/
 
 # =============================================================================
-# Test suite — run locally only, not needed for the weekly cloud routine
+# Test suite — TRACKED on purpose: the gates are the point of this project, so the
+# proofs ship with them. Do NOT re-add a tools/test_*.py ignore.
 # =============================================================================
-tools/test_*.py
 
 # =============================================================================
 # OS / editor noise
