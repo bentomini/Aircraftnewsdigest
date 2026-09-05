@@ -522,5 +522,85 @@ class TestUnaccountedRecallGap(unittest.TestCase):
         self.assertEqual(payload["unaccounted_refs"], [])
 
 
+# ----------------------------------------------------------------------------
+# Writer-completeness gate. The deterministic HTML renderer builds from the same
+# records the Markdown writer receives, so a record the writer silently omits
+# makes the two artifacts disagree about what the digest contains. The writer is
+# an LLM and cannot be trusted by instruction alone — check it mechanically.
+# ----------------------------------------------------------------------------
+def _rec(rid, refs=None, headline="Some headline"):
+    return {"id": rid, "headline": headline,
+            "references": [{"ref_number": n} for n in (refs or [])]}
+
+
+class TestWriterDroppedRecords(unittest.TestCase):
+    def test_all_records_present_reports_nothing(self):
+        md = ("**Alpha event on the wing spar happened today** — A350.\n"
+              "**Bravo event on the oil pump happened today** — Trent.")
+        count, ids = f.compute_dropped_records(
+            md, [_rec("a", [], "Alpha event on the wing spar happened today"),
+                 _rec("b", [], "Bravo event on the oil pump happened today")])
+        self.assertEqual(count, 0)
+        self.assertEqual(ids, [])
+
+    def test_omitted_record_is_detected(self):
+        md = "**Alpha event on the wing spar happened today** — A350."
+        count, ids = f.compute_dropped_records(
+            md, [_rec("a", [], "Alpha event on the wing spar happened today"),
+                 _rec("b", [], "Bravo event on the oil pump happened today")])
+        self.assertEqual(count, 1)
+        self.assertEqual(ids, ["b"])
+
+    def test_note_naming_the_reference_does_not_count_as_rendered(self):
+        # Regression: the 2026-08-31 digest omitted two records but carried a note
+        # explaining the omission that NAMED both reference numbers. Matching on
+        # reference numbers scored them "present" — the exact false negative this
+        # gate exists to prevent. Only the headline proves an item was rendered.
+        md = ("**Alpha event on the wing spar happened today** — A350.\n\n"
+              "*(Two peer-type proposed rules — FAA NPRM 2026-16956 and FAA NPRM "
+              "2026-17056 — are excluded here: no placement exists for them.)*")
+        count, ids = f.compute_dropped_records(
+            md, [_rec("a", [], "Alpha event on the wing spar happened today"),
+                 _rec("hpt", ["2026-16956"], "FAA proposes to supersede Trent 7000 HPT blade AD"),
+                 _rec("lfcd", ["2026-17056"], "FAA proposes 787-8 forward cargo door inspection")])
+        self.assertEqual(count, 2)
+        self.assertEqual(ids, ["hpt", "lfcd"])
+
+    def test_trailing_dedup_tag_after_headline_still_counts_as_present(self):
+        md = "**Alpha event on the wing spar happened today [UPDATED since 2026-08-16]** — A350."
+        count, ids = f.compute_dropped_records(
+            md, [_rec("a", [], "Alpha event on the wing spar happened today")])
+        self.assertEqual(count, 0)
+
+    def test_whitespace_and_case_differences_tolerated(self):
+        md = "**alpha  event on the   wing spar\nhappened today** — A350."
+        count, ids = f.compute_dropped_records(
+            md, [_rec("a", [], "Alpha event on the wing spar happened today")])
+        self.assertEqual(count, 0)
+
+    def test_no_records_supplied_is_not_a_failure(self):
+        count, ids = f.compute_dropped_records("anything", [])
+        self.assertEqual(count, 0)
+        self.assertEqual(ids, [])
+
+    def test_dropped_records_surface_in_health(self):
+        with tempfile.TemporaryDirectory() as d:
+            md = os.path.join(d, "digest.md")
+            recs = os.path.join(d, "records.json")
+            health = os.path.join(d, "health.json")
+            with open(md, "w", encoding="utf-8") as fh:
+                fh.write("**Kept event on the wing spar happened today** — A350.\n\n"
+                         "**Sources & Confidence:** 1 item\n")
+            with open(recs, "w", encoding="utf-8") as fh:
+                json.dump({"records": [
+                    _rec("kept", [], "Kept event on the wing spar happened today"),
+                    _rec("lost", [], "Lost event on the oil pump happened today")]}, fh)
+            f.main(["--infile", md, "--in-place", "--records", recs, "--health-out", health])
+            with open(health, encoding="utf-8") as fh:
+                payload = json.load(fh)
+        self.assertEqual(payload["dropped_count"], 1)
+        self.assertEqual(payload["dropped_ids"], ["lost"])
+
+
 if __name__ == "__main__":
     unittest.main()

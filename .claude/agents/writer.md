@@ -44,10 +44,16 @@ Omit a section if it has no items. Within each section, order by item_confidence
 (VERIFIED first), then by event_date (newest first).
 
 **On the Horizon routing:** a record whose references are ALL of `ref_type` `NPRM` or `PAD`
-is a proposed rule, not an active directive. Do NOT place it in the three sections above —
-render it under `### On the Horizon` inside `## Standing Watch` (see below), and tag each such
-reference `[PROPOSED — not yet final]` instead of a confidence tag colour. All other records
-group by `category` as usual.
+is a proposed rule, not an active directive. **Route it to `### On the Horizon` ONLY if its
+`category` is `fleet`** — Standing Watch is fleet-scoped, so a `read_across` or `industry`
+proposal is NOT promoted into it. Instead it stays in its own core section (`## Read-Across`
+or `## Major Industry Events`), where it is still tagged `[PROPOSED — not yet final]` rather
+than a confidence tag. All other records group by `category` as usual.
+
+This mirrors `is_horizon()` in `tools/render_publication.py` exactly, and the two must not
+diverge: the deterministic renderer builds the HTML from the same records you build the
+Markdown from, so any difference in this rule makes the published HTML and the Markdown
+disagree about which items the digest contains.
 
 Per item:
 - **{headline}** — {types_affected joined}, {event_date}.
@@ -97,7 +103,8 @@ The proposed-rule (NPRM/PAD) records routed here in Step 2. One item each, same 
 a core item (headline, what happened, technical detail with `[source]` link), but tag the
 reference `[PROPOSED — not yet final]`. Show at most `standing_watch.horizon_max` (default 3);
 if more exist, render the 3 nearest-dated and note "(+N more proposed rules this period)". Omit
-the sub-block if there are no NPRM/PAD records.
+the sub-block if no `fleet`-category NPRM/PAD records were routed here — peer-type and industry
+proposals stay in their own core section and never appear in this sub-block.
 
 ### Engineer's Corner
 From `08_corner.json`. If `corner` is non-null, render:

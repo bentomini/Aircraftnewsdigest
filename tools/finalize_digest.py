@@ -300,6 +300,36 @@ def finalize(text, config_path="config/fleet.yaml"):
     return text
 
 
+MAX_DROPPED_LISTED = 10
+HEADLINE_MATCH_CHARS = 40
+
+
+def _norm_text(s):
+    return re.sub(r"\s+", " ", (s or "")).strip().lower()
+
+
+def compute_dropped_records(raw_markdown, records):
+    """Records the writer received but never rendered. Returns (count, ids).
+
+    The deterministic HTML renderer builds from the same records the writer gets,
+    so a silently omitted record makes the Markdown and the published HTML
+    disagree about what the digest contains. Run this against the writer's RAW
+    output, before suppress_readacross() legitimately removes a whole section.
+
+    Matches on the HEADLINE, not on reference numbers. A reference number can
+    appear in prose that *explains why an item was left out* — a note reading
+    "NPRM 2026-16956 ... excluded here" would otherwise satisfy a check meant to
+    prove the item was included. Only a rendered item carries its headline.
+    """
+    haystack = _norm_text(raw_markdown)
+    missing = []
+    for rec in records or []:
+        needle = _norm_text(rec.get("headline"))[:HEADLINE_MATCH_CHARS]
+        if not needle or needle not in haystack:
+            missing.append(rec.get("id") or "?")
+    return len(missing), missing[:MAX_DROPPED_LISTED]
+
+
 def main(argv=None):
     for stream in (sys.stdout, sys.stderr):
         try:
@@ -343,6 +373,12 @@ def main(argv=None):
     preflight = _load_json(args.preflight, "preflight")
     payload = _load_json(args.records, "records")
     records = (payload or {}).get("records", []) if isinstance(payload, dict) else (payload or [])
+    dropped_count, dropped_ids = compute_dropped_records(text, records)
+    if dropped_count:
+        print("[finalise] WRITER DROPPED %d record(s) the HTML will still contain — "
+              "Markdown and HTML now disagree: %s"
+              % (dropped_count, ", ".join(dropped_ids)), file=sys.stderr)
+
     degraded, reason = compute_degraded(preflight, records)
     if degraded:
         fixed = insert_degraded_banner(fixed, reason)
@@ -381,6 +417,8 @@ def main(argv=None):
                        "recall_partial": recall, "recall_reason": recall_reason,
                        "unaccounted_count": unaccounted_count,
                        "unaccounted_refs": unaccounted_refs,
+                       "dropped_count": dropped_count,
+                       "dropped_ids": dropped_ids,
                        "inputs": {"preflight": preflight is not None,
                                   "records": payload is not None}}, fh2)
 
