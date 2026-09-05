@@ -292,9 +292,14 @@ body{margin:0;background:var(--paper);color:var(--body);
   text-transform:uppercase;color:var(--accent);font-weight:600;}
 .mast .ttl{font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:600;margin:6px 0 0;}
 .mast .sub{font-family:'Inter',Arial,sans-serif;font-size:12px;color:#aebfd6;margin-top:6px;}
-h2.sect{font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);border-bottom:2px solid var(--accent);
-  margin:26px 26px 4px;padding-bottom:6px;}
+h2.sect{font-family:'Inter',Arial,sans-serif;font-size:17px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:#fff;margin:26px 0 8px;padding:9px 26px 9px 20px;
+  border-left:6px solid rgba(0,0,0,.28);background:var(--ink);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+h2.sect.s-fleet{background:#0E7C6B;}
+h2.sect.s-read{background:#B26A00;}
+h2.sect.s-industry{background:#6B4E9E;}
+h2.sect.s-watch{background:#5a6470;}
 .item{padding:12px 26px 18px;border-bottom:1px solid #eef1f5;}
 .itemtbl{width:100%;} .itemtbl td.txt{vertical-align:top;padding-right:14px;}
 .itemtbl td.imgcell{vertical-align:top;width:160px;}
@@ -329,16 +334,17 @@ FONT_LINK = ('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
              'family=Inter:wght@400;600;700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;'
              'family=Source+Serif+4:opsz,wght@8..60,400&amp;display=swap">')
 
-SECTION_TITLES = [("fleet", "Directly Fleet-Relevant"),
-                  ("read_across", "Read-Across (Peer Types)"),
-                  ("industry", "Major Industry Events")]
+SECTION_TITLES = [("fleet", "Directly Fleet-Relevant", "s-fleet"),
+                  ("read_across", "Read-Across (Peer Types)", "s-read"),
+                  ("industry", "Major Industry Events", "s-industry")]
 
 
-def render_section(title, records, images):
+def render_section(title, records, images, css_class=""):
     if not records:
         return ""
     items = "\n".join(render_item(r, images.get(r.get("id"))) for r in order_records(records))
-    return '<h2 class="sect">%s</h2>\n%s' % (html_escape(title), items)
+    cls = ("sect " + css_class).strip()
+    return '<h2 class="%s">%s</h2>\n%s' % (cls, html_escape(title), items)
 
 
 def render_standing_watch(radar, horizon_records, corner, images):
@@ -352,7 +358,7 @@ def render_standing_watch(radar, horizon_records, corner, images):
     if not (radar_html or horizon_html or corner_html):
         return ""
     inner = "\n".join(x for x in [radar_html, horizon_html, corner_html] if x)
-    return ('<h2 class="sect">Standing Watch</h2>\n'
+    return ('<h2 class="sect s-watch">Standing Watch</h2>\n'
             '<p class="watch-intro">Forward-looking and background items — not this week\'s '
             'verified incident intelligence.</p>\n<div class="watch">%s</div>' % inner)
 
@@ -365,10 +371,10 @@ def render_document(bundle):
 
     core_shown = []
     sections = []
-    for key, title in SECTION_TITLES:
+    for key, title, css_class in SECTION_TITLES:
         recs = by_cat.get(key, [])
         core_shown.extend(recs)
-        sections.append(render_section(title, recs, images))
+        sections.append(render_section(title, recs, images, css_class))
 
     watch = render_standing_watch(bundle.get("radar", []), by_cat.get("_horizon", []),
                                   bundle.get("corner"), images)

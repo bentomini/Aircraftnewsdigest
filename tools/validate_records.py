@@ -233,11 +233,23 @@ def enforce_audit_reference(reference):
     if r.get("confidence") == "VERIFIED":
         audit = r.get("audit") or {}
         excerpt = (audit.get("excerpt") or "").strip()
+        status = audit.get("status")
         reasons = []
-        if audit.get("status") != "confirmed":
-            reasons.append("audit status %r != 'confirmed'" % audit.get("status"))
         if len(excerpt) < MIN_AUDIT_EXCERPT_LEN:
             reasons.append("missing/trivial independent-audit excerpt")
+        if status == "confirmed":
+            pass
+        elif status == "not_found" and audit.get("ref_number_found") is True:
+            # The auditor re-fetched the page and confirmed the reference number is
+            # really there — only the quote failed to match verbatim. Confidence in a
+            # reference rests on ref/rev/date/effectivity, so the reference keeps
+            # VERIFIED and enforce_audit_record drops the unbacked quote instead.
+            if not reasons:
+                violations.append(
+                    "ref %s keeps VERIFIED (audit): reference confirmed, quote not verbatim "
+                    "-> quote dropped" % r.get("ref_number", "?"))
+        else:
+            reasons.append("audit status %r != 'confirmed'" % status)
         if reasons:
             r["confidence"] = "UNVERIFIED"
             violations.append("ref %s downgraded VERIFIED->UNVERIFIED (audit): %s"
@@ -255,9 +267,13 @@ def enforce_audit_record(record):
         clean_refs.append(r)
     record["references"] = clean_refs
 
-    # A quote may only survive if a reference from its own document remained VERIFIED.
+    # A quote may only survive if a reference from its own document remained VERIFIED
+    # *and* the auditor confirmed that document's quoted text. A reference kept VERIFIED
+    # on ref-number confirmation alone (audit status 'not_found') does not back a quote.
     surviving = {r.get("primary_source_domain")
-                 for r in clean_refs if r.get("confidence") == "VERIFIED"}
+                 for r in clean_refs
+                 if r.get("confidence") == "VERIFIED"
+                 and (r.get("audit") or {}).get("status") == "confirmed"}
     surviving.discard(None)
     kept_quotes = []
     for q in record.get("quotes", []):

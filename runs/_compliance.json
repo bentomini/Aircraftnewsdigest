@@ -241,6 +241,22 @@
       "url": "https://ad.easa.europa.eu/ad/2025-0274R1",
       "headline": "EASA proposes fire-switch ICP inspection for A350-900/-1000 after in-flight engine shutdown; narrowbody fix already in force",
       "recorded": "2026-08-31"
+    },
+    "AD:2026-17551": {
+      "effective_date": "2026-10-01",
+      "ref_type": "AD",
+      "ref_number": "2026-17551",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/08/27/2026-17551.html",
+      "headline": "FAA supersedes A320-family MLG door actuator AD, now requires replacement (incl. A321neo)",
+      "recorded": "2026-08-31"
+    },
+    "AD:2026-17582": {
+      "effective_date": "2026-10-02",
+      "ref_type": "AD",
+      "ref_number": "2026-17582",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/08/28/2026-17582.html",
+      "headline": "FAA AD mandates action on Trent 7000 lubrication/scavenge oil pump IFSD risk (read-across)",
+      "recorded": "2026-08-31"
     }
   }
 }
