@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-31",
+  "updated": "2026-09-07",
   "ads": {
     "AD:FAA AD 2026-12-06": {
       "effective_date": "2026-06-30",
@@ -257,6 +257,46 @@
       "url": "https://www.federalregister.gov/documents/full_text/html/2026/08/28/2026-17582.html",
       "headline": "FAA AD mandates action on Trent 7000 lubrication/scavenge oil pump IFSD risk (read-across)",
       "recorded": "2026-08-31"
+    },
+    "EAD:2026-0172-E": {
+      "effective_date": "2026-09-08",
+      "ref_type": "EAD",
+      "ref_number": "2026-0172-E",
+      "url": "https://ad.easa.europa.eu/ad/2026-0172-E",
+      "headline": "EASA emergency AD 2026-0172-E: Trent 700 oil-pump shear-neck defect, mandatory de-pairing on A330",
+      "recorded": "2026-09-07"
+    },
+    "AD:2026-17-09": {
+      "effective_date": "2026-09-18",
+      "ref_type": "AD",
+      "ref_number": "2026-17-09",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/09/03/2026-18055.html",
+      "headline": "FAA AD 2026-17-09: missing fastener chamfers on A350-1000 engine pylons",
+      "recorded": "2026-09-07"
+    },
+    "AD:2026-18-03": {
+      "effective_date": "2026-09-18",
+      "ref_type": "AD",
+      "ref_number": "2026-18-03",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/09/03/2026-18052.html",
+      "headline": "FAA AD 2026-18-03: A320-family main landing gear support rib 5 tool-mark damage, includes A321neo (NX)",
+      "recorded": "2026-09-07"
+    },
+    "AD:2026-15-02": {
+      "effective_date": "2026-09-01",
+      "ref_type": "AD",
+      "ref_number": "2026-15-02",
+      "url": "https://www.federalregister.gov/documents/full_text/html/2026/07/28/2026-15239.html",
+      "headline": "FAA AD 2026-15-02: repetitive fuel-tank bond-resistance checks on 777-300ER, effective 1 Sept 2026",
+      "recorded": "2026-09-07"
+    },
+    "EAD:2026-0173-E": {
+      "effective_date": "2026-09-08",
+      "ref_type": "EAD",
+      "ref_number": "2026-0173-E",
+      "url": "https://ad.easa.europa.eu/ad/2026-0173-E",
+      "headline": "Companion EASA emergency AD 2026-0173-E: same oil-pump shear-neck finding on Trent 800 (777 'Classic')",
+      "recorded": "2026-09-07"
     }
   }
 }

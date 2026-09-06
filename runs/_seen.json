@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-31",
+  "updated": "2026-09-07",
   "seen": {
     "AD:FAA AD 2026-12-06": {
       "first_reported": "2026-06-27",
@@ -463,6 +463,60 @@
       "last_reported": "2026-08-31",
       "last_version": "2026-08-20",
       "headline": "FAA proposes 787-8 forward cargo door split-frame material inspection (read-across)"
+    },
+    "EAD:2026-0172-E": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-04",
+      "headline": "EASA emergency AD 2026-0172-E: Trent 700 oil-pump shear-neck defect, mandatory de-pairing on A330"
+    },
+    "AD:2026-18-51": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-05",
+      "headline": "EASA emergency AD 2026-0172-E: Trent 700 oil-pump shear-neck defect, mandatory de-pairing on A330"
+    },
+    "AD:2026-17-09": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-03",
+      "headline": "FAA AD 2026-17-09: missing fastener chamfers on A350-1000 engine pylons"
+    },
+    "AD:2026-18-03": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-03",
+      "headline": "FAA AD 2026-18-03: A320-family main landing gear support rib 5 tool-mark damage, includes A321neo (NX)"
+    },
+    "NPRM:FAA-2026-8795": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-03",
+      "headline": "On the Horizon — FAA NPRM: A320-family engine fire switch may self-release, including A321neo"
+    },
+    "AD:2026-15-02": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "Amendment 39-23414",
+      "headline": "FAA AD 2026-15-02: repetitive fuel-tank bond-resistance checks on 777-300ER, effective 1 Sept 2026"
+    },
+    "NPRM:FAA-2026-8781": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-08-17",
+      "headline": "On the Horizon — FAA NPRM: Trent XWB-84 front bearing housing oil-feed-tube modification"
+    },
+    "EAD:2026-0173-E": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-04",
+      "headline": "Companion EASA emergency AD 2026-0173-E: same oil-pump shear-neck finding on Trent 800 (777 'Classic')"
+    },
+    "AD:2026-18-52": {
+      "first_reported": "2026-09-07",
+      "last_reported": "2026-09-07",
+      "last_version": "2026-09-05",
+      "headline": "Companion EASA emergency AD 2026-0173-E: same oil-pump shear-neck finding on Trent 800 (777 'Classic')"
     }
   }
 }
