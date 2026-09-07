@@ -464,5 +464,108 @@ class TestEndToEndScenarios(unittest.TestCase):
             self.assertEqual(len(out["unaccounted"]), 1)
 
 
+# ----------------------------------------------------------------------------
+# Identifier-namespace mismatch (2026-09-07 run: RECALL GAP 5, all false).
+# The sweep identifies an FAA AD by its Federal Register DOCUMENT number
+# ("2026-18055"); the verifier records it by its FAA AD number ("2026-17-09")
+# or its docket ("FAA-2026-8795"). Those never compare equal, so three ADs that
+# were plainly in the digest were reported as unaccounted. The FR number is
+# present in the record all along — inside primary_source_url — so harvest it.
+# It worked the previous week only because the verifier happened to pick FR doc
+# numbers as ref_number; the ledger must not depend on that choice.
+# ----------------------------------------------------------------------------
+class TestReportedRefsFromSourceUrl(unittest.TestCase):
+    def _refs(self, ref_number, url):
+        return cl.reported_refs_from({"records": [{"references": [
+            {"ref_type": "AD", "ref_number": ref_number, "primary_source_url": url}]}]})
+
+    def test_fr_document_number_harvested_from_federalregister_url(self):
+        refs = self._refs(
+            "2026-17-09",
+            "https://www.federalregister.gov/documents/full_text/html/2026/09/03/2026-18055.html")
+        self.assertIn("2026-18055", refs)
+        self.assertIn("2026-17-09", refs)
+
+    def test_docket_style_ref_number_still_matches_via_url(self):
+        refs = self._refs(
+            "FAA-2026-8795",
+            "https://www.federalregister.gov/documents/full_text/html/2026/09/03/2026-18072.html")
+        self.assertIn("2026-18072", refs)
+
+    def test_govinfo_url_form_harvested(self):
+        refs = self._refs(
+            "2026-15-02",
+            "https://www.govinfo.gov/content/pkg/FR-2026-07-28/html/2026-15239.htm")
+        self.assertIn("2026-15239", refs)
+
+    def test_govinfo_date_segment_is_not_harvested_as_a_document_number(self):
+        # FR-2026-07-28 must not yield a YYYY-NNNN-shaped token; marking a
+        # genuinely missed AD as reported is the dangerous direction.
+        refs = self._refs(
+            "2026-15-02",
+            "https://www.govinfo.gov/content/pkg/FR-2026-07-28/html/2026-15239.htm")
+        self.assertNotIn("2026-0728", refs)
+        self.assertNotIn("2026-07-28", refs)
+
+    def test_url_date_path_segments_are_not_harvested(self):
+        refs = self._refs(
+            "2026-17-09",
+            "https://www.federalregister.gov/documents/full_text/html/2026/09/03/2026-18055.html")
+        self.assertEqual({r for r in refs if r.startswith("2026-")} & {"2026-0903", "2026-09"},
+                         set())
+
+    def test_easa_url_form_harvested(self):
+        refs = self._refs("2026-0172-E", "https://ad.easa.europa.eu/ad/2026-0172-E")
+        self.assertIn("2026-0172", refs)
+
+    def test_missing_url_is_harmless(self):
+        refs = self._refs("2026-18-51", None)
+        self.assertIn("2026-18-51", refs)
+
+    def test_ad_reported_only_via_url_classifies_as_reported(self):
+        records = {"records": [{"references": [
+            {"ref_type": "AD", "ref_number": "2026-17-09",
+             "primary_source_url":
+                 "https://www.federalregister.gov/documents/full_text/html/"
+                 "2026/09/03/2026-18055.html"}]}]}
+        reported = cl.reported_refs_from(records)
+        ad = {"ref_number": "2026-18055", "regulator": "FAA",
+              "types_hint": [], "manufacturer_hint": "Airbus SAS Airplanes"}
+        self.assertEqual(cl.classify(ad, reported, set(), ["a350"], ["airbus"]), "reported")
+
+
+# ----------------------------------------------------------------------------
+# Airbus Canada builds the A220 — a permanently out-of-scope product that shares
+# the tracked OEM's first word, exactly like Airbus Helicopters. Pratt & Whitney
+# Division Engines is NOT such a case: PW1100G powers the A321neo, so a P&W
+# engine AD with no model in its subject must stay loud.
+# ----------------------------------------------------------------------------
+class TestAirbusCanadaDivision(unittest.TestCase):
+    def test_airbus_canada_is_not_tracked(self):
+        self.assertIs(cl.manufacturer_is_tracked(
+            "Airbus Canada Limited Partnership (Type Certificate Previously Held by "
+            "C Series Aircraft Limited Partnership (CSALP); Bombardier, Inc.) Airplanes",
+            ["airbus sas", "boeing"]), False)
+
+    def test_airbus_canada_ad_is_excluded_not_unaccounted(self):
+        ad = {"ref_number": "2026-17967", "regulator": "FAA", "types_hint": [],
+              "manufacturer_hint": "Airbus Canada Limited Partnership (Type Certificate "
+                                   "Previously Held by C Series Aircraft Limited "
+                                   "Partnership (CSALP); Bombardier, Inc.) Airplanes"}
+        self.assertEqual(cl.classify(ad, set(), set(), ["a350"], ["airbus sas"]), "excluded")
+
+    def test_plain_airbus_sas_still_tracked(self):
+        self.assertIs(cl.manufacturer_is_tracked("Airbus SAS Airplanes", ["airbus sas"]), True)
+
+    def test_pratt_and_whitney_engines_stay_unaccounted(self):
+        # No model in the subject means the listing cannot prove it is out of
+        # scope. PW1100G is a fleet engine, so this must fail loud, not be
+        # silently excluded — absence of evidence is never exclusion.
+        ad = {"ref_number": "2026-18019", "regulator": "FAA", "types_hint": [],
+              "manufacturer_hint": "Pratt & Whitney Division Engines"}
+        self.assertEqual(cl.classify(ad, set(), set(), ["a321neo"], ["pratt & whitney"]),
+                         "unaccounted")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -169,9 +169,16 @@ _RECALL_NOTICE = ("> **Recall note:** regulator enumeration was incomplete for t
                   "Items above are unaffected; coverage of that gap relied on search alone.\n\n")
 
 
+# Re-running the finaliser on an already-finalised digest must REPLACE its
+# notices, not stack a second copy — regenerating after a coverage fix is normal.
+_RECALL_NOTICE_RE = re.compile(r"^> \*\*Recall note:\*\*.*?\n\n", re.MULTILINE | re.DOTALL)
+_RECALL_GAP_RE = re.compile(r"^> \*\*Recall gap:\*\*.*?\n\n", re.MULTILINE | re.DOTALL)
+
+
 def insert_recall_notice(text, reason):
     """Place the notice immediately before the Sources & Confidence line."""
     notice = _RECALL_NOTICE % reason
+    text = _RECALL_NOTICE_RE.sub("", text)
     marker = "**Sources & Confidence:**"
     idx = text.find(marker)
     if idx == -1:
@@ -205,6 +212,7 @@ def insert_recall_gap_notice(text, count, refs):
     adjacent to the recall-partial notice (if any)."""
     ref_list = ", ".join(refs) if refs else "see runs/DATE/12_coverage.json"
     notice = _RECALL_GAP_NOTICE % (count, ref_list)
+    text = _RECALL_GAP_RE.sub("", text)
     marker = "**Sources & Confidence:**"
     idx = text.find(marker)
     if idx == -1:

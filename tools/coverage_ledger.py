@@ -83,6 +83,10 @@ _NON_TRACKED_DIVISIONS = (
     "airbus helicopters",
     "airbus defence",
     "boeing helicopters",
+    # Airbus Canada builds the A220 (ex-Bombardier C Series) — a different,
+    # permanently out-of-scope airframe that shares the tracked OEM's first
+    # word. NOT a general "regional jet" rule: only this named division.
+    "airbus canada",
 )
 
 
@@ -131,10 +135,33 @@ def classify(ad, reported_refs, seen_refs, tokens, oems=()):
     return "unaccounted"                           # tracked OEM, or no signal at all
 
 
+def refs_from_source_url(url):
+    """Document numbers embedded in a primary_source_url.
+
+    The sweep identifies an FAA AD by its Federal Register DOCUMENT number
+    ("2026-18055"); the verifier may record it by its FAA AD number
+    ("2026-17-09") or its docket ("FAA-2026-8795"). Those never compare equal,
+    so an AD plainly present in the digest was reported as unaccounted. The FR
+    number is in the record all along — in the URL — so harvest it there and
+    stop depending on which identifier the verifier happened to pick.
+
+    Only the final path segment is scanned, so the date directories in
+    ".../2026/09/03/2026-18055.html" and the "FR-2026-07-28" package name in
+    govinfo URLs cannot contribute a spurious document number. Marking a
+    genuinely missed AD as reported is the dangerous direction.
+    """
+    if not url:
+        return set()
+    tail = str(url).rstrip("/").rsplit("/", 1)[-1]
+    tail = re.sub(r"\.(?:html?|pdf)$", "", tail, flags=re.IGNORECASE)
+    return set(_REF_NUM.findall(tail))
+
+
 def reported_refs_from(records):
     refs = set()
     for rec in records.get("records") or []:
         for r in rec.get("references") or []:
+            refs |= refs_from_source_url(r.get("primary_source_url"))
             num = (r.get("ref_number") or "").strip()
             if num:
                 refs.add(num)

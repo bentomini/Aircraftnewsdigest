@@ -533,6 +533,38 @@ def _rec(rid, refs=None, headline="Some headline"):
             "references": [{"ref_number": n} for n in (refs or [])]}
 
 
+class TestNoticesAreIdempotent(unittest.TestCase):
+    """Re-running the finaliser on an already-finalised digest must REPLACE its
+    notices, not stack a second copy. Regenerating a digest after a coverage
+    fix is a normal operation and must not corrupt the file."""
+
+    def test_recall_gap_notice_replaced_not_duplicated(self):
+        base = "Body text.\n\n**Sources & Confidence:** 7 items\n"
+        once = f.insert_recall_gap_notice(base, 5, ["2026-1", "2026-2"])
+        twice = f.insert_recall_gap_notice(once, 1, ["2026-9"])
+        self.assertEqual(twice.count("**Recall gap:**"), 1)
+        self.assertIn("2026-9", twice)
+        self.assertNotIn("2026-1", twice)
+
+    def test_recall_partial_notice_replaced_not_duplicated(self):
+        base = "Body text.\n\n**Sources & Confidence:** 7 items\n"
+        once = f.insert_recall_notice(base, "first reason")
+        twice = f.insert_recall_notice(once, "second reason")
+        self.assertEqual(twice.count("**Recall note:**"), 1)
+        self.assertIn("second reason", twice)
+        self.assertNotIn("first reason", twice)
+
+    def test_both_notices_coexist_and_each_stays_single(self):
+        base = "Body text.\n\n**Sources & Confidence:** 7 items\n"
+        out = f.insert_recall_notice(base, "why")
+        out = f.insert_recall_gap_notice(out, 2, ["2026-3"])
+        out = f.insert_recall_notice(out, "why again")
+        out = f.insert_recall_gap_notice(out, 1, ["2026-4"])
+        self.assertEqual(out.count("**Recall note:**"), 1)
+        self.assertEqual(out.count("**Recall gap:**"), 1)
+        self.assertEqual(out.count("**Sources & Confidence:**"), 1)
+
+
 class TestWriterDroppedRecords(unittest.TestCase):
     def test_all_records_present_reports_nothing(self):
         md = ("**Alpha event on the wing spar happened today** — A350.\n"
